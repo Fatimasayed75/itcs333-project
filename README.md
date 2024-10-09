@@ -1,8 +1,13 @@
 # ITCS333
 
+  CSS :
+    - dark/light mode
+    - REMEBER ALWAYS MAKE YOUR WORK RESPONSIVE
+    
 - Sign in
   - validation input (error message)
   - Authentication (Microsoft)
+  - Encrypted Password
 
 - Home
   - Browsing
@@ -33,9 +38,7 @@
     - Reporting & Analysis
       - reports on room usage/popularity statistics
 
-  CSS :
-    - dark/light mode
-
   EXTRA :
+    - to know name from backboard/sis
     - rating system (stars) 
     - Can enter as a guest? 
