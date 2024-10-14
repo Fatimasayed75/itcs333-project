@@ -1,8 +1,14 @@
 # ITCS333
 
-  CSS :
-    - dark/light mode
-    - REMEBER ALWAYS MAKE YOUR WORK RESPONSIVE
+PAGES TO DESIGN : 
+  - Sign in ✓
+  - Booking ✓
+  - view past and coming bookings
+  - profile
+  - Admin Panel
+
+- dark/light mode
+- REMEBER ALWAYS MAKE YOUR WORK RESPONSIVE
     
 - Sign in
   - validation input (error message)
@@ -13,22 +19,23 @@
   - Browsing
   - Book 
     - conflict checking algorithm
+      - notify me once available
     - real time booking
     - view comments
-    - after booking time passed can leave a comment
+    - after booking time passed user can leave a comment
   - bookings today
   - search
   - filter (lab/class/capacity/timeslot)
   - notifications (if admin/user responds to my comment)
+  - History
+    - Prev
+      - Book same room
+    - Coming 
+      - cancel booking (real time)
 
 - Profile 
   - default teacher/student pic
   - update profile details/profile pic
-
-- History
-  - Prev
-  - Coming 
-    - cancel booking (real time)
 
 - Admin Panel
   - Admin dashboard 
@@ -41,4 +48,4 @@
   EXTRA :
     - to know name from backboard/sis
     - rating system (stars) 
-    - Can enter as a guest? 
+    - Add pictures for each room
