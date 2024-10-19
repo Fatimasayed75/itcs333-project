@@ -83,7 +83,7 @@ CREATE TABLE `room` (
   `roomID` varchar(8) NOT NULL,
   `type` enum('lab','class') DEFAULT NULL,
   `capacity` int(10) UNSIGNED DEFAULT NULL,
-  `isAvailable` tinyint(1) DEFAULT NULL,
+  `isAvailable` tinyint(1) DEFAULT false,
   `floor` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
