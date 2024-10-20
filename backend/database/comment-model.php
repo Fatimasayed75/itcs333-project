@@ -1,9 +1,11 @@
 <?php
 
 require_once __DIR__ . '/../utils/crud.php';
+require_once __DIR__ . '/../utils/constants.php';
 
+
+use Utils\Constants;
 use Utils\Crud;
-// use Utils\Constants;
 
 class CommentModel
 {
@@ -13,7 +15,7 @@ class CommentModel
     public $content;
     public $createdAt;
 
-    // constructor
+    // Constructor
     function __construct($conn, $commentID = null, $userID = null, $content = null, $createdAt = null)
     {
         $this->conn = $conn;
@@ -23,7 +25,7 @@ class CommentModel
         $this->createdAt = $createdAt;
     }
 
-    // create a new comment
+    // Create a new comment
     public function save()
     {
         $crud = new Crud($this->conn);
@@ -32,7 +34,7 @@ class CommentModel
         return $crud->create('comments', $columns, $values);
     }
 
-    // update a comment
+    // Update a comment
     public function update()
     {
         $crud = new Crud($this->conn);
@@ -41,34 +43,78 @@ class CommentModel
         return $crud->update('comments', $update, $condition, $this->commentID);
     }
 
-    // delete a comment
+    // Delete a comment
     public function delete()
     {
-        $curd = new Crud($this->conn);
+        $crud = new Crud($this->conn);
         $condition = 'commentID = ?';
-        return $curd->delete('comments', $condition, $this->commentID);
+        return $crud->delete('comments', $condition, $this->commentID);
     }
 
-    // Get a comment by its ID
-    // public function getCommentByID($commentID)
-    // {
-    //     $crud = new Crud($this->conn);
-    //     $condition = 'commentID = ?';
-    //     $result = $crud->read('comments', [], $condition, $commentID);
+    // Get all comments
+    public function getAllComments()
+    {
+        $crud = new Crud($this->conn);
+        $result = $crud->read('comments');
+        
+        // Check if there are no records
+        return !empty($result) ? $result : Constants::NO_RECORDS;
+    }
 
-    //     if (!empty($result)) {
+    // Get a comment by comment ID
+    public function getCommentByID($commentID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'commentID = ?';
+        $result = $crud->read('comments', [], $condition, $commentID);
 
-    //         foreach ($result[0] as $key => $value) {
-    //             $this->{$key} = $value;
-    //         }
+        return !empty($result) ? $result[0] : Constants::COMMENT_NOT_FOUND;
+    }
 
-    //         // $row = $result[0];
-    //         // $this->commentID = $row['commentID'];
-    //         // $this->userID = $row['userID'];
-    //         // $this->content = $row['content'];
-    //         // $this->createdAt = $row['createdAt'];
-    //         return $this;
-    //     }
-    //     return Constants::COMMENT_NOT_FOUND;
-    // }
+    // Delete all comments
+    public function deleteAllComments()
+    {
+        $crud = new Crud($this->conn);
+        $condition = '1';
+        return $crud->delete('comments', $condition);
+    }
+
+    // Get comments by userID
+    public function getCommentsByUserID($userID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'userID = ?';
+        $result = $crud->read('comments', [], $condition, $userID);
+
+        // Check if result is not empty
+        return !empty($result) ? $result : Constants::NO_RECORDS;
+    }
+
+    // Get comments by creation date
+    public function getCommentsByCreatedAt($date)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'DATE(createdAt) = ?';
+        $result = $crud->read('comments', [], $condition, $date);
+
+        // Check if result is not empty
+        return !empty($result) ? $result : Constants::NO_RECORDS;
+    }
+
+    // Get the number of comments
+    public function getCommentCount()
+    {
+        $crud = new Crud($this->conn);
+        $result = $crud->read('comments', ['COUNT(*) as count']);
+        return $result[0]['count'] ?? 0;
+    }
+
+    // Get the number of comments by user ID
+    public function getCommentCountByUserID($userID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'userID = ?';
+        $result = $crud->read('comments', ['COUNT(*) as count'], $condition, $userID);
+        return $result[0]['count'] ?? 0;
+    }
 }

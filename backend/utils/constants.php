@@ -17,8 +17,8 @@ class Constants
     public const COMMENT_NOT_FOUND = 'Comment not found';
 
     // Records-related
-    // public const RECORD_NOT_FOUND = 'Record not found';
-    public const RECORDS_NOT_FOUND = 'Records not found';
+    public const RECORD_NOT_FOUND = 'Record not found';
+    public const NO_RECORDS = 'No records found';
 
 
     // HTTP Status
