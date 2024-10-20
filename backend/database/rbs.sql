@@ -1,3 +1,4 @@
+-- USE rbs;
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -46,6 +47,7 @@ CREATE TABLE `bookings` (
 CREATE TABLE `comments` (
   `commentID` int(11) NOT NULL,
   `userID` int(11) DEFAULT NULL,
+  `roomID` varchar(8) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `content` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -58,7 +60,10 @@ CREATE TABLE `comments` (
 
 CREATE TABLE `comment_reply` (
   `replyID` int(11) NOT NULL,
-  `commentID` int(11) DEFAULT NULL
+  `commentID` int(11) DEFAULT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `replyContent` text DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,13 +123,15 @@ ALTER TABLE `bookings`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
-  ADD KEY `userID` (`userID`);
+  ADD KEY `userID` (`userID`),
+  ADD KEY `roomID` (`roomID`);
 
 --
 -- Indexes for table `comment_reply`
 --
 ALTER TABLE `comment_reply`
   ADD PRIMARY KEY (`replyID`),
+  ADD KEY `userID` (`userID`), -- Added missing comma
   ADD KEY `commentID` (`commentID`);
 
 --
@@ -196,13 +203,15 @@ ALTER TABLE `bookings`
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`);
 
 --
 -- Constraints for table `comment_reply`
 --
 ALTER TABLE `comment_reply`
-  ADD CONSTRAINT `comment_reply_ibfk_1` FOREIGN KEY (`commentID`) REFERENCES `comments` (`commentID`);
+  ADD CONSTRAINT `comment_reply_ibfk_1` FOREIGN KEY (`commentID`) REFERENCES `comments` (`commentID`),
+  ADD CONSTRAINT `comment_reply_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
 
 --
 -- Constraints for table `equipment`

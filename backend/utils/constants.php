@@ -20,6 +20,9 @@ class Constants
     public const RECORD_NOT_FOUND = 'Record not found';
     public const NO_RECORDS = 'No records found';
 
+    // reply-related
+    public const REPLY_NOT_FOUND = "Reply not found";
+
 
     // HTTP Status
     public const BAD_REQUEST_404 = 'Bad Request';

@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../utils/crud.php';
 require_once __DIR__ . '/../utils/constants.php';
 
-
 use Utils\Constants;
 use Utils\Crud;
 
@@ -12,15 +11,17 @@ class CommentModel
     private $conn;
     public $commentID;
     public $userID;
+    public $roomID;
     public $content;
     public $createdAt;
 
     // Constructor
-    function __construct($conn, $commentID = null, $userID = null, $content = null, $createdAt = null)
+    function __construct($conn, $commentID = null, $userID = null, $roomID = null, $content = null, $createdAt = null)
     {
         $this->conn = $conn;
         $this->commentID = $commentID;
         $this->userID = $userID;
+        $this->roomID = $roomID;
         $this->content = $content;
         $this->createdAt = $createdAt;
     }
@@ -29,8 +30,8 @@ class CommentModel
     public function save()
     {
         $crud = new Crud($this->conn);
-        $columns = ['userID', 'content'];
-        $values = [$this->userID, $this->content];
+        $columns = ['userID', 'roomID', 'content'];
+        $values = [$this->userID, $this->roomID, $this->content];
         return $crud->create('comments', $columns, $values);
     }
 
@@ -56,7 +57,7 @@ class CommentModel
     {
         $crud = new Crud($this->conn);
         $result = $crud->read('comments');
-        
+
         // Check if there are no records
         return !empty($result) ? $result : Constants::NO_RECORDS;
     }
@@ -69,6 +70,17 @@ class CommentModel
         $result = $crud->read('comments', [], $condition, $commentID);
 
         return !empty($result) ? $result[0] : Constants::COMMENT_NOT_FOUND;
+    }
+
+    // Get comments by roomID
+    public function getCommentsByRoomID($roomID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'roomID = ?';
+        $result = $crud->read('comments', [], $condition, $roomID);
+
+        // Check if result is not empty
+        return !empty($result) ? $result : Constants::NO_RECORDS;
     }
 
     // Delete all comments
