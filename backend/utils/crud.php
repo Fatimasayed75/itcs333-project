@@ -24,8 +24,19 @@ class Crud {
         
         $query = "INSERT INTO $tableName ($columnList) VALUES ($placeholders)";
         $stmt = $this->db->prepare($query);
-
-        return $stmt->execute($values);
+        print_r($stmt);
+        if (!$stmt->execute($values)) {
+            // Fetch the error info and print it
+            $errorInfo = $stmt->errorInfo();
+            echo "Error executing query: " . $errorInfo[2]; // Error message
+            return false; // Return false to indicate failure
+        } else {
+            echo "Record inserted successfully";
+            echo "columnList: $columnList";
+            echo "placeholders: $placeholders";
+        }
+    
+        return true; 
     }
 
     // Read retrieves records from the specified table based on the given condition.

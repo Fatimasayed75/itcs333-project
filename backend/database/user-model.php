@@ -8,20 +8,24 @@ use Utils\Crud;
 
 class UserModel
 {
-    private $conn;
+                private $conn;
     public $userID;
     public $email;
-    public $userPassword;
+    public $password;
+    public $firstName;
+    public $lastName;
     public $role;
     public $profilePic;
 
     // Constructor
-    function __construct($conn, $userID = null, $email = null, $userPassword = null, $role = null, $profilePic = null)
+    function __construct($conn, $userID = null, $email = null, $password = null, $firstName = null, $lastName = null, $role = null, $profilePic = null)
     {
         $this->conn = $conn;
         $this->userID = $userID;
         $this->email = $email;
-        $this->userPassword = $userPassword;
+        $this->password = $password;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->role = $role;
         $this->profilePic = $profilePic;
     }
@@ -30,8 +34,8 @@ class UserModel
     public function save()
     {
         $crud = new Crud($this->conn);
-        $columns = ['email', 'userPassword', 'role', 'profilePic'];
-        $values = [$this->email, $this->userPassword, $this->role, $this->profilePic];
+        $columns = ['email', 'password', 'firstName', 'lastName', 'role', 'profilePic'];
+        $values = [$this->email, $this->password, $this->firstName, $this->lastName, $this->role, $this->profilePic];
         return $crud->create('users', $columns, $values);
     }
 
@@ -39,7 +43,7 @@ class UserModel
     public function update()
     {
         $crud = new Crud($this->conn);
-        $update = ['email' => $this->email, 'userPassword' => $this->userPassword, 'role' => $this->role, 'profilePic' => $this->profilePic];
+        $update = ['email' => $this->email, 'password' => $this->password, 'role' => $this->role, 'profilePic' => $this->profilePic];
         $condition = 'userID = ?';
         return $crud->update('users', $update, $condition, $this->userID);
     }
