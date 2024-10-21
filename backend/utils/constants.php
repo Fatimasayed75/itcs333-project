@@ -26,6 +26,10 @@ class Constants
     // null values
     public const NULL_VALUE_FOUND = "Null values are not accepted";
 
+    // Operations
+    public const SUCCESS = 'Operation executed successfully';
+    public const FAILED = 'Operation failed';
+
 
     // HTTP Status
     public const BAD_REQUEST_404 = 'Bad Request';

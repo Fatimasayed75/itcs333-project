@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../utils/crud.php';
 require_once __DIR__ . '/../utils/constants.php';
+require 'user-model.php';
+require 'room_model.php';
 
 use Utils\Constants;
 use Utils\Crud;
@@ -15,6 +17,10 @@ class CommentModel
     public $content;
     public $createdAt;
 
+
+    private $userModel;
+    private $roomModel;
+
     // Constructor
     function __construct($conn, $commentID = null, $userID = null, $roomID = null, $content = null, $createdAt = null)
     {
@@ -24,37 +30,69 @@ class CommentModel
         $this->roomID = $roomID;
         $this->content = $content;
         $this->createdAt = $createdAt;
+
+        $this->userModel = new UserModel($conn);
+        $this->roomModel = new RoomModel($conn);
     }
 
     // Create a new comment
     public function save()
     {
-        // null values are not accepted
+        // Null values are not accepted
         if (empty($this->userID) || empty($this->roomID) || empty($this->content)) {
             return Constants::NULL_VALUE_FOUND;
         }
 
+        // Check if the user exists
+        if ($this->userModel->getUserByID($this->userID) === Constants::USER_NOT_FOUND) {
+            return Constants::USER_NOT_FOUND;
+        }
+
+        // Check if the room exists
+        // if ($this->roomModel->getRoomByID($roomID) === Constants::ROOM_NOT_FOUND) {
+        //     return Constants::ROOM_NOT_FOUND;
+        // }
+
         $crud = new Crud($this->conn);
         $columns = ['userID', 'roomID', 'content'];
         $values = [$this->userID, $this->roomID, $this->content];
-        return $crud->create('comments', $columns, $values);
+        $result = $crud->create('comments', $columns, $values);
+
+        // check if the comment saved
+        return $result ? $result : Constants::FAILED;
     }
 
     // Update a comment
     public function update()
     {
+        // Check if the comment exists
+        if ($this->getCommentByID($this->commentID) === Constants::COMMENT_NOT_FOUND) {
+            return Constants::COMMENT_NOT_FOUND;
+        }
+
         $crud = new Crud($this->conn);
         $update = ['content' => $this->content];
         $condition = 'commentID = ?';
-        return $crud->update('comments', $update, $condition, $this->commentID);
+        $result = $crud->update('comments', $update, $condition, $this->commentID);
+
+        // check if the comment updated
+        return $result ? Constants::SUCCESS : Constants::FAILED;
     }
 
     // Delete a comment
     public function delete()
     {
+        // Check if the comment exists
+        if ($this->getCommentByID($this->commentID) === Constants::COMMENT_NOT_FOUND) {
+            return Constants::COMMENT_NOT_FOUND;
+        }
+
         $crud = new Crud($this->conn);
         $condition = 'commentID = ?';
-        return $crud->delete('comments', $condition, $this->commentID);
+        $result = $crud->delete('comments', $condition, $this->commentID);
+
+        // check if the comment deleted
+        return $result ? Constants::SUCCESS : Constants::FAILED;
     }
 
     // Get all comments
@@ -93,7 +131,10 @@ class CommentModel
     {
         $crud = new Crud($this->conn);
         $condition = '1';
-        return $crud->delete('comments', $condition);
+        $result = $crud->delete('comments', $condition);
+
+        // check if all comments are deleted
+        return $result ? Constants::SUCCESS : Constants::FAILED;
     }
 
     // Get comments by userID
@@ -129,6 +170,11 @@ class CommentModel
     // Get the number of comments by user ID
     public function getCommentCountByUserID($userID)
     {
+        // Check if the user exists
+        if ($this->userModel->getUserByID($this->userID) === Constants::USER_NOT_FOUND) {
+            return Constants::USER_NOT_FOUND;
+        }
+
         $crud = new Crud($this->conn);
         $condition = 'userID = ?';
         $result = $crud->read('comments', ['COUNT(*) as count'], $condition, $userID);
