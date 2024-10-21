@@ -23,6 +23,9 @@ class Constants
     // reply-related
     public const REPLY_NOT_FOUND = "Reply not found";
 
+    // null values
+    public const NULL_VALUE_FOUND = "Null values are not accepted";
+
 
     // HTTP Status
     public const BAD_REQUEST_404 = 'Bad Request';

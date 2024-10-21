@@ -29,6 +29,11 @@ class CommentReplyModel
     // Create a new reply
     public function save()
     {
+        // null values are not accepted
+        if (empty($this->commentID) || empty($this->userID) || empty($this->replyContent)) {
+            return Constants::NULL_VALUE_FOUND;
+        }
+
         $crud = new Crud($this->conn);
         $columns = ['commentID', 'userID', 'replyContent'];
         $values = [$this->commentID, $this->userID, $this->replyContent];
@@ -140,15 +145,14 @@ class CommentReplyModel
 
 
     // Delete replies by room ID
-    // public function deleteRepliesByRoomID($roomID)
-    // {
-    //     // $crud = new Crud($this->conn);
-    //     $query = "DELETE comment_reply 
-    //           FROM comment_reply 
-    //           INNER JOIN comments ON comment_reply.commentID = comments.commentID 
-    //           WHERE comments.roomID = ?";
+    public function deleteRepliesByRoomID($roomID)
+    {
+        $query = "DELETE comment_reply 
+              FROM comment_reply 
+              INNER JOIN comments ON comment_reply.commentID = comments.commentID 
+              WHERE comments.roomID = ?";
 
-    //     $stmt = $this->conn->prepare($query);
-    //     return $stmt->execute([$roomID]);
-    // }
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute([$roomID]);
+    }
 }

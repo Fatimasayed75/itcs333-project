@@ -29,6 +29,11 @@ class CommentModel
     // Create a new comment
     public function save()
     {
+        // null values are not accepted
+        if (empty($this->userID) || empty($this->roomID) || empty($this->content)) {
+            return Constants::NULL_VALUE_FOUND;
+        }
+
         $crud = new Crud($this->conn);
         $columns = ['userID', 'roomID', 'content'];
         $values = [$this->userID, $this->roomID, $this->content];
