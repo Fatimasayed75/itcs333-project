@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2024 at 04:57 PM
+-- Generation Time: Oct 28, 2024 at 08:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -118,6 +118,21 @@ INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `session`
+--
+
+CREATE TABLE `session` (
+  `sessionID` int(11) NOT NULL,
+  `userID` int(10) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `expiresAt` timestamp NULL DEFAULT NULL,
+  `isActive` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -186,6 +201,14 @@ ALTER TABLE `room`
   ADD PRIMARY KEY (`roomID`);
 
 --
+-- Indexes for table `session`
+--
+ALTER TABLE `session`
+  ADD PRIMARY KEY (`sessionID`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `userID` (`userID`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -213,6 +236,12 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `comment_reply`
   MODIFY `replyID` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `session`
+--
+ALTER TABLE `session`
+  MODIFY `sessionID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -250,6 +279,12 @@ ALTER TABLE `comment_reply`
 --
 ALTER TABLE `equipment`
   ADD CONSTRAINT `fk_equipment_roomID` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `session`
+--
+ALTER TABLE `session`
+  ADD CONSTRAINT `session_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
