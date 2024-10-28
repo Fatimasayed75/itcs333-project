@@ -60,7 +60,8 @@ CREATE TABLE `comments` (
   `userID` int(10) NOT NULL,
   `roomID` varchar(10) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `content` text DEFAULT NULL
+  `content` text DEFAULT NULL,
+  `isRead` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

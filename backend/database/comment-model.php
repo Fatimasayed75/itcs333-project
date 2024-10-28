@@ -16,13 +16,14 @@ class CommentModel
     public $roomID;
     public $content;
     public $createdAt;
+    public $isRead;
 
 
     private $userModel;
     private $roomModel;
 
     // Constructor
-    function __construct($conn, $commentID = null, $userID = null, $roomID = null, $content = null, $createdAt = null)
+    function __construct($conn, $commentID = null, $userID = null, $roomID = null, $content = null, $createdAt = null, $isRead = 0)
     {
         $this->conn = $conn;
         $this->commentID = $commentID;
@@ -30,6 +31,7 @@ class CommentModel
         $this->roomID = $roomID;
         $this->content = $content;
         $this->createdAt = $createdAt;
+        $this->isRead = $isRead;
 
         $this->userModel = new UserModel($conn);
         $this->roomModel = new RoomModel($conn);
@@ -54,7 +56,7 @@ class CommentModel
         // }
 
         $crud = new Crud($this->conn);
-        $columns = ['userID', 'roomID', 'content'];
+        $columns = ['userID', 'roomID', 'content', 'isRead'];
         $values = [$this->userID, $this->roomID, $this->content];
         $result = $crud->create('comments', $columns, $values);
 
@@ -71,7 +73,7 @@ class CommentModel
         }
 
         $crud = new Crud($this->conn);
-        $update = ['content' => $this->content];
+        $update = ['content' => $this->content, 'isRead' => $this->isRead];
         $condition = 'commentID = ?';
         $result = $crud->update('comments', $update, $condition, $this->commentID);
 
@@ -179,5 +181,27 @@ class CommentModel
         $condition = 'userID = ?';
         $result = $crud->read('comments', ['COUNT(*) as count'], $condition, $userID);
         return $result[0]['count'] ?? 0;
+    }
+
+    // Get all read comments
+    public function getAllReadComments()
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'isRead = 1';
+        $orderBy = 'ORDER BY createdAt DESC';
+        $result = $crud->read('comments', [], $condition, null, $orderBy);
+
+        return !empty($result) ? $result : Constants::NO_RECORDS;
+    }
+
+    // Get all unread comments
+    public function getAllUnreadComments()
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'isRead = 0';
+        $orderBy = 'ORDER BY createdAt DESC';
+        $result = $crud->read('comments', [], $condition, null, $orderBy);
+
+        return !empty($result) ? $result : Constants::NO_RECORDS;
     }
 }
