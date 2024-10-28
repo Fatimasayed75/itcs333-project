@@ -26,6 +26,9 @@ class Constants
 
     public const INVALID_START_TIME = 'Start time must be at least after an hour from now';
 
+    // session-related
+    public const SESSION_NOT_FOUND = 'Session not found';
+
     // Records-related
     public const RECORD_NOT_FOUND = 'Record not found';
     public const NO_RECORDS = 'No records found';
