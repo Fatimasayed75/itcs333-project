@@ -17,12 +17,13 @@
         
         if (isset($pdo)) {
 
+            // $room = new RoomModel($pdo, "S40-1003", null, 10, 1, 1);
+            // $result = $room->save();
+            // echo $result;
 
-            $Book = new BookModel($pdo, null, 14, "S40-1112", null, '2024-10-30 10:00:00', '2024-10-30 10:30:00');
+            $Book = new BookModel($pdo, null, 14, "S40-1003", null, '2024-10-30 11:00:00', '2024-10-30 11:30:00');
             $result = $Book->save();
             echo $result;
-            $x = $Book->cancelBooking();
-            echo $x;
 
             // $result = $Book->expire();
             

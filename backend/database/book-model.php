@@ -29,7 +29,7 @@ class BookModel
     $this->bookingTime = $bookingTime;
     $this->startTime = $startTime;
     $this->endTime = $endTime;
-    $this->status = 'pending';
+    $this->status = 'active';
   }
 
   // Create a new booking
@@ -55,32 +55,50 @@ class BookModel
     if ($interval->h == 0 && $interval->i < 30) {
       return Constants::BOOKING_DURATION_TOO_SHORT;
     }
+
     // Check if the duration exceeds 2 hours and 30 minutes
     if ($interval->h > 2 || ($interval->h == 2 && $interval->i > 30)) {
       return Constants::BOOKING_DURATION_TOO_LONG;
     }
 
-    // if ($this->checkConflicts($this->roomID, $this->startTime, $this->endTime)) {
-    //   return Constants::BOOKING_CONFLICT;
-    // }
+    if ($this->checkConflicts($this->roomID, $this->startTime, $this->endTime)) {
+      return Constants::BOOKING_CONFLICT;
+    }
 
     // if booking duration valid, insert it
     $crud = new Crud($this->conn);
-    $columns = ['userID', 'roomID', 'bookingTime', 'startTime', 'endTime'];
-    $values = [$this->userID, $this->roomID, $this->bookingTime, $this->startTime, $this->endTime];
+    $columns = ['userID', 'roomID', 'bookingTime', 'startTime', 'endTime', 'status'];
+    $values = [
+      $this->userID,
+      $this->roomID,
+      $this->bookingTime,
+      $this->startTime,
+      $this->endTime,
+      $this->status = $this->roomID == "S40-1002" ? 'pending' : 'active' // Set status to 'pending' if roomID is 1002
+    ];
+
     if ($crud->create('bookings', $columns, $values)) {
       // Fetch the last inserted ID if insert was successful
       $this->bookingID = $this->conn->lastInsertId(); // Set the new bookingID
     }
-
   }
 
   // check for a specific room is a startTime and endTime are valid
-  private function checkConflicts($roomID, $startTime, $endTime)
+  private function checkConflicts($roomID, $startTime, $newEndTime)
   {
     $crud = new Crud($this->conn);
-    $condition = 'roomID = ? AND ((startTime < ? AND endTime > ?) OR (startTime < ? AND endTime > ?) OR (startTime >= ? AND endTime <= ?))';
-    $result = $crud->read('bookings', [], $condition, $roomID, $endTime, $startTime, $startTime, $endTime, $startTime, $endTime);
+
+    // 10 MINUTES GAP BETWEEN BOOKINGS
+    $condition = 'roomID = ? AND status = ? AND (
+      (endTime + INTERVAL 10 MINUTE > ?) AND (startTime < ?)
+      OR (endTime + INTERVAL 10 MINUTE > ?) AND (startTime < ?)
+    )';
+
+    // Case 1: New booking starts before an existing booking ends
+    // Case 2: New booking ends after an existing booking starts
+    // Case 3: New booking is fully within an existing booking
+
+    $result = $crud->read('bookings', [], $condition, $roomID, 'active', $startTime, $newEndTime, $startTime, $newEndTime);
 
     return !empty($result); // returns true if there's a conflict
   }
@@ -100,7 +118,6 @@ class BookModel
     $condition = 'bookingID = ?';
 
     // If the record exists, delete it
-    echo "deleting bookingID: {$this->bookingID}";
     return $crud->delete('bookings', $condition, $this->bookingID);
   }
 
@@ -122,7 +139,6 @@ class BookModel
     // Check if the booking exists
     $condition = 'bookingID = ?';
     $currentBooking = $this->getBookingsBy('bookingID', $this->bookingID);
-    var_dump($currentBooking);
 
     if ($currentBooking === Constants::BOOKING_NOT_FOUND) {
       return Constants::BOOKING_NOT_FOUND;
@@ -130,7 +146,6 @@ class BookModel
 
     // If the record exists, update the status
     $update = ['status' => $status];
-    echo "updating status to {$update['status']}";
     return $crud->update('bookings', $update, $condition, $this->bookingID);
   }
 
@@ -145,8 +160,7 @@ class BookModel
     }
 
     if (!is_array($currentBooking)) {
-      echo "currentBooking is not an array";
-      return;
+      return Constants::FAILED;
     }
 
     $crud = new Crud($this->conn);
@@ -156,14 +170,13 @@ class BookModel
 
     // Check if the new endTime is after the current endTime
     if ($newEndDateTime <= $currentEndTime) {
-      echo "newEndTime {$newEndDateTime->format('Y-m-d H:i:s')} is not after currentEndTime {$currentEndTime->format('Y-m-d H:i:s')}";
       return Constants::INVALID_END_TIME; // Return an error if newEndTime is not after the currentEndTime
     }
 
     // Check if the new endTime conflicts with another booking
-    // if ($this->checkConflicts($currentBooking[0]['roomID'], $currentBooking[0]['startTime'], $newEndTime)) {
-    //   return Constants::BOOKING_CONFLICT;
-    // }
+    if ($this->checkConflicts($currentBooking[0]['roomID'], $currentBooking[0]['startTime'], $newEndTime)) {
+      return Constants::BOOKING_CONFLICT;
+    }
 
     // Update the endTime if the newEndTime is valid
     $update = ['endTime' => $newEndTime];
@@ -185,9 +198,9 @@ class BookModel
     }
 
     // Check for conflicts with other bookings
-    // if ($this->checkConflicts($currentBooking['roomID'], $newStartDateTime, $newEndDateTime)) {
-    //   return Constants::BOOKING_CONFLICT;
-    // }
+    if ($this->checkConflicts($currentBooking[0]['roomID'], $newStartTime, $newEndTime)) {
+      return Constants::BOOKING_CONFLICT;
+    }
 
     //Update the booking with the new start and end times
     $update = [
@@ -207,8 +220,6 @@ class BookModel
     $update = ['status' => 'expired'];
 
     $currentDateTime = (new DateTime())->format('Y-m-d H:i:s');
-
-    var_dump($this->bookingID, $currentDateTime);
 
     // Update the status to 'expired' where conditions match
     // date('Y-m-d H:i:s') is the current date and time
