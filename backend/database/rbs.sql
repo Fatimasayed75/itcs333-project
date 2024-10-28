@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2024 at 01:50 PM
+-- Generation Time: Oct 28, 2024 at 04:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,8 +34,20 @@ CREATE TABLE `bookings` (
   `bookingTime` timestamp NOT NULL DEFAULT current_timestamp(),
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
-  `status` enum('confirmed','pending','canceled') NOT NULL DEFAULT 'pending'
+  `status` enum('active','pending','expired') NOT NULL DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`bookingID`, `userID`, `roomID`, `bookingTime`, `startTime`, `endTime`, `status`) VALUES
+(43, 14, 'S40-1112', '2024-10-28 09:33:10', '2024-10-30 10:00:00', '2024-10-30 10:30:00', 'expired'),
+(44, 14, 'S40-1112', '2024-10-28 09:44:44', '2024-10-30 10:00:00', '2024-10-30 10:30:00', 'pending'),
+(49, 14, 'S40-1112', '2024-10-28 10:03:01', '2024-10-30 09:15:00', '2024-10-30 10:45:00', 'pending'),
+(50, 14, 'S40-1112', '2024-10-28 10:03:24', '2024-10-30 08:00:00', '2024-10-30 09:15:00', 'pending'),
+(57, 14, 'S40-1002', '2024-10-28 10:31:34', '2024-10-30 10:54:00', '2024-10-30 12:00:00', 'pending'),
+(58, 14, 'S40-1003', '2024-10-28 10:31:44', '2024-10-30 10:54:00', '2024-10-30 12:00:00', 'active');
 
 -- --------------------------------------------------------
 
@@ -85,7 +97,7 @@ CREATE TABLE `equipment` (
 
 CREATE TABLE `room` (
   `roomID` varchar(10) NOT NULL,
-  `type` enum('lab','class') DEFAULT NULL,
+  `type` enum('lab','class') DEFAULT 'class',
   `capacity` int(10) UNSIGNED NOT NULL,
   `isAvailable` tinyint(4) NOT NULL DEFAULT 0,
   `floor` tinyint(4) NOT NULL
@@ -96,7 +108,11 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`) VALUES
-('S40-1112', 'class', 20, 1, 1);
+('S40-1002', NULL, 10, 1, 1),
+('S40-1003', NULL, 10, 1, 1),
+('S40-1112', 'class', 20, 1, 1),
+('S40-1117', NULL, 20, 1, 1),
+('S40-1118', NULL, 20, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -111,7 +127,7 @@ CREATE TABLE `users` (
   `firstName` text NOT NULL,
   `lastName` text NOT NULL,
   `role` enum('admin','student','instructor') NOT NULL DEFAULT 'student',
-  `profilePic` blob NOT NULL
+  `profilePic` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -122,7 +138,10 @@ INSERT INTO `users` (`userID`, `email`, `password`, `firstName`, `lastName`, `ro
 (13, 'z.fadhel2004@gmail.com', '$2y$10$SVXz4/ZIcig5ETK5wFFVS.W7oGbSiBdO4O/azxFUbxwWtuRckNVRm', '', '', 'student', ''),
 (14, 'zf@gmail.com', '$2y$10$If9LNj9T4xOSCkdRJ5tQleYC0O7yxrqQRWtZMnCMTvrMS1xyNLGqC', '', '', 'student', ''),
 (15, '22@gmail.com', '$2y$10$hM4ic42IPRFi5yrUZiPGKOJ3G.cNKnFLsR6SyXKFcT7txLxM2QaGq', '', '', 'student', ''),
-(17, 'z@gmail.com', '$2y$10$Kr4HBq4DGR90BPPNfIAXdeBPcovK4kyzKYVmIlksHcAKHHUrkwlai', '', '', 'student', '');
+(17, 'z@gmail.com', '$2y$10$Kr4HBq4DGR90BPPNfIAXdeBPcovK4kyzKYVmIlksHcAKHHUrkwlai', '', '', 'student', ''),
+(19, 'eee@gmail.com', '123', 'z', 'f', 'student', ''),
+(20, 'work@gmail.com', '123', 'z', 'f', 'student', ''),
+(21, 'workPlz@gmail.com', '123', 'z', 'f', 'student', '');
 
 --
 -- Indexes for dumped tables
@@ -180,7 +199,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -198,7 +217,7 @@ ALTER TABLE `comment_reply`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
