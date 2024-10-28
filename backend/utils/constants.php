@@ -24,6 +24,8 @@ class Constants
     public const BOOKING_CONFLICT = 'Booking conflicts with another booking';
     public const INVALID_END_TIME = 'End time must be later than start time';
 
+    public const INVALID_START_TIME = 'Start time must be at least after an hour from now';
+
     // Records-related
     public const RECORD_NOT_FOUND = 'Record not found';
     public const NO_RECORDS = 'No records found';

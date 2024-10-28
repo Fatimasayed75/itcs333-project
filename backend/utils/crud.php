@@ -59,6 +59,7 @@ class Crud {
         $updateValues = [];
 
         foreach ($updates as $col => $val) {
+
             $setClauses[] = "$col = ?";
             $updateValues[] = $val;
         }
