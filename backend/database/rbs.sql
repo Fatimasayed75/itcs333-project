@@ -1,10 +1,9 @@
--- USE rbs;
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2024 at 05:03 PM
+-- Generation Time: Oct 21, 2024 at 01:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,13 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bookings` (
-  `bookingID` int(11) NOT NULL,
-  `userID` int(11) DEFAULT NULL,
-  `roomID` varchar(8) DEFAULT NULL,
+  `bookingID` int(10) NOT NULL,
+  `userID` int(10) NOT NULL,
+  `roomID` varchar(10) NOT NULL,
   `bookingTime` timestamp NOT NULL DEFAULT current_timestamp(),
-  `startTime` datetime DEFAULT NULL,
-  `endTime` datetime DEFAULT NULL,
-  `status` enum('confirmed','pending','canceled') DEFAULT NULL
+  `startTime` datetime NOT NULL,
+  `endTime` datetime NOT NULL,
+  `status` enum('confirmed','pending','canceled') NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -45,9 +44,9 @@ CREATE TABLE `bookings` (
 --
 
 CREATE TABLE `comments` (
-  `commentID` int(11) NOT NULL,
-  `userID` int(11) DEFAULT NULL,
-  `roomID` varchar(8) NOT NULL,
+  `commentID` int(10) NOT NULL,
+  `userID` int(10) NOT NULL,
+  `roomID` varchar(10) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
   `content` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -59,10 +58,10 @@ CREATE TABLE `comments` (
 --
 
 CREATE TABLE `comment_reply` (
-  `replyID` int(11) NOT NULL,
-  `commentID` int(11) DEFAULT NULL,
-  `userID` int(11) DEFAULT NULL,
-  `replyContent` text DEFAULT NULL,
+  `replyID` int(10) NOT NULL,
+  `commentID` int(10) NOT NULL,
+  `userID` int(10) NOT NULL,
+  `replyContent` text NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -73,9 +72,9 @@ CREATE TABLE `comment_reply` (
 --
 
 CREATE TABLE `equipment` (
-  `equipmentID` int(11) NOT NULL,
-  `roomID` varchar(8) DEFAULT NULL,
-  `equipmentName` varchar(255) DEFAULT NULL
+  `equipmentID` int(10) NOT NULL,
+  `roomID` varchar(10) NOT NULL,
+  `equipmentName` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -85,12 +84,19 @@ CREATE TABLE `equipment` (
 --
 
 CREATE TABLE `room` (
-  `roomID` varchar(8) NOT NULL,
+  `roomID` varchar(10) NOT NULL,
   `type` enum('lab','class') DEFAULT NULL,
-  `capacity` int(10) UNSIGNED DEFAULT NULL,
-  `isAvailable` tinyint(1) DEFAULT false,
-  `floor` tinyint(4) DEFAULT NULL
+  `capacity` int(10) UNSIGNED NOT NULL,
+  `isAvailable` tinyint(4) NOT NULL DEFAULT 0,
+  `floor` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `room`
+--
+
+INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`) VALUES
+('S40-1112', 'class', 20, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -99,12 +105,24 @@ CREATE TABLE `room` (
 --
 
 CREATE TABLE `users` (
-  `userID` int(11) NOT NULL,
-  `email` varchar(255) DEFAULT NULL CHECK (`email` like '%@stu.uob.edu.bh' or `email` like '%@uob.edu.bh'),
-  `userPassword` varchar(255) DEFAULT NULL,
-  `role` enum('admin','student','instructor') DEFAULT NULL,
-  `profilePic` blob DEFAULT NULL
+  `userID` int(10) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `firstName` text NOT NULL,
+  `lastName` text NOT NULL,
+  `role` enum('admin','student','instructor') NOT NULL DEFAULT 'student',
+  `profilePic` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userID`, `email`, `password`, `firstName`, `lastName`, `role`, `profilePic`) VALUES
+(13, 'z.fadhel2004@gmail.com', '$2y$10$SVXz4/ZIcig5ETK5wFFVS.W7oGbSiBdO4O/azxFUbxwWtuRckNVRm', '', '', 'student', ''),
+(14, 'zf@gmail.com', '$2y$10$If9LNj9T4xOSCkdRJ5tQleYC0O7yxrqQRWtZMnCMTvrMS1xyNLGqC', '', '', 'student', ''),
+(15, '22@gmail.com', '$2y$10$hM4ic42IPRFi5yrUZiPGKOJ3G.cNKnFLsR6SyXKFcT7txLxM2QaGq', '', '', 'student', ''),
+(17, 'z@gmail.com', '$2y$10$Kr4HBq4DGR90BPPNfIAXdeBPcovK4kyzKYVmIlksHcAKHHUrkwlai', '', '', 'student', '');
 
 --
 -- Indexes for dumped tables
@@ -115,31 +133,31 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`bookingID`),
-  ADD KEY `userID` (`userID`),
-  ADD KEY `roomID` (`roomID`);
+  ADD KEY `fk_bookings_userID` (`userID`),
+  ADD KEY `fk_bookings_roomID` (`roomID`);
 
 --
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`commentID`),
-  ADD KEY `userID` (`userID`),
-  ADD KEY `roomID` (`roomID`);
+  ADD KEY `fk_comments_userID` (`userID`),
+  ADD KEY `fk_comments_roomID` (`roomID`);
 
 --
 -- Indexes for table `comment_reply`
 --
 ALTER TABLE `comment_reply`
   ADD PRIMARY KEY (`replyID`),
-  ADD KEY `userID` (`userID`), -- Added missing comma
-  ADD KEY `commentID` (`commentID`);
+  ADD KEY `fk_comment_reply_commentID` (`commentID`),
+  ADD KEY `fk_comment_reply_userID` (`userID`);
 
 --
 -- Indexes for table `equipment`
 --
 ALTER TABLE `equipment`
   ADD PRIMARY KEY (`equipmentID`),
-  ADD KEY `roomID` (`roomID`);
+  ADD KEY `fk_equipment_roomID` (`roomID`);
 
 --
 -- Indexes for table `room`
@@ -162,31 +180,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `commentID` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `comment_reply`
 --
 ALTER TABLE `comment_reply`
-  MODIFY `replyID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `equipment`
---
-ALTER TABLE `equipment`
-  MODIFY `equipmentID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `replyID` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
@@ -196,28 +208,28 @@ ALTER TABLE `users`
 -- Constraints for table `bookings`
 --
 ALTER TABLE `bookings`
-  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
-  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`);
+  ADD CONSTRAINT `fk_bookings_roomID` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bookings_userID` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`);
+  ADD CONSTRAINT `fk_comments_roomID` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_comments_userID` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `comment_reply`
 --
 ALTER TABLE `comment_reply`
-  ADD CONSTRAINT `comment_reply_ibfk_1` FOREIGN KEY (`commentID`) REFERENCES `comments` (`commentID`),
-  ADD CONSTRAINT `comment_reply_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`);
+  ADD CONSTRAINT `fk_comment_reply_commentID` FOREIGN KEY (`commentID`) REFERENCES `comments` (`commentID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_comment_reply_userID` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `equipment`
 --
 ALTER TABLE `equipment`
-  ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`);
+  ADD CONSTRAINT `fk_equipment_roomID` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

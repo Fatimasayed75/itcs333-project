@@ -29,8 +29,8 @@ class RoomModel
     public function save()
     {
         $crud = new Crud($this->conn);
-        $columns = ['type', 'capacity', 'isAvailable', 'floor'];
-        $values = [$this->type, $this->capacity, $this->isAvailable, $this->floor];
+        $columns = ['roomID', 'type', 'capacity', 'isAvailable', 'floor'];
+        $values = [$this->roomID, $this->type, $this->capacity, $this->isAvailable, $this->floor];
         return $crud->create('room', $columns, $values);
     }
 
