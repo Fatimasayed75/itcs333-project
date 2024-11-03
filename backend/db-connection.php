@@ -35,7 +35,7 @@ try {
         $pdo->exec($sql);
         echo "Database and tables created successfully.\n";
     } else {
-        echo "Database already exists.\n";
+        echo "Database already exists <br>";
     }
     // return $pdo;
 } catch (PDOException $e) {

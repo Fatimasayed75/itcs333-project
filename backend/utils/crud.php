@@ -30,10 +30,6 @@ class Crud {
             $errorInfo = $stmt->errorInfo();
             echo "Error executing query: " . $errorInfo[2]; // Error message
             return false; // Return false to indicate failure
-        } else {
-            echo "Record inserted successfully";
-            echo "columnList: $columnList";
-            echo "placeholders: $placeholders";
         }
     
         return true; 

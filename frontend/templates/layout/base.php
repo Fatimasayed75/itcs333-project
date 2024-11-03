@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IT College Room Booking System</title>
-  {{template "header" .}}
+  <title>Home</title>
 </head>
-
 <body>
-	{{template "content" .}}
+  <h1>Welcome to home</h1>
 </body>
 </html>

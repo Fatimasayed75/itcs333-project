@@ -8,7 +8,7 @@ use Utils\Crud;
 
 class UserModel
 {
-                private $conn;
+    private $conn;
     public $userID;
     public $email;
     public $password;
