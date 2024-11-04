@@ -2,7 +2,6 @@
 require_once __DIR__ . '/utils/crud.php';
 require_once __DIR__ . '/server/room.php';
 
-use Utils\Crud;
 
 // Database connection settings
 $dbhost = "localhost";
@@ -33,9 +32,6 @@ try {
         // Database is empty, run the SQL script to create tables
         $sql = file_get_contents(__DIR__ . '/database/rbs.sql');
         $pdo->exec($sql);
-        echo "Database and tables created successfully.\n";
-    } else {
-        echo "Database already exists <br>";
     }
     // return $pdo;
 } catch (PDOException $e) {

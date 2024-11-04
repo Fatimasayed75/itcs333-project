@@ -24,7 +24,7 @@ class Crud {
         
         $query = "INSERT INTO $tableName ($columnList) VALUES ($placeholders)";
         $stmt = $this->db->prepare($query);
-        print_r($stmt);
+        // print_r($stmt);
         if (!$stmt->execute($values)) {
             // Fetch the error info and print it
             $errorInfo = $stmt->errorInfo();

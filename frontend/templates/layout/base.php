@@ -1,3 +1,11 @@
+<?php
+require_once '../../../backend/db-connection.php';
+session_start();
+
+$id = $_SESSION["active-user"];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +14,6 @@
   <title>Home</title>
 </head>
 <body>
-  <h1>Welcome to home</h1>
+  <h1>Welcome to home user with id = <?php echo $id?></h1>
 </body>
 </html>

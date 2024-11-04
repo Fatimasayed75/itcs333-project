@@ -52,6 +52,7 @@ button {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	cursor: pointer;
 }
 button:active {
 	transform: scale(0.95);
@@ -203,10 +204,10 @@ input {
 	height: 40px;
 	width: 40px;
 }
-#haveAccoount, #enterGuest {
+#haveAccount, #enterGuest {
 	cursor: pointer;
 }
-#haveAccoount:hover, #enterGuest:hover {
+#haveAccount:hover, #enterGuest:hover {
 	text-decoration: underline;
 }
 

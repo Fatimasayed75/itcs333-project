@@ -40,11 +40,13 @@ class Constants
     public const SUCCESS = 'Operation executed successfully';
     public const FAILED = 'Operation failed';
 
-
     // HTTP Status
     public const BAD_REQUEST_404 = 'Bad Request';
     public const NOT_FOUND_404 = 'Not Found';
     public const METHOD_NOT_ALLOWED_405 = 'Method Not Allowed';
     public const INTERNAL_SERVER_ERROR_500 = 'Internal Server Error';
+
+    // Admin Email
+    public const ADMIN_EMAIL = 'admin@uob.edu.bh';
 
 }

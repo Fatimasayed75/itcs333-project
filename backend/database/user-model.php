@@ -35,18 +35,46 @@ class UserModel
     {
         $crud = new Crud($this->conn);
         $columns = ['email', 'password', 'firstName', 'lastName', 'role', 'profilePic'];
+        $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
+        $this->password = $hashedPassword;
         $values = [$this->email, $this->password, $this->firstName, $this->lastName, $this->role, $this->profilePic];
-        return $crud->create('users', $columns, $values);
+        $crud->create('users', $columns, $values);
+        return $this->conn->lastInsertId();
     }
 
     // Update a user
-    public function update()
+    public function isEmailRegistered($email)
     {
         $crud = new Crud($this->conn);
-        $update = ['email' => $this->email, 'password' => $this->password, 'role' => $this->role, 'profilePic' => $this->profilePic];
-        $condition = 'userID = ?';
-        return $crud->update('users', $update, $condition, $this->userID);
+        $condition = 'email = ?';
+        return !empty($crud->read('users', ['email'], $condition, $email));
     }
+
+    public function update($email, $password, $fname, $lname, $role)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $crud = new Crud($this->conn);
+        $colums = [
+            'email',
+            'password',
+            'firstName',
+            'lastName',
+            'role',
+            'profilePic'
+        ];
+        $data = [
+            $email,
+            $hashedPassword,
+            $fname,
+            $lname,
+            $role,
+            'default.jpg'
+        ];
+
+        $crud->create('users', $colums, $data);
+        return $this->conn->lastInsertId();
+    }
+
 
     // Delete a user
     public function delete()
@@ -73,6 +101,15 @@ class UserModel
         return !empty($result) ? $result[0] : Constants::USER_NOT_FOUND;
     }
 
+    // Get a user by email
+    public function getUserByEmail($email)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'email = ?';
+        $result = $crud->read('users', [], $condition, $email);
+        return !empty($result) ? $result[0] : null;
+    }
+
     // Delete a user by email
     public function deleteUserByEmail($email)
     {
@@ -89,4 +126,3 @@ class UserModel
         return $result[0]['count'] ?? 0;
     }
 }
-?>

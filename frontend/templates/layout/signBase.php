@@ -1,11 +1,18 @@
 <?php
 session_start();
 
-$errMsg = "";
-if (isset($_SESSION['error'])) {
-	$errMsg = $_SESSION['error'];
-	// Unset the message after displaying it
-	unset($_SESSION['error']);
+$signInErrMsg = $registerErrMsg = "";
+$isSignUpError = false;
+
+if (isset($_SESSION['signin-error'])) {
+	$signInErrMsg = $_SESSION['signin-error'];
+	unset($_SESSION['signin-error']);
+}
+
+if (isset($_SESSION['register-error'])) {
+	$registerErrMsg = $_SESSION['register-error'];
+	$isSignUpError = true;
+	unset($_SESSION['register-error']);
 }
 
 ?>
@@ -23,49 +30,49 @@ if (isset($_SESSION['error'])) {
 </head>
 
 <body>
-	<div class="container" id="container">
+	<!-- Apply the "right-panel-active" class conditionally based on $isSignUpError -->
+	<div class="container <?php echo $isSignUpError ? 'right-panel-active' : ''; ?>" id="container">
 		<!-- SIGN UP FORM -->
 		<div class="form-container sign-up-container">
-			<form action="../../../backend/index.php" method="post">
+			<form action="../../../backend/server/handleRegister.php" method="post">
 				<h1>Create Account</h1>
-				<!-- <div class="social-container">
-					<a href="#" class="social"><i class="fa fa-facebook"></i></a>
-					<a href="#" class="social"><i class="fa fa-google"></i></a>
-					<a href="#" class="social"><i class="fa fa-linkedin"></i></a>
-				</div> -->
-				<span>or use your email for registration</span>
 				<div id="names-div">
-					<input type="text" placeholder="First Name" name="firstName" />
-					<input type="text" placeholder="Last Name" name="lastName" />
+					<input type="text" placeholder="First Name" name="firstName" required
+						value="<?php echo isset($_SESSION['old-input-reg']['fname']) ? htmlspecialchars($_SESSION['old-input-reg']['fname']) : ''; ?>" />
+					<input type="text" placeholder="Last Name" name="lastName" required
+						value="<?php echo isset($_SESSION['old-input-reg']['lname']) ? htmlspecialchars($_SESSION['old-input-reg']['lname']) : ''; ?>" />
 				</div>
-				<input type="email" placeholder="Email" name="email" />
-				<input type="password" placeholder="Password" name="password" />
+				<input type="email" placeholder="Email" name="email" required
+					value="<?php echo isset($_SESSION['old-input-reg']['email']) ? htmlspecialchars($_SESSION['old-input-reg']['email']) : ''; ?>" />
+				<input type="password" placeholder="Password" name="password" required />
+
+				<!-- Display register error message only if it exists -->
+				<?php if (!empty($registerErrMsg)): ?>
+					<p class="register-error error"><?php echo $registerErrMsg; ?></p>
+				<?php endif; ?>
+
 				<button type="submit" name="sign-up-btn">Sign Up</button>
-				<p id="haveAccoount">Already have an account?</p>
+				<a href="#" id="haveAccount">Already have an account?</a>
 			</form>
 		</div>
+
 		<!-- SIGN IN FORM -->
 		<div class="form-container sign-in-container">
-			<form action="../../../backend/index.php" method="post">
-
+			<form action="../../../backend/server/handleLogin.php" method="post">
 				<h1>Sign in</h1>
-				<!-- <div class="social-container">
-					<a href="#" class="social"><i class="fa fa-facebook"></i></a>
-					<a href="#" class="social"><i class="fa fa-google"></i></a>
-					<a href="#" class="social"><i class="fa fa-linkedin"></i></a>
-				</div> -->
-				<span>or use your account</span>
-				<input type="email" placeholder="Email" name="email" />
-				<input type="password" placeholder="Password" name="password" />
+				<input type="email" placeholder="Email" name="email" required value="<?php echo isset($_SESSION['old-input-signin']['email']) ? htmlspecialchars($_SESSION['old-input-signin']['email']) : ''; ?>">
+				<input type="password" placeholder="Password" name="password" required/>
 
-				<?php if ($errMsg): ?>
-					<p class="error"><?php echo $errMsg; ?></p>
+				<!-- Display sign-in error message only if it exists -->
+				<?php if (!empty($signInErrMsg)): ?>
+					<p class="signin-error error"><?php echo $signInErrMsg; ?></p>
 				<?php endif; ?>
-				
+
 				<button type="submit" name="sign-in-btn">Sign In</button>
-				<a href="base.php" id="enterGuest">Enter as a guest?</a>
+				<a href="../../../backend/server/handleGuests.php" id="enterGuest">Enter as a guest?</a>
 			</form>
 		</div>
+
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-left">
@@ -84,3 +91,9 @@ if (isset($_SESSION['error'])) {
 </body>
 
 </html>
+
+<?php
+// Clear the session data after displaying the form
+unset($_SESSION['old-input-reg']);
+unset($_SESSION['old-input-signin']);
+?>
