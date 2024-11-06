@@ -246,3 +246,77 @@ header .image-text .system {
 .open-logo-text{
   margin-left: 40px;
 }
+
+/* Top navigation for small screens */
+.top-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--sidebar-color);
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+}
+
+.top-nav ul {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.top-nav ul li {
+  text-align: center;
+}
+
+.top-nav ul li a {
+  color: var(--text-color);
+  font-size: 20px;
+  font-weight: 500;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: var(--tran-03);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-nav ul li a i {
+  font-size: 24px;
+}
+
+.top-nav ul li a:hover {
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+  transition: var(--tran-04);
+}
+
+.top-nav ul li a.hover {
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+}
+
+@media (max-width: 768px) {
+  .top-nav ul {
+    justify-content: space-between;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .top-nav {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-nav ul li a {
+    padding: 6px 8px;
+  }
+}
