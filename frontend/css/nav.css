@@ -156,12 +156,14 @@ header .image-text .system {
   transition: var(--tran-03);
 }
 
-.sidebar li a:hover {
+.sidebar li a:hover, .nav-link.active {
   background-color: var(--primary-color);
 }
 
 .sidebar li a:hover .icon,
-.sidebar li a:hover .text {
+.sidebar li a:hover .text,
+.nav-link.active .icon,
+.nav-link.active .text {
   color: var(--sidebar-color);
 }
 
@@ -284,24 +286,47 @@ header .image-text .system {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
 }
 
 .top-nav ul li a i {
   font-size: 24px;
 }
 
-.top-nav ul li a:hover {
+.top-nav ul li a:hover, .nav-link.active {
   background-color: var(--primary-color);
   color: var(--sidebar-color);
   transition: var(--tran-04);
+  border-radius: 6px;
 }
 
-.top-nav ul li a.hover {
+.top-nav ul li a.hover, .nav-link.active {
   background-color: var(--primary-color);
   color: var(--sidebar-color);
 }
 
+/* Common hover and active styles */
+.nav-link a:hover,
+.nav-link.active a {
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+  transition: var(--tran-04);
+  border-radius: 6px;
+}
+
+/* Ensure hover and active styles are the same */
+.sidebar .menu-bar .menu li a:hover,
+.top-nav ul li a:hover,
+.sidebar .menu-bar .menu li a.active,
+.top-nav ul li a.nav-link.active {
+  background-color: var(--primary-color);
+  color: var(--sidebar-color);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
+
   .top-nav ul {
     justify-content: space-between;
   }
