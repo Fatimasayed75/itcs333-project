@@ -20,6 +20,7 @@
 }
 
 body {
+  display: flex;
   min-height: 100vh;
   background-color: var(--body-color);
   transition: var(--tran-05);
@@ -32,16 +33,19 @@ body {
 
 /*  Sidebar  */
 .sidebar {
-  position: fixed;
+  /* position: fixed;
   top: 0;
   left: 0;
   height: 100%;
-  width: 250px;
+  width: 250px; */
   padding: 10px 14px;
   background: var(--sidebar-color);
   transition: var(--tran-05);
-  z-index: 100;
+  /* z-index: 100; */
+  width: 250px;
+  height: 100vh;
 }
+
 .sidebar.close {
   width: 88px;
 }
@@ -323,6 +327,17 @@ header .image-text .system {
   color: var(--sidebar-color);
   border-radius: 6px;
   cursor: pointer;
+}
+
+/* Right Side content */
+.content {
+  flex: 1;
+  padding: 16px;
+  transition: var(--tran-05);
+}
+
+body.sidebar-expanded .content {
+  margin-left: 250px;
 }
 
 @media (max-width: 768px) {

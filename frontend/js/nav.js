@@ -7,6 +7,7 @@ const topNavLinks = document.querySelectorAll(".top-nav .nav-link");
 // Sidebar toggle
 toggle.addEventListener("click", () => {
   sidebar.classList.toggle("close");
+  document.body.classList.toggle("sidebar-expanded");
 });
 
 // Dark mode switch
@@ -60,12 +61,10 @@ function setActiveLink(link) {
   // Add active class to the clicked link
   link.classList.add("active");
 
-  // Get the ID of the clicked link (e.g., "home-tab")
   const linkId = link.querySelector("a").getAttribute("id");
 
-  // Find the corresponding link in the other navigation bar and set it as active
+  // Sync active state between sidebar and top-nav
   if (link.closest(".sidebar")) {
-    // If the clicked link is in the sidebar, find the matching top-nav link
     const matchingTopLink = document.querySelector(
       `.top-nav .nav-link a[id="${linkId}"]`
     );
@@ -73,7 +72,6 @@ function setActiveLink(link) {
       matchingTopLink.parentElement.classList.add("active");
     }
   } else if (link.closest(".top-nav")) {
-    // If the clicked link is in the top-nav, find the matching sidebar link
     const matchingSidebarLink = document.querySelector(
       `.sidebar .nav-link a[id="${linkId}"]`
     );

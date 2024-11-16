@@ -30,7 +30,7 @@ if (isset($_SESSION['active-user'])) {
   <?php include "../components/nav.php"; ?>
 
   <!-- Main Content -->
-  <div id="main-content" class="pt-24 sm:pt-24 md:pt-16 lg:pt-16 ml-4 sm:ml-10 md:ml-40 lg:ml-40">
+  <div id="main-content" class="content">
     <h1 class="text-xl sm:text-3xl lg:text-4xl font-bold text-gray-800 welcome-message">
       Welcome home, user with ID = <?php echo $id ?>
     </h1>

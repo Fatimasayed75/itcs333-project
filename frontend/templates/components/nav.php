@@ -57,7 +57,7 @@
     </div>
 
     <div class="bottom-content">
-      <li class="">
+      <li>
         <a href="logout.php">
           <i class="bx bx-log-out icon"></i>
           <span class="text nav-text">Logout</span>
@@ -67,7 +67,6 @@
       <li class="mode">
         <div class="sun-moon">
           <i class="bx bx-moon icon moon"></i>
-          <!-- <i class='bx bx-sun icon sun'></i> -->
         </div>
         <span class="mode-text text">Dark mode</span>
 
@@ -87,8 +86,7 @@
     <li class="nav-link active"><a id="home-tab"><i class="bx bx-building"></i></a></li>
     <li class="nav-link"><a id="bookings-tab"><i class="bx bx-calendar"></i></a></li>
     <li class="nav-link"><a id="notifiations-tab"><i class="bx bx-bell"></i></a></li>
-    <li class="nav-link"><a id="#" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li>
-    <li class="nav-link"><a id="logout.php"><i class="bx bx-log-out"></i></a></li>
+    <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li>
+    <li class="nav-link"><a href="logout.php"><i class="bx bx-log-out"></i></a></li>
   </ul>
 </nav>
-
