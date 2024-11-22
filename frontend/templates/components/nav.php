@@ -18,10 +18,10 @@
 
   <div class="menu-bar">
     <div class="menu">
-      <li class="nav-link">
-        <a id="profile-tab">
-          <i class="bx bx-user-circle icon"></i>
-          <span class="text nav-text">Profile</span>
+      <li class="nav-link active">
+        <a id="home-tab">
+          <i class="bx bx-building icon"></i>
+          <span class="text nav-text">Browse Rooms</span>
         </a>
       </li>
 
@@ -33,13 +33,6 @@
           </a>
         </li>
 
-        <li class="nav-link active">
-          <a id="home-tab">
-            <i class="bx bx-building icon"></i>
-            <span class="text nav-text">Browse Rooms</span>
-          </a>
-        </li>
-
         <li class="nav-link">
           <a id="bookings-tab">
             <i class="bx bx-calendar icon"></i>
@@ -48,10 +41,18 @@
         </li>
 
         <li class="nav-link">
+          <a id="profile-tab">
+            <i class="bx bx-user-circle icon"></i>
+            <span class="text nav-text">Profile</span>
+          </a>
+        </li>
+
+        <li class="nav-link">
           <a id="notifiations-tab">
             <i class="bx bx-bell icon"></i>
             <span class="text nav-text">Notifications</span>
           </a>
+        </li>
         </li>
       </ul>
     </div>
@@ -81,12 +82,12 @@
 <!-- Top navigation bar for smaller screens -->
 <nav class="top-nav">
   <ul>
-    <li class="nav-link"><a id="profile-tab"><i class="bx bx-user-circle"></i></a></li>
-    <li class="nav-link"><a id="dashboard-tab"><i class="bx bx-home-alt"></i></a></li>
     <li class="nav-link active"><a id="home-tab"><i class="bx bx-building"></i></a></li>
+    <li class="nav-link"><a id="dashboard-tab"><i class="bx bx-home-alt"></i></a></li>
     <li class="nav-link"><a id="bookings-tab"><i class="bx bx-calendar"></i></a></li>
+    <!-- <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li> -->
+    <li class="nav-link"><a id="profile-tab"><i class="bx bx-user-circle"></i></a></li>
     <li class="nav-link"><a id="notifiations-tab"><i class="bx bx-bell"></i></a></li>
-    <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li>
     <li class="nav-link"><a href="logout.php"><i class="bx bx-log-out"></i></a></li>
   </ul>
 </nav>

@@ -22,6 +22,7 @@ if (isset($_SESSION['active-user'])) {
   <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
   <!-- tailwind css framework  -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
 
@@ -30,11 +31,12 @@ if (isset($_SESSION['active-user'])) {
   <?php include "../components/nav.php"; ?>
 
   <!-- Main Content -->
-  <div id="main-content" class="content">
-    <h1 class="text-xl sm:text-3xl lg:text-4xl font-bold text-gray-800 welcome-message">
-      Welcome home, user with ID = <?php echo $id ?>
-    </h1>
+  <div id="main-content" class="content md:ml-28">
+    <?php include "../components/home.php" ?>
   </div>
   <script src="../../js/nav.js"></script>
+  <script src="../../js/cardViews.js"></script>
+  <script src="../../js/roomDetails.js"></script>
 </body>
+
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2024 at 04:57 PM
+-- Generation Time: Nov 22, 2024 at 02:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,18 +37,6 @@ CREATE TABLE `bookings` (
   `status` enum('active','pending','expired') NOT NULL DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `bookings`
---
-
-INSERT INTO `bookings` (`bookingID`, `userID`, `roomID`, `bookingTime`, `startTime`, `endTime`, `status`) VALUES
-(43, 14, 'S40-1112', '2024-10-28 09:33:10', '2024-10-30 10:00:00', '2024-10-30 10:30:00', 'expired'),
-(44, 14, 'S40-1112', '2024-10-28 09:44:44', '2024-10-30 10:00:00', '2024-10-30 10:30:00', 'pending'),
-(49, 14, 'S40-1112', '2024-10-28 10:03:01', '2024-10-30 09:15:00', '2024-10-30 10:45:00', 'pending'),
-(50, 14, 'S40-1112', '2024-10-28 10:03:24', '2024-10-30 08:00:00', '2024-10-30 09:15:00', 'pending'),
-(57, 14, 'S40-1002', '2024-10-28 10:31:34', '2024-10-30 10:54:00', '2024-10-30 12:00:00', 'pending'),
-(58, 14, 'S40-1003', '2024-10-28 10:31:44', '2024-10-30 10:54:00', '2024-10-30 12:00:00', 'active');
-
 -- --------------------------------------------------------
 
 --
@@ -60,8 +48,7 @@ CREATE TABLE `comments` (
   `userID` int(10) NOT NULL,
   `roomID` varchar(10) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `content` text DEFAULT NULL,
-  `isRead` tinyint(1) NOT NULL DEFAULT 0
+  `content` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -109,11 +96,12 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`) VALUES
-('S40-1002', NULL, 10, 1, 1),
-('S40-1003', NULL, 10, 1, 1),
-('S40-1112', 'class', 20, 1, 1),
-('S40-1117', NULL, 20, 1, 1),
-('S40-1118', NULL, 20, 1, 1);
+('S40-021', 'class', 10, 0, 0),
+('S40-023', 'class', 10, 1, 0),
+('S40-028', 'class', 20, 0, 0),
+('S40-029', 'class', 20, 1, 0),
+('S40-030', 'class', 20, 1, 0),
+('S40-032', 'class', 30, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -136,13 +124,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `email`, `password`, `firstName`, `lastName`, `role`, `profilePic`) VALUES
-(13, 'z.fadhel2004@gmail.com', '$2y$10$SVXz4/ZIcig5ETK5wFFVS.W7oGbSiBdO4O/azxFUbxwWtuRckNVRm', '', '', 'student', ''),
-(14, 'zf@gmail.com', '$2y$10$If9LNj9T4xOSCkdRJ5tQleYC0O7yxrqQRWtZMnCMTvrMS1xyNLGqC', '', '', 'student', ''),
-(15, '22@gmail.com', '$2y$10$hM4ic42IPRFi5yrUZiPGKOJ3G.cNKnFLsR6SyXKFcT7txLxM2QaGq', '', '', 'student', ''),
-(17, 'z@gmail.com', '$2y$10$Kr4HBq4DGR90BPPNfIAXdeBPcovK4kyzKYVmIlksHcAKHHUrkwlai', '', '', 'student', ''),
-(19, 'eee@gmail.com', '123', 'z', 'f', 'student', ''),
-(20, 'work@gmail.com', '123', 'z', 'f', 'student', ''),
-(21, 'workPlz@gmail.com', '123', 'z', 'f', 'student', '');
+(57, '201245123@stu.uob.edu.bh', '$2y$10$qKdWaSKr77cZP9TFpeqMHeMYUGOOOdm35GX9sLbGuFdTaeBnERtv6', 'Test', 'Test', 'student', 0x64656661756c742e6a7067),
+(58, '202211111@stu.uob.edu.bh', '$2y$10$AFRdEi2pWCGoqG7vjJOcgOpA1qwTiZJ6RQhHq9bebfekk2LSiy/r2', 'first', 'last', 'student', 0x64656661756c742e6a7067),
+(62, 'admin@uob.edu.bh', '$2y$10$oTI5fQMqPQTaaca6MkZfzueNjAfKjL5N9Qep/xBLUfRS2khmpYTGW', 'Admin1', 'Admin1', 'admin', 0x64656661756c742e6a7067),
+(63, 'instructor@uob.edu.bh', '$2y$10$HsL1UloZGJGB37IpX9xm3.a0Ooil20eVzuuEIhC.DyFV7mfu144WO', 'Instructor1', 'Instructor1', 'instructor', 0x64656661756c742e6a7067),
+(64, '201745123@stu.uob.edu.bh', '$2y$10$LUg3JSU1vLY.Qx4L2QrdmuKvUY43m8nf4Ofm7quMIU92F8MoXsKGq', 'E', 'E', 'student', 0x64656661756c742e6a7067),
+(65, '202145123@stu.uob.edu.bh', '$2y$10$tM7km2EmbmAqUepEWvjpUuuBfttxCr.48nHa5kMn9XpjTqM9DqU8i', 'D', 'D', 'student', 0x64656661756c742e6a7067),
+(66, '202233333@stu.uob.edu.bh', '$2y$10$nxzMW.ww0rC2oL9rmLXBoOuhfyY0IWSAJVQcO8AOGTT0X/5uDtxVq', 'R', 'R', 'student', 0x64656661756c742e6a7067),
+(67, '202012333@stu.uob.edu.bh', '$2y$10$FZaaYngQ1c7MLohQZY7.Nu1Uc28c/CVzUzgKx7aoMw2KLjkOAS/qK', 'Q', 'Q', 'student', 0x64656661756c742e6a7067);
 
 --
 -- Indexes for dumped tables
@@ -218,7 +207,7 @@ ALTER TABLE `comment_reply`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- Constraints for dumped tables

@@ -55,48 +55,55 @@ class RoomModel
     }
 
     // Get a room by ID
-    public function getRoomById($id) {
-        return $this->crud->read('room', ['roomID' => $id]);
+    public function getRoomById($id)
+    {
+        return $this->crud->read('room', [], 'roomID = ?', $id);
     }
 
-
     // Get all rooms
-    public function getAllRooms() {
+    public function getAllRooms()
+    {
         return $this->crud->read('room');
     }
 
     // Get all available rooms
-    public function getAvailableRooms() {
+    public function getAvailableRooms()
+    {
         $condition = 'isAvailable = ?';
         return $this->crud->read('room', [], $condition, true);
     }
 
     // Get all rooms by type
-    public function getRoomsByType($type) {
+    public function getRoomsByType($type)
+    {
         $condition = 'type = ?';
         return $this->crud->read('room', [], $condition, $type);
     }
 
     // Get all rooms by floor
-    public function getRoomsByFloor($floor) {
+    public function getRoomsByFloor($floor)
+    {
         $condition = 'floor = ?';
         return $this->crud->read('room', [], $condition, $floor);
     }
 
     // Get all rooms by capacity
-    public function getRoomsByCapacity($capacity) {
+    public function getRoomsByCapacity($capacity)
+    {
         $condition = 'capacity = ?';
         return $this->crud->read('room', [], $condition, $capacity);
     }
 
     // Get all rooms by type and floor
-    public function getRoomsByTypeAndFloor($type, $floor) {
+    public function getRoomsByTypeAndFloor($type, $floor)
+    {
         $condition = 'type = ? AND floor = ?';
         return $this->crud->read('room', [], $condition, $type, $floor);
     }
 
     // get all rooms by user id by the crud class
-    public function getRoomsByUserId($userId) {
+    public function getRoomsByUserId($userId)
+    {
         $condition = 'roomID IN (SELECT roomID FROM bookings WHERE userID = ?)';
         return $this->crud->read('room', [], $condition, $userId);
     }

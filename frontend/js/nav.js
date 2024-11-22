@@ -23,6 +23,9 @@ sidebarLinks.forEach((link) => {
       link.querySelector("a").getAttribute("id").replace("-tab", "").trim() +
       ".php";
     await loadContent(page);
+    if (page == "home.php") {
+      initializeHomeEventListeners();
+    }
   });
 });
 
@@ -33,6 +36,9 @@ topNavLinks.forEach((link) => {
       link.querySelector("a").getAttribute("id").replace("-tab", "").trim() +
       ".php";
     await loadContent(page);
+    if (page == "home.php") {
+      initializeHomeEventListeners();
+    }
   });
 });
 

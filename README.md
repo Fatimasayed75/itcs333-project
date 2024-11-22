@@ -12,13 +12,10 @@ Instructor:
 email: instructor@uob.edu.bh
 password: uobInstructor1!
 
-PAGES TO DESIGN :
-
-- Sign in ✓
-- Booking ✓
-- view past and coming bookings
-- profile
-- Admin Panel
+TO DO;
+- when moving from a nav to browse rooms, js not working ✓ 
+- grid view
+- search
 
 - dark/light mode
 - REMEBER ALWAYS MAKE YOUR WORK RESPONSIVE
