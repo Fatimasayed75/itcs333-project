@@ -67,7 +67,7 @@ function formatBookingDetails($startTime, $endTime) {
                     <!-- Cancel Booking Button -->
                     <button 
                         type="button" 
-                        class="cancel-booking-btn bg-red-600 text-white py-2 px-6 rounded-lg mt-4 w-full transition duration-200 hover:bg-red-700"
+                        class="cancel-booking-btn bg-red-500 text-white py-2 px-6 rounded-lg mt-4 w-full transition duration-200 hover:bg-red-600"
                         onclick="showConfirmation('<?php echo $booking['bookingID']; ?>')"
                     >
                         Cancel Booking
