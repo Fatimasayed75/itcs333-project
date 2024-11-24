@@ -104,22 +104,23 @@ class BookModel
   }
 
   // Delete a a booking
-  public function delete()
+  public function delete($bookingID)
   {
-    $crud = new Crud($this->conn);
-
-    // Check if the booking exists
-    $currentBooking = $this->getBookingsBy('bookingID', $this->bookingID);
-
-    if ($currentBooking === Constants::NO_RECORDS) {
-      return Constants::NO_RECORDS;
-    }
-
-    $condition = 'bookingID = ?';
-
-    // If the record exists, delete it
-    return $crud->delete('bookings', $condition, $this->bookingID);
+      $crud = new Crud($this->conn);
+  
+      // Check if the booking exists
+      $currentBooking = $this->getBookingsBy('bookingID', $bookingID);
+  
+      if ($currentBooking === Constants::NO_RECORDS) {
+          return Constants::NO_RECORDS;
+      }
+  
+      $condition = 'bookingID = ?';
+  
+      // If the record exists, delete it
+      return $crud->delete('bookings', $condition, $bookingID);
   }
+  
 
   // get bookings by a specific field
   private function getBookingsBy($field, $value)
