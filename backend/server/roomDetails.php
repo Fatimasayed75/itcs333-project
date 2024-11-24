@@ -8,8 +8,12 @@ require '../database/room-model.php';
 
 header('Content-Type: application/json');
 
-$roomID = $_GET['roomID']; // Example: S40-028
+if(!isset($_GET['roomID'])) {
+  echo json_encode(['error' => 'Room ID is required']);
+  exit;
+}
 
+$roomID = $_GET['roomID'];
 $roomModel = new RoomModel($pdo);
 $room = $roomModel->getRoomById($roomID);
 

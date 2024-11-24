@@ -82,8 +82,16 @@ async function loadRoomDetails(roomId) {
     // Update the page content with room details
     const mainContent = document.getElementById("main-content");
     mainContent.innerHTML = filledTemplate;
+    const homeBtn = document.getElementById("backToHomeBtn");
+    if (homeBtn) {
+      homeBtn.addEventListener("click", navigateToHomePage);
+    }
   } catch (error) {
     console.error("Error loading room details:", error);
     // alert("Failed to load room details.");
   }
+}
+async function navigateToHomePage() {
+  await loadContent("home.php");
+  initializeHomeEventListeners();
 }

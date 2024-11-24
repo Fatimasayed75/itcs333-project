@@ -35,7 +35,7 @@ if (isset($_SESSION['active-user'])) {
     <?php include "../components/home.php" ?>
   </div>
   <script src="../../js/nav.js"></script>
-  <script src="../../js/cardViews.js"></script>
+  <script src="../../js/roomViews.js"></script>
   <script src="../../js/roomDetails.js"></script>
 </body>
 

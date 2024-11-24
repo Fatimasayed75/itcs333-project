@@ -91,8 +91,4 @@ $rooms = $roomModel->getAllRooms();
 
     </div>
   </div>
-
-  <!-- Tailwind CSS - JavaScript to Toggle Views -->
-  <script></script>
-
 </body>
