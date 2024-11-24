@@ -34,7 +34,7 @@ CREATE TABLE `bookings` (
   `bookingTime` timestamp NOT NULL DEFAULT current_timestamp(),
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
-  `status` enum('active','pending','expired') NOT NULL DEFAULT 'active'
+  `status` enum('active','pending','expired', 'cancelled') NOT NULL DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
