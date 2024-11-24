@@ -244,11 +244,9 @@ public function getUpcomingBookingsByUser($userID)
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    // Query for bookings with startTime greater than now
     $condition = 'userID = ? AND startTime > ? AND status = ?';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime, 'active');
 
-    // Return result or an empty array
     return !empty($result) ? $result : [];
 }
 
@@ -257,13 +255,11 @@ public function getUpcomingBookingsByUser($userID)
 public function getCurrentBookingsByUser($userID)
 {
     $crud = new Crud($this->conn);
-    $currentTime = (new DateTime())->format('Y-m-d H:i:s');  // Get current time
+    $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    // Query for bookings where the current time is between the start time and end time
     $condition = 'userID = ? AND startTime <= ? AND endTime >= ? AND status = ?';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime, $currentTime, 'active');
 
-    // Return the result, or an empty array if no bookings found
     return !empty($result) ? $result : [];
 }
 
@@ -275,11 +271,9 @@ public function getPreviousBookingsByUser($userID)
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    // Query for bookings with endTime less than now
     $condition = 'userID = ? AND endTime < ?';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime);
 
-    // Return result or an empty array
     return !empty($result) ? $result : [];
 }
 }
