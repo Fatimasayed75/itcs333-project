@@ -41,7 +41,7 @@
         </li>
 
         <li class="nav-link">
-          <a id="profile-tab">
+          <a id="profile-tab" onclick="loadContent('profile.php')">
             <i class="bx bx-user-circle icon"></i>
             <span class="text nav-text">Profile</span>
           </a>

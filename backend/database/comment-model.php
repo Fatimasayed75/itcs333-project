@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../utils/crud.php';
 require_once __DIR__ . '/../utils/constants.php';
 require_once 'user-model.php';
-require_once 'room_model.php';
+require_once 'room-model.php';
 
 use Utils\Constants;
 use Utils\Crud;

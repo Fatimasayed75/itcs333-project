@@ -68,7 +68,7 @@ class UserModel
             $fname,
             $lname,
             $role,
-            'default.jpg'
+            'default-profile.jpeg'
         ];
 
         $crud->create('users', $colums, $data);
