@@ -48,6 +48,7 @@ function formatBookingDetails($startTime, $endTime) {
 ?>
 
 <body class="bg-gray-50 min-h-screen px-6 py-12">
+  <div class="pt-16">
   <!-- Section: Upcoming Bookings -->
   <div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8 upcoming-bookings-section">
     <h2 class="text-3xl font-semibold text-gray-800 mb-6">Upcoming Bookings</h2>
@@ -156,5 +157,5 @@ function formatBookingDetails($startTime, $endTime) {
     <p class="text-gray-500">No previous bookings.</p>
   <?php endif; ?>
 </div>
-
+</div>
 </body>
