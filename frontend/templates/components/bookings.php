@@ -3,6 +3,8 @@ require_once '../../../backend/database/user-model.php';
 require_once '../../../backend/database/book-model.php';
 require_once '../../../backend/utils/helpers.php';
 
+date_default_timezone_set('Asia/Bahrain');
+
 $id = isAuthorized();
 
 $userModel = new UserModel($pdo);
