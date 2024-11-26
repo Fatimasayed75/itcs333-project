@@ -48,20 +48,19 @@ function formatBookingDetails($startTime, $endTime) {
 ?>
 
 <body class="bg-gray-50 min-h-screen px-6 py-12">
-  <div class="pt-4">
+  <div class="pt-10">
   
   <!-- Section: Upcoming Bookings -->
   <div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8 upcoming-bookings-section">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Upcoming Bookings</h2>
     <?php if (!empty($upcomingBookings)): ?>
-        <div class="flex flex-wrap gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
             <?php foreach ($upcomingBookings as $booking): ?>
                 <?php 
                     // Get formatted details
                     $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
                 ?>
-                <div id="booking-card-<?php echo $booking['bookingID']; ?>" class="w-full sm:w-1/3 lg:w-1/4 bg-blue-50 rounded-lg shadow p-4 relative">
-                    
+                <div id="booking-card-<?php echo $booking['bookingID']; ?>" class="bg-blue-50 rounded-lg shadow p-6 relative w-full">
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
                     <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
@@ -116,13 +115,13 @@ function formatBookingDetails($startTime, $endTime) {
   <div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Current Bookings</h2>
     <?php if (!empty($currentBookings)): ?>
-        <div class="flex flex-wrap gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
             <?php foreach ($currentBookings as $booking): ?>
                 <?php 
                     // Get formatted details
                     $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
                 ?>
-                <div class="w-full sm:w-1/3 lg:w-1/4 bg-green-50 rounded-lg shadow p-4">
+                <div class="bg-green-50 rounded-lg shadow p-6 relative w-full">
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
                     <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
@@ -141,13 +140,13 @@ function formatBookingDetails($startTime, $endTime) {
 <div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8 previous-bookings-section">
     <h2 class="text-2xl font-semibold text-gray-800 mb-6">Previous Bookings</h2>
     <?php if (!empty($previousBookings)): ?>
-        <div class="flex flex-wrap gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
             <?php foreach ($previousBookings as $booking): ?>
                 <?php 
                     // Get formatted details for the booking
                     $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
                 ?>
-                <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" class="w-full sm:w-1/3 lg:w-1/4 bg-orange-50 rounded-lg shadow p-4">
+                <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" class="bg-orange-50 rounded-lg shadow p-6 relative w-full">
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
                     <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
@@ -170,7 +169,7 @@ function formatBookingDetails($startTime, $endTime) {
                             class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-emerald-600"
                             onclick="showModal('<?php echo $booking['bookingID']; ?>', '<?php echo $booking['roomID']; ?>')"
                         >
-                            Leave a Comment
+                            Feedback
                         </button>
                     </div>
                 </div>
@@ -214,6 +213,6 @@ function formatBookingDetails($startTime, $endTime) {
     </div>
 </div>
 
-  
+
   </div>
 </body>
