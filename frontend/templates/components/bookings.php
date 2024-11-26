@@ -156,7 +156,7 @@ function formatBookingDetails($startTime, $endTime) {
                     <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
 
                     <!-- Buttons -->
-                    <div class="flex justify-between gap-2 mt-4">
+                    <div class="flex justify-center gap-4 mt-4">
                         <!-- Rebook Button -->
                         <button 
                             class="rebook-btn bg-orange-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-orange-600"
@@ -167,7 +167,7 @@ function formatBookingDetails($startTime, $endTime) {
 
                         <!-- Add Comment Button -->
                         <button 
-                            class="add-comment-btn bg-blue-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-blue-600"
+                            class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-green-600"
                             onclick="showModal('<?php echo $booking['bookingID']; ?>', '<?php echo $booking['roomID']; ?>')"
                         >
                             Add Comment
