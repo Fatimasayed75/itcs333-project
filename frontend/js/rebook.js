@@ -73,7 +73,7 @@ async function loadRoomDetails(roomId) {
 }
 
 async function navigateToHomePage() {
-    await loadContent("home.php");
+    await loadContent("bookings.php");
     initializeHomeEventListeners();
 }
 
