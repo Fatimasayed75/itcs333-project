@@ -3,6 +3,8 @@ require_once '../../../backend/database/user-model.php';
 require_once '../../../backend/database/book-model.php';
 require_once '../../../backend/utils/helpers.php';
 
+date_default_timezone_set('Asia/Bahrain');
+
 $id = isAuthorized();
 
 $userModel = new UserModel($pdo);
@@ -46,32 +48,37 @@ function formatBookingDetails($startTime, $endTime) {
 ?>
 
 <body class="bg-gray-50 min-h-screen px-6 py-12">
+  <div class="pt-4">
+  
   <!-- Section: Upcoming Bookings -->
   <div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8 upcoming-bookings-section">
-    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Upcoming Bookings</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Upcoming Bookings</h2>
     <?php if (!empty($upcomingBookings)): ?>
-        <div class="flex flex-wrap gap-8">
+        <div class="flex flex-wrap gap-4">
             <?php foreach ($upcomingBookings as $booking): ?>
                 <?php 
                     // Get formatted details
                     $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
                 ?>
-                <div id="booking-card-<?php echo $booking['bookingID']; ?>" class="w-full sm:w-1/2 lg:w-1/3 bg-blue-50  rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
+                <div id="booking-card-<?php echo $booking['bookingID']; ?>" class="w-full sm:w-1/3 lg:w-1/4 bg-blue-50 rounded-lg shadow p-4 relative">
+                    
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
                     <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
-                    <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
+                    <p class="text-sm text-gray-700">Duration: <?php echo $bookingDetails['duration']; ?></p>
 
                     <!-- Cancel Booking Button -->
-                    <button 
-                        type="button" 
-                        class="cancel-booking-btn bg-red-500 text-white py-2 px-6 rounded-lg mt-4 w-full transition duration-200 hover:bg-red-600"
-                        onclick="showConfirmation('<?php echo $booking['bookingID']; ?>')"
-                    >
-                        Cancel Booking
-                    </button>
+                    <div class="flex justify-center">
+                        <button 
+                            type="button" 
+                            class="cancel-booking-btn bg-blue-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-blue-600 mt-4"
+                            onclick="showConfirmation('<?php echo $booking['bookingID']; ?>')"
+                        >
+                            Cancel Booking
+                        </button>
+                    </div>
 
                     <!-- Confirmation Box -->
                     <div id="confirm-box-<?php echo $booking['bookingID']; ?>" 
@@ -103,56 +110,67 @@ function formatBookingDetails($startTime, $endTime) {
     <?php else: ?>
         <p class="text-gray-500">No upcoming bookings.</p>
     <?php endif; ?>
-</div>
+  </div>
 
-<!-- Section: Current Bookings -->
-<div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8">
-  <h2 class="text-3xl font-semibold text-gray-800 mb-6">Current Bookings</h2>
-  <?php if (!empty($currentBookings)): ?>
-    <div class="flex flex-wrap gap-8">
-      <?php foreach ($currentBookings as $booking): ?>
-        <?php 
-            // Get formatted details
-            $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
-        ?>
-        <div class="w-full sm:w-1/2 lg:w-1/3 bg-green-50 rounded-lg shadow-lg p-6">
-          <h3 class="text-xl font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
-          <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
-          <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
-          <p class="text-sm text-gray-700 mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
-          <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
-          <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
+  <!-- Section: Current Bookings -->
+  <div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Current Bookings</h2>
+    <?php if (!empty($currentBookings)): ?>
+        <div class="flex flex-wrap gap-4">
+            <?php foreach ($currentBookings as $booking): ?>
+                <?php 
+                    // Get formatted details
+                    $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
+                ?>
+                <div class="w-full sm:w-1/3 lg:w-1/4 bg-green-50 rounded-lg shadow p-4">
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
+                    <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
+                    <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
+                    <p class="text-sm text-gray-700 mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
+                    <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
+                    <p class="text-sm text-gray-700">Duration: <?php echo $bookingDetails['duration']; ?></p>
+                </div>
+            <?php endforeach; ?>
         </div>
-      <?php endforeach; ?>
-    </div>
-  <?php else: ?>
-    <p class="text-gray-500">No current bookings.</p>
-  <?php endif; ?>
-</div>
+    <?php else: ?>
+        <p class="text-gray-500">No current bookings.</p>
+    <?php endif; ?>
+  </div>
 
-<!-- Section: Previous Bookings -->
-<div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8">
-  <h2 class="text-3xl font-semibold text-gray-800 mb-6">Previous Bookings</h2>
+<!-- Previous Bookings Section -->
+<div class="w-full bg-white shadow-lg rounded-xl my-6 py-6 px-6 sm:px-8 previous-bookings-section">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6">Previous Bookings</h2>
   <?php if (!empty($previousBookings)): ?>
-    <div class="flex flex-wrap gap-8">
-      <?php foreach ($previousBookings as $booking): ?>
-        <?php 
-            // Get formatted details
-            $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
-        ?>
-        <div class="w-full sm:w-1/2 lg:w-1/3 bg-red-50 rounded-lg shadow-lg p-6">
-          <h3 class="text-xl font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
-          <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
-          <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
-          <p class="text-sm text-gray-700 mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
-          <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
-          <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
-        </div>
-      <?php endforeach; ?>
+    <div class="flex flex-wrap gap-4">
+        <?php foreach ($previousBookings as $booking): ?>
+            <?php 
+                // Get formatted details for the booking
+                $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
+            ?>
+            <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" class="w-full sm:w-1/3 lg:w-1/4 bg-orange-50 rounded-lg shadow p-4">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
+                <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
+                <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
+                <p class="text-sm text-gray-700 mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
+                <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
+                <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
+
+                <!-- Rebook Button -->
+                <div class="flex justify-center">
+                    <button 
+                        class="rebook-btn bg-orange-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-orange-600 mt-4"
+                        data-room-id="<?php echo $booking['roomID']; ?>"
+                    >
+                        Rebook
+                    </button>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </div>
   <?php else: ?>
-    <p class="text-gray-500">No previous bookings.</p>
+    <p class="text-gray-700">No previous bookings found.</p>
   <?php endif; ?>
 </div>
-
+  
+  </div>
 </body>

@@ -106,21 +106,21 @@ class BookModel
   // Delete a a booking
   public function delete($bookingID)
   {
-      $crud = new Crud($this->conn);
-  
-      // Check if the booking exists
-      $currentBooking = $this->getBookingsBy('bookingID', $bookingID);
-  
-      if ($currentBooking === Constants::NO_RECORDS) {
-          return Constants::NO_RECORDS;
-      }
-  
-      $condition = 'bookingID = ?';
-  
-      // If the record exists, delete it
-      return $crud->delete('bookings', $condition, $bookingID);
+    $crud = new Crud($this->conn);
+
+    // Check if the booking exists
+    $currentBooking = $this->getBookingsBy('bookingID', $bookingID);
+
+    if ($currentBooking === Constants::NO_RECORDS) {
+      return Constants::NO_RECORDS;
+    }
+
+    $condition = 'bookingID = ?';
+
+    // If the record exists, delete it
+    return $crud->delete('bookings', $condition, $bookingID);
   }
-  
+
 
   // get bookings by a specific field
   private function getBookingsBy($field, $value)
@@ -227,21 +227,9 @@ class BookModel
     return $crud->update('bookings', $update, $condition, $this->bookingID, $currentDateTime, "active");
   }
 
-  // Cancel a booking
-  // public function cancelBooking()
-  // {
-  //   return $this->updateStatus('expired');
-  // }
-
-  public function cancelBooking()
-{
-    return $this->updateStatus('canceled');
-}
-
-
-// Get Upcoming Bookings
-public function getUpcomingBookingsByUser($userID)
-{
+  // Get Upcoming Bookings
+  public function getUpcomingBookingsByUser($userID)
+  {
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
@@ -249,12 +237,12 @@ public function getUpcomingBookingsByUser($userID)
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime, 'active');
 
     return !empty($result) ? $result : [];
-}
+  }
 
 
-// Get Current Bookings
-public function getCurrentBookingsByUser($userID)
-{
+  // Get Current Bookings
+  public function getCurrentBookingsByUser($userID)
+  {
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
@@ -262,13 +250,13 @@ public function getCurrentBookingsByUser($userID)
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime, $currentTime, 'active');
 
     return !empty($result) ? $result : [];
-}
+  }
 
 
 
-// Get Previous Bookings
-public function getPreviousBookingsByUser($userID)
-{
+  // Get Previous Bookings
+  public function getPreviousBookingsByUser($userID)
+  {
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
@@ -276,5 +264,5 @@ public function getPreviousBookingsByUser($userID)
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime);
 
     return !empty($result) ? $result : [];
-}
+  }
 }
