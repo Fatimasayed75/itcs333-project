@@ -73,7 +73,7 @@ function formatBookingDetails($startTime, $endTime) {
                     <div class="flex justify-center">
                         <button 
                             type="button" 
-                            class="cancel-booking-btn bg-blue-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-red-600 mt-4"
+                            class="cancel-booking-btn bg-blue-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-blue-600 mt-4"
                             onclick="showConfirmation('<?php echo $booking['bookingID']; ?>')"
                         >
                             Cancel Booking
@@ -158,7 +158,7 @@ function formatBookingDetails($startTime, $endTime) {
                 <!-- Rebook Button -->
                 <div class="flex justify-center">
                     <button 
-                        class="rebook-btn bg-orange-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-teal-600 mt-4"
+                        class="rebook-btn bg-orange-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-orange-600 mt-4"
                         data-room-id="<?php echo $booking['roomID']; ?>"
                     >
                         Rebook
