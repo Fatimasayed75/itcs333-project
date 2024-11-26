@@ -167,7 +167,7 @@ function formatBookingDetails($startTime, $endTime) {
 
                         <!-- Add Comment Button -->
                         <button 
-                            class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-green-600"
+                            class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-emerald-600"
                             onclick="showModal('<?php echo $booking['bookingID']; ?>', '<?php echo $booking['roomID']; ?>')"
                         >
                             Leave a Comment
