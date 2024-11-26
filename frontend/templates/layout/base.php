@@ -39,6 +39,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/roomDetails.js"></script>
   <script src="../../js/cancelBooking.js"></script>
   <script src="../../js/rebook.js"></script>
+  <script src="../../js/addComment.js"></script>
 </body>
 
 </html>

@@ -44,26 +44,26 @@ class CommentModel
         if (empty($this->userID) || empty($this->roomID) || empty($this->content)) {
             return Constants::NULL_VALUE_FOUND;
         }
-
+    
         // Check if the user exists
         if ($this->userModel->getUserByID($this->userID) === Constants::USER_NOT_FOUND) {
             return Constants::USER_NOT_FOUND;
         }
-
+    
         // Check if the room exists
         // if ($this->roomModel->getRoomByID($roomID) === Constants::ROOM_NOT_FOUND) {
         //     return Constants::ROOM_NOT_FOUND;
         // }
-
+    
         $crud = new Crud($this->conn);
         $columns = ['userID', 'roomID', 'content', 'isRead'];
-        $values = [$this->userID, $this->roomID, $this->content];
+        $values = [$this->userID, $this->roomID, $this->content, 0]; // Default 'isRead' to 0
         $result = $crud->create('comments', $columns, $values);
-
-        // check if the comment saved
+    
+        // Check if the comment was saved
         return $result ? $result : Constants::FAILED;
     }
-
+    
     // Update a comment
     public function update()
     {

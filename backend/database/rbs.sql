@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2024 at 02:37 PM
+-- Generation Time: Nov 26, 2024 at 07:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,6 +37,19 @@ CREATE TABLE `bookings` (
   `status` enum('active','pending','expired') NOT NULL DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`bookingID`, `userID`, `roomID`, `bookingTime`, `startTime`, `endTime`, `status`) VALUES
+(59, 69, 'S40-023', '2024-11-25 15:13:13', '2024-11-25 18:12:45', '2024-11-25 18:20:45', 'active'),
+(60, 69, 'S40-029', '2024-11-25 15:40:42', '2024-11-25 18:39:51', '2024-11-25 18:45:51', 'active'),
+(61, 69, 'S40-028', '2024-11-25 15:43:39', '2024-11-25 18:46:51', '2024-11-25 18:50:51', 'active'),
+(62, 69, 'S40-029', '2024-11-25 20:45:36', '2024-11-25 23:50:49', '2024-11-25 23:59:49', 'active'),
+(63, 69, 'S40-030', '2024-11-26 07:08:37', '2024-11-26 10:06:58', '2024-11-26 10:13:58', 'active'),
+(65, 69, 'S40-028', '2024-11-26 14:13:32', '2024-11-26 17:12:51', '2024-11-26 18:50:51', 'active'),
+(66, 69, 'S40-032', '2024-11-26 14:13:57', '2024-11-27 17:13:36', '2024-11-27 17:13:36', 'active');
+
 -- --------------------------------------------------------
 
 --
@@ -48,7 +61,8 @@ CREATE TABLE `comments` (
   `userID` int(10) NOT NULL,
   `roomID` varchar(10) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
-  `content` text DEFAULT NULL
+  `content` text DEFAULT NULL,
+  `isRead` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -131,7 +145,8 @@ INSERT INTO `users` (`userID`, `email`, `password`, `firstName`, `lastName`, `ro
 (64, '201745123@stu.uob.edu.bh', '$2y$10$LUg3JSU1vLY.Qx4L2QrdmuKvUY43m8nf4Ofm7quMIU92F8MoXsKGq', 'E', 'E', 'student', 0x64656661756c742e6a7067),
 (65, '202145123@stu.uob.edu.bh', '$2y$10$tM7km2EmbmAqUepEWvjpUuuBfttxCr.48nHa5kMn9XpjTqM9DqU8i', 'D', 'D', 'student', 0x64656661756c742e6a7067),
 (66, '202233333@stu.uob.edu.bh', '$2y$10$nxzMW.ww0rC2oL9rmLXBoOuhfyY0IWSAJVQcO8AOGTT0X/5uDtxVq', 'R', 'R', 'student', 0x64656661756c742e6a7067),
-(67, '202012333@stu.uob.edu.bh', '$2y$10$FZaaYngQ1c7MLohQZY7.Nu1Uc28c/CVzUzgKx7aoMw2KLjkOAS/qK', 'Q', 'Q', 'student', 0x64656661756c742e6a7067);
+(67, '202012333@stu.uob.edu.bh', '$2y$10$FZaaYngQ1c7MLohQZY7.Nu1Uc28c/CVzUzgKx7aoMw2KLjkOAS/qK', 'Q', 'Q', 'student', 0x64656661756c742e6a7067),
+(69, '202207777@stu.uob.edu.bh', '$2y$10$6xHbqYCmxNdp3Q.TTZUFMOcSVbwp2Iy3yx/5r3/0.8CrdVqy0cTfG', 'Fatima', 'Sayed', 'student', 0x64656661756c742e6a7067);
 
 --
 -- Indexes for dumped tables
@@ -189,7 +204,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -207,7 +222,7 @@ ALTER TABLE `comment_reply`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `userID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- Constraints for dumped tables
