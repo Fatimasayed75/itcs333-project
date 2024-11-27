@@ -102,10 +102,11 @@ class CommentModel
     {
         $crud = new Crud($this->conn);
         $result = $crud->read('comments');
-
+    
         // Check if there are no records
-        return !empty($result) ? $result : Constants::NO_RECORDS;
+        return !empty($result) ? $result : []; 
     }
+    
 
     // Get a comment by comment ID
     public function getCommentByID($commentID)

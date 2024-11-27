@@ -34,12 +34,14 @@ if (isset($_SESSION['active-user'])) {
   <div id="main-content" class="content md:ml-28">
     <?php include "../components/home.php" ?>
   </div>
-  <script src="../../js/nav.js"></script>
-  <script src="../../js/roomViews.js"></script>
-  <script src="../../js/roomDetails.js"></script>
-  <script src="../../js/cancelBooking.js"></script>
-  <script src="../../js/rebook.js"></script>
-  <script src="../../js/addComment.js"></script>
+  <!-- <script src="../../js/fetchNotification.js" defer></script> -->
+<script src="../../js/addComment.js" defer></script>
+<script src="../../js/rebook.js" defer></script>
+<script src="../../js/cancelBooking.js" defer></script>
+<script src="../../js/roomDetails.js" defer></script>
+<script src="../../js/roomViews.js" defer></script>
+<script src="../../js/nav.js" defer></script>
+
 </body>
 
 </html>

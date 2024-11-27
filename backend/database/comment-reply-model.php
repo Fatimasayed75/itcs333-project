@@ -130,9 +130,10 @@ class CommentReplyModel
         $condition = 'commentID = ?';
         $result = $crud->read('comment_reply', [], $condition, $commentID);
 
-        // Check if the result is not empty
-        return !empty($result) ? $result : Constants::NO_RECORDS;
+        // Return the result, or a constant if no replies found
+        return !empty($result) ? $result : [];
     }
+
 
     // Get replies by user ID
     public function getRepliesByUserID($userID)
