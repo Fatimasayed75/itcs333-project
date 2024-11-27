@@ -15,36 +15,6 @@ $upcomingBookings = $bookModel->getUpcomingBookingsByUser($id);
 $currentBookings = $bookModel->getCurrentBookingsByUser($id);
 $previousBookings = $bookModel->getPreviousBookingsByUser($id);
 
-// Function to format time and calculate duration
-function formatBookingDetails($startTime, $endTime) {
-    // Convert to DateTime objects
-    $start = new DateTime($startTime);
-    $end = new DateTime($endTime);
-
-    // Date and Day format
-    $date = $start->format('M d, Y');
-    $day = $start->format('l');
-
-    // Time format
-    $startTimeFormatted = $start->format('g:i A');
-    $endTimeFormatted = $end->format('g:i A');    
-
-    // Duration calculation
-    $duration = $start->diff($end);
-    if ($duration->h > 0) {
-        $durationFormatted = $duration->h . 'h and ' . $duration->i . ' min';
-    } else {
-        $durationFormatted = $duration->i . ' min';
-    }
-
-    return [
-        'date' => $date,
-        'day' => $day,
-        'startTime' => $startTimeFormatted,
-        'endTime' => $endTimeFormatted,
-        'duration' => $durationFormatted
-    ];
-}
 ?>
 
 <body class="bg-gray-50 min-h-screen px-6 py-12">

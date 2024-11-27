@@ -1,0 +1,7 @@
+.reply-section button{
+    background-color: #D885A3;
+}
+
+.reply-section button:hover {
+    background-color: #c77492;
+}

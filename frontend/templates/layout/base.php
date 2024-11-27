@@ -19,6 +19,7 @@ if (isset($_SESSION['active-user'])) {
   <title>Home</title>
   <link rel="stylesheet" href="../../css/nav.css" />
   <link rel="stylesheet" href="../../css/home.css" />
+  <link rel="stylesheet" href="../../css/notification.css" />
   <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
   <!-- tailwind css framework  -->
   <script src="https://cdn.tailwindcss.com"></script>
