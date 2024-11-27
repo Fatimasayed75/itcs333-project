@@ -1,41 +1,49 @@
 <?php
-// Include necessary files
-require_once '../../../backend/database/comment-reply-model.php';
-require_once '../../../backend/database/user-model.php';
-require_once '../../../backend/db-connection.php';
-require_once '../../../backend/utils/constants.php';
+require_once '../database/comment-reply-model.php';
+require_once '../db-connection.php';
+require_once '../utils/constants.php';
+require_once '../utils/helpers.php';
 
 USE Utils\Constants;
 
-// Check if the user is authorized
-$id = isAuthorized();
+header('Content-Type: application/json');
 
-// Get the comment ID and reply content from POST request
-$commentID = $_POST['commentID'] ?? null;
-$replyContent = $_POST['replyContent'] ?? null;
+// Get the raw POST data and decode the JSON
+$data = json_decode(file_get_contents('php://input'), true);
 
-header('Content-Type: application/json'); // Ensure JSON response
-
-if ($commentID && $replyContent) {
-    // Instantiate the model
-    $commentReplyModel = new CommentReplyModel($pdo);
-
-    // Create a new reply
-    $commentReplyModel->commentID = $commentID;
-    $commentReplyModel->userID = $id;
-    $commentReplyModel->replyContent = $replyContent;
-
-    // Save the reply and get the result
-    $result = $commentReplyModel->save();
-
-    if ($result === Constants::SUCCESS) {
-        echo json_encode(['success' => true, 'message' => 'Reply posted successfully']);
-        exit;
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to save the reply']);
-        exit;
-    }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Missing parameters']);
+// Validate input
+if (!isset($data['commentID'], $data['replyContent'])) {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
     exit;
+}
+
+$commentID = $data['commentID'];
+$replyContent = trim($data['replyContent']);
+if (empty($replyContent)) {
+    echo json_encode(['status' => 'error', 'message' => 'Reply content cannot be empty']);
+    exit;
+}
+
+$userID = isAuthorized();
+
+// Instantiate model
+$replyModel = new CommentReplyModel($pdo);
+$replyModel->commentID = $commentID;
+$replyModel->userID = $userID;
+$replyModel->replyContent = $replyContent;
+
+// Save reply and return the result
+$result = $replyModel->save();
+
+if ($result === Constants::FAILED) {
+    echo json_encode(['status' => 'error', 'message' => 'Failed to save reply']);
+    exit;
+} else {
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Reply saved',
+        'replyID' => $result,
+        'replyContent' => $replyContent,
+        'createdAt' => date('Y-m-d H:i:s') // Include timestamp
+    ]);
 }

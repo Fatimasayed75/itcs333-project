@@ -1,63 +1,89 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Attach event listeners to all reply forms
-    document.querySelectorAll('.reply-form').forEach(form => {
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the default form submission
-            
-            // Extract data from the form
-            const commentID = this.querySelector('input[name="commentID"]').value;
-            const replyContent = this.querySelector('textarea[name="replyContent"]').value;
+document.addEventListener("DOMContentLoaded", function () {
+    // Handle reply button click event using event delegation
+    document.body.addEventListener('click', function(event) {
+        if (event.target && event.target.classList.contains('reply-button')) {
+            const commentID = event.target.dataset.commentId;
+            const replyContent = document.getElementById(`replyContent-${commentID}`).value;
 
-            // Debugging logs to verify data
-            console.log('Submitting reply:', { commentID, replyContent });
+            // Validate the reply content
+            if (!replyContent.trim()) {
+                alert('Reply content cannot be empty');
+                return;
+            }
 
-            // Perform an AJAX request using Fetch API
-            console.log("HI");
+            // Send AJAX request to save the reply
             fetch('../../../backend/server/reply.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json'
                 },
-                body: new URLSearchParams({
+                body: JSON.stringify({
                     commentID: commentID,
-                    replyContent: replyContent,
-                }),
+                    replyContent: replyContent
+                })
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json(); // Parse the response as JSON
-                })
-                .then(data => {
-                    console.log('Server response:', data); // Debugging the server response
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Append the new reply to the UI
+                    const repliesSection = document.getElementById(`replies-${commentID}`);
+                    const newReplyDiv = document.createElement('div');
+                    newReplyDiv.classList.add('reply', 'p-4', 'bg-green-50', 'border-l-4', 'border-green-400', 'shadow-sm');
+                    newReplyDiv.innerHTML = ` 
+                        <p class="font-medium text-gray-800"><strong>Admin:</strong> ${data.replyContent}</p>
+                        <p class="text-sm text-gray-500"><small>Posted on: ${data.createdAt}</small></p>
+                    `;
+                    repliesSection.appendChild(newReplyDiv);
 
-                    if (data.success) {
-                        // Update the UI with the new reply
-                        const repliesSection = document.querySelector(`#replies-${commentID}`);
-                        
-                        // Create a new reply element
-                        const newReply = document.createElement('div');
-                        newReply.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm');
-                        newReply.innerHTML = `
-                            <p class="font-medium text-gray-800"><strong>You:</strong> ${replyContent}</p>
-                            <p class="text-sm text-gray-500"><small>Posted just now</small></p>
+                    // Clear the textarea and hide the reply section
+                    document.getElementById(`replyContent-${commentID}`).value = '';
+                    document.getElementById(`reply-section-${commentID}`).style.display = 'none';
+                } else {
+                    alert(data.message);  // Show error message if reply wasn't saved
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting your reply');
+            });
+        }
+    });
+
+    // Fetch existing replies for all comments
+    const commentIDs = Array.from(document.querySelectorAll('.comment')).map(comment => comment.id.split('-')[1]);
+    
+    commentIDs.forEach(commentID => {
+        fetchReplies(commentID);
+    });
+
+    // Function to fetch replies from the server
+    function fetchReplies(commentID) {
+        fetch(`../../../backend/server/fetch_replies.php?commentID=${commentID}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.replies) {
+                    const repliesSection = document.getElementById(`replies-${commentID}`);
+                    data.replies.forEach(reply => {
+                        const replyDiv = document.createElement('div');
+                        replyDiv.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm');
+                        replyDiv.innerHTML = `
+                            <p class="font-medium text-gray-800"><strong>User:</strong> ${reply.replyContent}</p>
+                            <p class="text-sm text-gray-500"><small>Posted on: ${reply.createdAt}</small></p>
                         `;
-                        
-                        // Append the new reply to the replies section
-                        repliesSection.appendChild(newReply);
-                        
-                        // Clear the reply textarea
-                        this.querySelector('textarea[name="replyContent"]').value = '';
-                    } else {
-                        // Show an alert if the reply could not be posted
-                        alert('Failed to post reply: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error); // Log any errors to the console
-                    alert('An error occurred while posting your reply. Please try again.');
-                });
-        });
+                        repliesSection.appendChild(replyDiv);
+                    });
+                }
+            })
+            .catch(error => console.error('Error fetching replies:', error));
+    }
+
+    // Loop through each comment to check if the last reply was from an admin
+    commentIDs.forEach(commentID => {
+        const lastReplyIsAdmin = document.getElementById(`reply-section-${commentID}`);
+
+        // Show the reply section only if the last reply is from the admin
+        if (lastReplyIsAdmin) {
+            lastReplyIsAdmin.style.display = 'block';
+        }
     });
 });
