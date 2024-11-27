@@ -220,4 +220,16 @@ class CommentModel
 
         return false; // No reply from the admin
     }
+
+    public function feedbackExists($bookingID) {
+        $stmt = $this->conn->prepare("
+            SELECT COUNT(*) 
+            FROM comments c 
+            JOIN bookings b ON c.roomID = b.roomID AND c.userID = b.userID
+            WHERE b.bookingID = :bookingID
+        ");
+        $stmt->execute(['bookingID' => $bookingID]);
+        return $stmt->fetchColumn() > 0;
+    }
+    
 }

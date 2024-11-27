@@ -116,7 +116,9 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                     // Get formatted details for the booking
                     $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
                 ?>
-                <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" class="bg-orange-50 rounded-lg shadow p-6 relative w-full">
+                <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" 
+                     class="bg-orange-50 rounded-lg shadow p-6 relative w-full previous-booking-card" 
+                     data-booking-id="<?php echo $booking['bookingID']; ?>">
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
                     <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
                     <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
@@ -124,24 +126,33 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                     <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
                     <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
 
-                    <!-- Buttons -->
-                    <div class="flex justify-center gap-4 mt-4">
+                    <!-- Buttons or Feedback Indicator -->
+                    <div class="flex justify-center gap-4 mt-4 items-center">
                         <!-- Rebook Button -->
                         <button 
                             class="rebook-btn bg-orange-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-orange-600"
                             data-room-id="<?php echo $booking['roomID']; ?>"
-                        >
+                            onclick="handleRebook('<?php echo $booking['bookingID']; ?>')">
                             Rebook
                         </button>
 
-                        <!-- Add Comment Button -->
-                        <button 
-                            class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-emerald-600"
-                            onclick="showModal('<?php echo $booking['bookingID']; ?>', '<?php echo $booking['roomID']; ?>')"
-                        >
-                            Feedback
-                        </button>
+                        <!-- Feedback Button or Feedback Status -->
+                        <?php if ($booking['feedback'] == 0): ?>
+                            <button 
+                                id="feedback-btn-<?php echo $booking['bookingID']; ?>"
+                                class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-emerald-600"
+                                onclick="showModal('<?php echo $booking['bookingID']; ?>', '<?php echo $booking['roomID']; ?>')">
+                                Feedback
+                            </button>
+                        <?php else: ?>
+                            <!-- Feedback Submitted Status -->
+                            <span id="feedback-status-<?php echo $booking['bookingID']; ?>" 
+                                class="text-emerald-600 text-xs font-semibold flex items-center justify-center">
+                                ✔ Feedback Submitted
+                            </span>
+                        <?php endif; ?>
                     </div>
+
                 </div>
             <?php endforeach; ?>
         </div>
@@ -153,15 +164,15 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
 <!-- Modal for adding comment -->
 <div id="comment-modal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center hidden">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-        <h3 class="text-lg font-semibold mb-4">Add Comment</h3>
+        <h3 class="text-lg font-semibold mb-4">Feedback</h3>
         <textarea 
             class="w-full border rounded-lg p-2 text-sm mb-4" 
             rows="4" 
-            placeholder="Enter your comment here..."
+            placeholder="Enter your feedback here..."
             id="comment-input-modal"
         ></textarea>
 
-         <!-- Error message display -->
+        <!-- Error message display -->
         <div id="error-message" class="text-red-600 text-sm mb-4 hidden">
             Comment cannot be empty!
         </div>

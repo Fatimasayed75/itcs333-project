@@ -18,6 +18,7 @@ class BookModel
   public $startTime;
   public $endTime;
   public $status;
+  public $feedback;
 
   // Constructor
   function __construct($conn, $bookingID = null, $userID, $roomID, $bookingTime, $startTime, $endTime)
@@ -67,7 +68,7 @@ class BookModel
 
     // if booking duration valid, insert it
     $crud = new Crud($this->conn);
-    $columns = ['userID', 'roomID', 'bookingTime', 'startTime', 'endTime', 'status'];
+    $columns = ['userID', 'roomID', 'bookingTime', 'startTime', 'endTime', 'status', 'feedback'];
     $values = [
       $this->userID,
       $this->roomID,
@@ -265,4 +266,43 @@ class BookModel
 
     return !empty($result) ? $result : [];
   }
+
+  // Check if feedback has already been submitted for the booking
+public function hasFeedbackSubmitted()
+{
+    $crud = new Crud($this->conn);
+    $condition = 'bookingID = ?';
+    $result = $crud->read('bookings', ['feedback'], $condition, $this->bookingID);
+
+    if (!empty($result)) {
+        return $result[0]['feedback'] == 1;
+    }
+
+    return false;
+}
+
+// Update feedback submission status
+public function submitFeedback()
+{
+    $crud = new Crud($this->conn);
+
+    // Check if the booking exists
+    $condition = 'bookingID = ?';
+    $currentBooking = $this->getBookingsBy('bookingID', $this->bookingID);
+
+    if ($currentBooking === Constants::BOOKING_NOT_FOUND) {
+        return Constants::BOOKING_NOT_FOUND;
+    }
+
+    // If feedback is already submitted, return false
+    if ($this->hasFeedbackSubmitted()) {
+        return false;
+    }
+
+    // If feedback hasn't been submitted yet, update it
+    $update = ['feedback' => 1];
+    return $crud->update('bookings', $update, $condition, $this->bookingID);
+}
+
+
 }
