@@ -36,7 +36,7 @@ foreach ($bookingDetails as $booking) {
 ?>
 
 <div class="notifications p-6 space-y-6 bg-gray-100 rounded-lg">
-    <h1 class="text-3xl font-semibold text-gray-800">User Comments & Booking Details</h1>
+    <h1 class="text-3xl font-semibold text-gray-800">Notifications</h1>
 
     <?php
     // Loop through each comment and display only those that have an admin reply

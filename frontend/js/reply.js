@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Append the new reply to the UI
                     const repliesSection = document.getElementById(`replies-${commentID}`);
                     const newReplyDiv = document.createElement('div');
-                    newReplyDiv.classList.add('reply', 'p-4', 'bg-green-50', 'border-l-4', 'border-green-400', 'shadow-sm');
+                    newReplyDiv.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-400', 'shadow-sm');
                     newReplyDiv.innerHTML = ` 
-                        <p class="font-medium text-gray-800"><strong>Admin:</strong> ${data.replyContent}</p>
+                        <p class="font-medium text-gray-800"><strong>User:</strong> ${data.replyContent}</p>
                         <p class="text-sm text-gray-500"><small>Posted on: ${data.createdAt}</small></p>
                     `;
                     repliesSection.appendChild(newReplyDiv);
