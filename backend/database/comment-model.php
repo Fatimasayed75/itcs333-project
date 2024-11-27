@@ -205,4 +205,19 @@ class CommentModel
 
         return !empty($result) ? $result : Constants::NO_RECORDS;
     }
+
+    public function hasAdminReply($commentID)
+    {
+        // Fetch replies for the comment
+        $replies = (new CommentReplyModel($this->conn))->getRepliesByCommentID($commentID);
+
+        // Check if any reply is from the admin
+        foreach ($replies as $reply) {
+            if ($reply['userID'] == Constants::ADMIN_USER_ID) {
+                return true; // Found at least one reply from the admin
+            }
+        }
+
+        return false; // No reply from the admin
+    }
 }
