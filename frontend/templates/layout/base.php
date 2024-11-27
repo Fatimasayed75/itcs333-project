@@ -35,6 +35,7 @@ if (isset($_SESSION['active-user'])) {
     <?php include "../components/home.php" ?>
   </div>
   <!-- <script src="../../js/fetchNotification.js" defer></script> -->
+<script src="../../js/reply.js"></script>
 <script src="../../js/addComment.js" defer></script>
 <script src="../../js/rebook.js" defer></script>
 <script src="../../js/cancelBooking.js" defer></script>

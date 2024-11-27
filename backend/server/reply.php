@@ -1,44 +1,41 @@
 <?php
 // Include necessary files
-require_once '../database/comment-reply-model.php';
-require_once '../database/comment-model.php';
-require_once '../db-connection.php';
-require_once '../utils/constants.php'; // For Constants
+require_once '../../../backend/database/comment-reply-model.php';
+require_once '../../../backend/database/user-model.php';
+require_once '../../../backend/db-connection.php';
+require_once '../../../backend/utils/constants.php';
 
 USE Utils\Constants;
 
-session_start();
+// Check if the user is authorized
+$id = isAuthorized();
 
-// Ensure the user is logged in and is an admin
-if (!isset($_SESSION['active-user']) || $_SESSION['email'] !== Constants::ADMIN_EMAIL) {
-    header("Location: login.php");
-    exit();
-}
+// Get the comment ID and reply content from POST request
+$commentID = $_POST['commentID'] ?? null;
+$replyContent = $_POST['replyContent'] ?? null;
 
-// Instantiate models
-$commentReplyModel = new CommentReplyModel($conn);
+header('Content-Type: application/json'); // Ensure JSON response
 
-// Handle form submission to reply to a comment
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $commentID = $_POST['commentID'];
-    $userID = $_SESSION['active-user']; // Admin ID from session
-    $replyContent = $_POST['replyContent'];
+if ($commentID && $replyContent) {
+    // Instantiate the model
+    $commentReplyModel = new CommentReplyModel($pdo);
 
-    // Set up the reply model to save the new reply
+    // Create a new reply
     $commentReplyModel->commentID = $commentID;
-    $commentReplyModel->userID = $userID;
+    $commentReplyModel->userID = $id;
     $commentReplyModel->replyContent = $replyContent;
 
-    // Save the reply (no parentReplyID needed)
+    // Save the reply and get the result
     $result = $commentReplyModel->save();
 
-    // If successful, redirect back to the notification page
     if ($result === Constants::SUCCESS) {
-        header("Location: notification.php"); // Redirect to the notification page to see the reply
-        exit();
+        echo json_encode(['success' => true, 'message' => 'Reply posted successfully']);
+        exit;
     } else {
-        // Handle error (optional)
-        echo "<p>Error: Could not save reply.</p>";
+        echo json_encode(['success' => false, 'message' => 'Failed to save the reply']);
+        exit;
     }
+} else {
+    echo json_encode(['success' => false, 'message' => 'Missing parameters']);
+    exit;
 }
-?>
