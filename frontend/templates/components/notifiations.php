@@ -72,7 +72,7 @@ foreach ($comments as $comment) {
 
         // Display comment content
         echo "<div class='reply p-4 bg-gray-50 border-l-4 border-gray-300 shadow-sm'>";
-        echo "<p class='font-medium text-gray-800'><strong>User Comment:</strong> {$commentContent}</p>";
+        echo "<p class='font-medium text-gray-800'><strong>User Feedback:</strong> {$commentContent}</p>";
         echo "<p class='text-sm text-gray-500'><small>Posted on: {$createdAt}</small></p>";
         echo "</div>"; // Close comment content styled like a reply
 

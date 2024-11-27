@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2024 at 07:29 PM
+-- Generation Time: Nov 27, 2024 at 10:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = '+03:00';
+SET time_zone = "+03:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -34,21 +34,9 @@ CREATE TABLE `bookings` (
   `bookingTime` timestamp NOT NULL DEFAULT current_timestamp(),
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
-  `status` enum('active','pending','expired') NOT NULL DEFAULT 'active'
+  `status` enum('active','pending','expired') NOT NULL DEFAULT 'active',
+  `feedback` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `bookings`
---
-
-INSERT INTO `bookings` (`bookingID`, `userID`, `roomID`, `bookingTime`, `startTime`, `endTime`, `status`) VALUES
-(59, 69, 'S40-023', '2024-11-25 15:13:13', '2024-11-25 18:12:45', '2024-11-25 18:20:45', 'active'),
-(60, 69, 'S40-029', '2024-11-25 15:40:42', '2024-11-25 18:39:51', '2024-11-25 18:45:51', 'active'),
-(61, 69, 'S40-028', '2024-11-25 15:43:39', '2024-11-25 18:46:51', '2024-11-25 18:50:51', 'active'),
-(62, 69, 'S40-029', '2024-11-25 20:45:36', '2024-11-25 23:50:49', '2024-11-25 23:59:49', 'active'),
-(63, 69, 'S40-030', '2024-11-26 07:08:37', '2024-11-26 10:06:58', '2024-11-26 10:13:58', 'active'),
-(65, 69, 'S40-028', '2024-11-26 14:13:32', '2024-11-26 17:12:51', '2024-11-26 18:50:51', 'active'),
-(66, 69, 'S40-032', '2024-11-26 14:13:57', '2024-11-27 17:13:36', '2024-11-27 17:13:36', 'active');
 
 -- --------------------------------------------------------
 
@@ -204,19 +192,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `bookingID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `commentID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `comment_reply`
 --
 ALTER TABLE `comment_reply`
-  MODIFY `replyID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `replyID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `users`

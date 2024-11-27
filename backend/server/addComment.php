@@ -1,10 +1,9 @@
 <?php
 require_once '../database/comment-model.php';
-require_once '../db-connection.php';
+require_once '../database/book-model.php';
 require_once '../utils/helpers.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require_once '../db-connection.php';
 
 header('Content-Type: application/json');
 
@@ -27,21 +26,24 @@ try {
             exit;
         }
 
+        // Save the comment first
         $commentModel = new CommentModel($pdo);
         $commentModel->userID = $userID;
         $commentModel->roomID = $roomID;
         $commentModel->content = $content;
+        $commentModel->save();
 
-        $result = $commentModel->save();
+        // Update feedback status for the booking
+        $bookingModel = new BookModel($pdo, $bookingID, $userID, $roomID, $data['bookingTime'], $data['startTime'], $data['endTime']);
+        $bookingModel->submitFeedback(); // This should set the feedback status to 1
 
-        if ($result) {
-            echo json_encode(['success' => true]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to save comment.']);
-        }
+        // Return the updated feedback status
+        echo json_encode(['success' => true, 'feedbackExists' => true]);
+
     } else {
         echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     }
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
+
