@@ -234,7 +234,8 @@ class BookModel
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    $condition = 'userID = ? AND startTime > ? AND status = ?';
+    // Query to get upcoming bookings ordered by startTime ASC
+    $condition = 'userID = ? AND startTime > ? AND status = ? ORDER BY startTime ASC';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime, 'active');
 
     return !empty($result) ? $result : [];
@@ -247,7 +248,8 @@ class BookModel
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    $condition = 'userID = ? AND startTime <= ? AND endTime >= ? AND status = ?';
+    // Query to get current bookings ordered by startTime DESC
+    $condition = 'userID = ? AND startTime <= ? AND endTime >= ? AND status = ? ORDER BY startTime DESC';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime, $currentTime, 'active');
 
     return !empty($result) ? $result : [];
@@ -261,29 +263,30 @@ class BookModel
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    $condition = 'userID = ? AND endTime < ?';
+    // Query to get previous bookings ordered by endTime DESC
+    $condition = 'userID = ? AND endTime < ? ORDER BY endTime DESC';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime);
 
     return !empty($result) ? $result : [];
   }
 
   // Check if feedback has already been submitted for the booking
-public function hasFeedbackSubmitted()
-{
+  public function hasFeedbackSubmitted()
+  {
     $crud = new Crud($this->conn);
     $condition = 'bookingID = ?';
     $result = $crud->read('bookings', ['feedback'], $condition, $this->bookingID);
 
     if (!empty($result)) {
-        return $result[0]['feedback'] == 1;
+      return $result[0]['feedback'] == 1;
     }
 
     return false;
-}
+  }
 
-// Update feedback submission status
-public function submitFeedback()
-{
+  // Update feedback submission status
+  public function submitFeedback()
+  {
     $crud = new Crud($this->conn);
 
     // Check if the booking exists
@@ -291,28 +294,29 @@ public function submitFeedback()
     $currentBooking = $this->getBookingsBy('bookingID', $this->bookingID);
 
     if ($currentBooking === Constants::BOOKING_NOT_FOUND) {
-        return Constants::BOOKING_NOT_FOUND;
+      return Constants::BOOKING_NOT_FOUND;
     }
 
     // If feedback is already submitted, return false
     if ($this->hasFeedbackSubmitted()) {
-        return false;
+      return false;
     }
 
     // If feedback hasn't been submitted yet, update it
     $update = ['feedback' => 1];
     return $crud->update('bookings', $update, $condition, $this->bookingID);
-}
+  }
 
   public function getAllBookings()
   {
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
-    // Fetch all bookings where endTime is in the past
-    $condition = 'endTime < ?';
+    // Query to get all past bookings ordered by endTime DESC
+    $condition = 'endTime < ? ORDER BY endTime DESC';
     $result = $crud->read('bookings', [], $condition, $currentTime);
 
     return !empty($result) ? $result : [];
   }
+
 }
