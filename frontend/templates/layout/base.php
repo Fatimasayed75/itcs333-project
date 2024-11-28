@@ -37,12 +37,13 @@ if (isset($_SESSION['active-user'])) {
   </div>
   <!-- <script src="../../js/fetchNotification.js" defer></script> -->
   <script src="../../js/nav.js"></script>
+  <script src="../../js/rebook.js"></script>
   <script src="../../js/roomViews.js"></script>
   <script src="../../js/roomDetails.js"></script>
   <script src="../../js/cancelBooking.js"></script>
-  <script src="../../js/rebook.js"></script>
   <script src="../../js/addComment.js"></script>
   <script src="../../js/reply.js"></script>
+  <script src="../../js/adminReply.js"></script>
 </body>
 
 </html>

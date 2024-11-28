@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function rebookRoom(roomId) {
     try {
-        // Send request to roomDetails.php for booking or rebooking
+        // Send request to roomDetails.php for rebooking
         const response = await fetch(`../../../backend/server/roomDetails.php?roomID=${roomId}&action=rebook`, {
             method: "GET",
         });

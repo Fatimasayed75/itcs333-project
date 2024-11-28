@@ -24,9 +24,14 @@ $comments = $commentModel->getAllComments();
 
 // Get the user details by ID
 $userDetails = $userModel->getUserByID($id);
+$isAdmin = $userDetails['role'] === 'admin';
 
-// Fetch the booking details for the current user (based on roomID)
-$bookingDetails = $bookModel->getPreviousBookingsByUser($id);
+
+// Fetch booking details
+$bookingDetails = $isAdmin 
+    ? $bookModel->getAllBookings() // Admins see all bookings
+    : $bookModel->getPreviousBookingsByUser($id); // Normal users see their bookings only
+
 
 // Prepare an associative array to map roomID to its booking details
 $bookingDetailsByRoom = [];
@@ -50,7 +55,7 @@ foreach ($comments as $comment) {
     $createdAt = $comment['createdAt'];
 
     // Check if the comment has a reply from the admin
-    if ($commentModel->hasAdminReply($commentID)) {
+    if ($isAdmin || $commentModel->hasAdminReply($commentID)) {
 
         echo "<div class='comment p-4 bg-white rounded-lg shadow-md space-y-4' id='comment-{$commentID}'>";
 
@@ -74,7 +79,7 @@ foreach ($comments as $comment) {
         echo "<div class='reply p-4 bg-gray-50 border-l-4 border-gray-300 shadow-sm'>";
         echo "<p class='font-medium text-gray-800'><strong>User Feedback:</strong> {$commentContent}</p>";
         echo "<p class='text-sm text-gray-500'><small>Posted on: {$createdAt}</small></p>";
-        echo "</div>"; // Close comment content styled like a reply
+        echo "</div>";
 
         // Display replies for this comment
         echo "<div class='replies mt-4 space-y-4' id='replies-{$commentID}'>";
@@ -103,15 +108,21 @@ foreach ($comments as $comment) {
 
         echo "</div>"; // Close replies section
 
-        // Initially hide the reply section by default (we'll control visibility with JS)
         // Show reply section only if the last reply was from the admin
-        if ($lastReplyIsAdmin) {
+        if ($lastReplyIsAdmin && $isAdmin === false) {
             echo "<div class='reply-section mt-6 space-y-4' id='reply-section-{$commentID}'>";
             echo "<textarea id='replyContent-{$commentID}' required class='w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400' placeholder='Write your reply here...'></textarea>";
-            echo "<div class='flex justify-center'>";  // Add this div to center the button
-            echo "<button class='reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-400' data-comment-id='{$commentID}'>Reply</button>";
-            echo "</div>";  // Close the center div
-            echo "</div>"; // Close reply section
+            echo "<div class='flex justify-center'>";
+            echo "<button class='reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700' data-comment-id='{$commentID}'>Reply</button>";
+            echo "</div>";
+            echo "</div>";
+        } else if ($isAdmin) {
+            echo "<div class='admin-reply-section mt-6 space-y-4' id='admin-reply-section-{$commentID}'>";
+            echo "<textarea id='adminReplyContent-{$commentID}' required class='w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400' placeholder='Write your reply here...'></textarea>";
+            echo "<div class='flex justify-center'>";
+            echo "<button class='admin-reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700' data-comment-id='{$commentID}'>Reply</button>";
+            echo "</div>";
+            echo "</div>";
         }
         
         echo "</div>"; // Close comment div

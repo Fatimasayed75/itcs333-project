@@ -304,5 +304,15 @@ public function submitFeedback()
     return $crud->update('bookings', $update, $condition, $this->bookingID);
 }
 
+  public function getAllBookings()
+  {
+    $crud = new Crud($this->conn);
+    $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
+    // Fetch all bookings where endTime is in the past
+    $condition = 'endTime < ?';
+    $result = $crud->read('bookings', [], $condition, $currentTime);
+
+    return !empty($result) ? $result : [];
+  }
 }

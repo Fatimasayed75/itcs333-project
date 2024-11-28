@@ -1,7 +1,15 @@
-.reply-section button{
+.reply-section button.reply-button {
     background-color: #D885A3;
 }
 
-.reply-section button:hover {
+.reply-section button.reply-button:hover {
+    background-color: #c77492;
+}
+
+.admin-reply-section button.admin-reply-button {
+    background-color: #D885A3;
+}
+
+.admin-reply-section button.admin-reply-button:hover {
     background-color: #c77492;
 }
