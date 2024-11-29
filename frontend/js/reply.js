@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Clear the textarea and hide the reply section
                     document.getElementById(`replyContent-${commentID}`).value = '';
                     document.getElementById(`reply-section-${commentID}`).style.display = 'none';
+                    const iconElement = event.target;
+                    toggleDetails(commentID, iconElement);
                 } else {
                     alert(data.message);  // Show error message if reply wasn't saved
                 }
@@ -87,3 +89,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+
+function toggleDetails(commentID, iconElement) {
+    const detailsSection = document.getElementById(`details-${commentID}`);
+    // Toggle the visibility of the notification details
+    detailsSection.classList.toggle('hidden');
+    
+    // Toggle the icon (change between down and up arrows)
+    if (detailsSection.classList.contains('hidden')) {
+        iconElement.classList.remove('fa-chevron-up');
+        iconElement.classList.add('fa-chevron-down');
+    } else {
+        iconElement.classList.remove('fa-chevron-down');
+        iconElement.classList.add('fa-chevron-up');
+    }
+}
