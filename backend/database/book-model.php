@@ -319,4 +319,16 @@ class BookModel
     return !empty($result) ? $result : [];
   }
 
+  public function getBookingByID($bookingID) {
+   
+    $currentBooking = $this->getBookingsBy('bookingID', $bookingID);
+
+    if ($currentBooking === Constants::NO_RECORDS) {
+      return Constants::NO_RECORDS;
+    }
+
+    return $currentBooking;
+
+  }
+
 }

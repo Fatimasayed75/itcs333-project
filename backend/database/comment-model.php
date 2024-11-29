@@ -4,6 +4,7 @@ require_once __DIR__ . '/../utils/crud.php';
 require_once __DIR__ . '/../utils/constants.php';
 require_once 'user-model.php';
 require_once 'room-model.php';
+require_once 'book-model.php';
 
 use Utils\Constants;
 use Utils\Crud;
@@ -14,6 +15,7 @@ class CommentModel
     public $commentID;
     public $userID;
     public $roomID;
+    public $bookingID;
     public $content;
     public $createdAt;
     public $isRead;
@@ -21,45 +23,53 @@ class CommentModel
 
     private $userModel;
     private $roomModel;
+    private $bookModel;
 
     // Constructor
-    function __construct($conn, $commentID = null, $userID = null, $roomID = null, $content = null, $createdAt = null, $isRead = 0)
+    function __construct($conn, $commentID = null, $userID = null, $roomID = null, $bookingID = null, $content = null, $createdAt = null, $isRead = 0)
     {
         $this->conn = $conn;
         $this->commentID = $commentID;
         $this->userID = $userID;
         $this->roomID = $roomID;
+        $this->bookingID = $bookingID;  // Set bookingID
         $this->content = $content;
         $this->createdAt = $createdAt;
         $this->isRead = $isRead;
 
         $this->userModel = new UserModel($conn);
         $this->roomModel = new RoomModel($conn);
+        $this->bookModel = new BookModel($conn, null, null, null, null, null, null);  // Initialize the booking model
     }
 
     // Create a new comment
     public function save()
     {
         // Null values are not accepted
-        if (empty($this->userID) || empty($this->roomID) || empty($this->content)) {
+        if (empty($this->userID) || empty($this->roomID) || empty($this->content) || empty($this->bookingID)) {
             return Constants::NULL_VALUE_FOUND;
         }
-    
+
         // Check if the user exists
         if ($this->userModel->getUserByID($this->userID) === Constants::USER_NOT_FOUND) {
             return Constants::USER_NOT_FOUND;
         }
-    
+
         // Check if the room exists
         // if ($this->roomModel->getRoomByID($roomID) === Constants::ROOM_NOT_FOUND) {
         //     return Constants::ROOM_NOT_FOUND;
         // }
-    
+
+        // Check if the booking exists
+        if ($this->bookModel->getBookingByID($this->bookingID) === Constants::NO_RECORDS) {
+            return Constants::BOOKING_NOT_FOUND;
+        }
+
         $crud = new Crud($this->conn);
-        $columns = ['userID', 'roomID', 'content', 'isRead'];
-        $values = [$this->userID, $this->roomID, $this->content, 0]; // Default 'isRead' to 0
+        $columns = ['userID', 'roomID', 'bookingID', 'content', 'isRead'];
+        $values = [$this->userID, $this->roomID, $this->bookingID, $this->content, 0]; // Default 'isRead' to 0
         $result = $crud->create('comments', $columns, $values);
-    
+
         // Check if the comment was saved
         return $result ? $result : Constants::FAILED;
     }

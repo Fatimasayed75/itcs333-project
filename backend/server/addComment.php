@@ -31,6 +31,7 @@ try {
         $commentModel->userID = $userID;
         $commentModel->roomID = $roomID;
         $commentModel->content = $content;
+        $commentModel->bookingID = $bookingID;
         $commentModel->save();
 
         // Update feedback status for the booking
