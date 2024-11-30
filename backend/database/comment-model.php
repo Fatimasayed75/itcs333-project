@@ -241,5 +241,22 @@ class CommentModel
         $stmt->execute(['bookingID' => $bookingID]);
         return $stmt->fetchColumn() > 0;
     }
+    function getUserFullName($userID) {
+        // Query to get the user's first name and last name from the users table
+        $query = "SELECT firstName, lastName FROM users WHERE userID = :userID";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // Return the full name
+        if ($user) {
+            return $user['firstName'] . ' ' . $user['lastName'];
+        }
+    
+        return 'Unknown User';
+    }
+
     
 }

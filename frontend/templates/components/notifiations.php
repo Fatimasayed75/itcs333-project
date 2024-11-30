@@ -89,7 +89,7 @@ usort($commentsWithReplies, function ($a, $b) {
 ?>
 
 <div class="notifications p-6 space-y-6 bg-gray-100 rounded-lg pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10">
-    <h1 class="text-3xl font-semibold text-gray-800">Notifications</h1>
+    <h1 class="text-3xl font-semibold text-gray-800 mb-4">Notifications</h1>
 
     <?php foreach ($commentsWithReplies as $commentData): 
         $comment = $commentData['comment'];
@@ -108,44 +108,52 @@ usort($commentsWithReplies, function ($a, $b) {
 
         // Check if the comment has a reply from the admin
         if ($isAdmin || $commentModel->hasAdminReply($commentID)): ?>
-            <div class="comment p-4 bg-white rounded-lg shadow-md space-y-4" id="comment-<?= $commentID; ?>">
-                <div class="notification-header flex justify-between items-center" data-comment-id="<?= $commentID; ?>">
-                    <p class="text-lg font-medium text-gray-700">
-                        <strong>Room:</strong> <?= $roomID; ?> | 
-                        <strong>Date:</strong> <?= $bookingDate; ?>
-                    </p>
-                    <span class="text-sm text-gray-500">
-                        <?= $startTime; ?> to <?= $endTime; ?>
-                    </span>
-                    <i class="expand-icon fa fa-chevron-down ml-2 cursor-pointer" onclick="toggleDetails(<?= $commentID; ?>, this)"></i>
+            <div class="comment bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative" id="comment-<?= $commentID; ?>">
+                <!-- Notification Header -->
+                <div class="notification-header flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <i class="fa fa-bell text-blue-500 text-2xl"></i>
+                        <div>
+                            <p class="text-sm text-gray-500">
+                                <strong>Room:</strong> <?= $roomID; ?> | <strong>Date:</strong> <?= $bookingDate; ?>
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                <strong>Time:</strong> <?= $startTime; ?> - <?= $endTime; ?>
+                            </p>
+                        </div>
+                    </div>
+                    <i class="expand-icon fa fa-chevron-down text-gray-400 cursor-pointer" onclick="toggleDetails(<?= $commentID; ?>, this)"></i>
                 </div>
 
-                <div class="notification-details mt-4 space-y-4 hidden" id="details-<?= $commentID; ?>">
-                    <div class="reply p-4 bg-gray-50 border-l-4 border-gray-300 shadow-sm">
-                        <p class="font-medium text-gray-800">
-                            <strong>User Feedback:</strong> <?= $commentContent; ?>
+                <!-- Notification Details -->
+                <div class="notification-details mt-4 hidden" id="details-<?= $commentID; ?>">
+                    <div class="reply bg-gray-50 border-l-4 border-gray-300 p-4 rounded-md shadow-sm">
+                        <p class="text-sm text-gray-800">
+                            <strong>Feedback:</strong> <?= $commentContent; ?>
                         </p>
                     </div>
 
                     <?php if (!empty($replies)): ?>
                         <div class="replies mt-4 space-y-4" id="replies-<?= $commentID; ?>">
-                            <?php foreach ($replies as $index => $reply):
-                                $isAdminReply = ($reply['userID'] == Constants::ADMIN_USER_ID);
-                                if ($isAdminReply && $index === count($replies) - 1) {
-                                    $lastReplyIsAdmin = true;
-                                }
-                                $replyClass = $isAdminReply ? 'bg-green-50 border-l-4 border-green-400' : 'bg-gray-50 border-l-4 border-gray-300';
-                                ?>
-                                <div class="reply p-4 <?= $replyClass; ?> shadow-sm">
-                                    <p class="font-medium text-gray-800">
-                                        <?= $isAdminReply ? '<strong>Admin:</strong> ' : '<strong>User:</strong> '; ?>
-                                        <?= $reply['replyContent']; ?>
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        <small>Posted on: <?= $reply['createdAt']; ?></small>
-                                    </p>
-                                </div>
-                            <?php endforeach; ?>
+                        <?php foreach ($replies as $index => $reply):
+                            $isAdminReply = ($reply['userID'] == Constants::ADMIN_USER_ID);
+                            if ($isAdminReply && $index === count($replies) - 1) {
+                                $lastReplyIsAdmin = true;
+                            }
+
+                            $userFullName = $isAdminReply ? 'Admin' : $commentModel->getUserFullName( $reply['userID']);
+                            $replyClass = $isAdminReply ? 'bg-green-50 border-l-4 border-green-400' : 'bg-gray-50 border-l-4 border-gray-300';
+                            ?>
+                            <div class="reply p-3 <?= $replyClass; ?> rounded-md shadow-sm">
+                                <p class="text-sm text-gray-800">
+                                    <strong><?= $userFullName; ?>:</strong>
+                                    <?= htmlspecialchars($reply['replyContent']); ?>
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    Posted on: <?= date("M d, Y h:i A", strtotime($reply['createdAt'])); ?>
+                                </p>
+                            </div>
+                        <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
 
