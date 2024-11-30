@@ -112,7 +112,7 @@ usort($commentsWithReplies, function ($a, $b) {
                 <!-- Notification Header -->
                 <div class="notification-header flex items-center justify-between">
                     <div class="flex items-center space-x-4">
-                        <i class="fa fa-bell text-blue-500 text-2xl"></i>
+                        <i class="fa fa-bell text-2xl" style="color: #D885A3;"></i>
                         <div>
                             <p class="text-sm text-gray-500">
                                 <strong>Room:</strong> <?= $roomID; ?> | <strong>Date:</strong> <?= $bookingDate; ?>
