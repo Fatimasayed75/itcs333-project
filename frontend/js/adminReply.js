@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const commentID = event.target.dataset.commentId;
             const replyContent = document.getElementById(`adminReplyContent-${commentID}`).value;
 
+            // const name = event.target.dataset.fullName;
+
             // Validate the reply content
             if (!replyContent.trim()) {
                 alert('Reply content cannot be empty');
@@ -19,7 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({
                     commentID: commentID,
-                    replyContent: replyContent
+                    replyContent: replyContent,
+                    // name: name
                 })
             })
             .then(response => response.json())
@@ -28,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Append the new reply to the UI
                     const repliesSection = document.getElementById(`replies-${commentID}`);
                     const newReplyDiv = document.createElement('div');
-                    newReplyDiv.classList.add('reply', 'p-4', 'bg-green-50', 'border-l-4', 'border-green-400', 'shadow-sm');
+                    newReplyDiv.classList.add('reply', 'p-4', 'bg-green-50', 'border-l-4', 'border-green-300', 'shadow-sm', 'rounded-md');
                     newReplyDiv.innerHTML = ` 
-                        <p class="font-medium text-gray-800"><strong>Admin:</strong> ${data.replyContent}</p>
+                        <p class="font-medium text-gray-800"><strong>${data.fullName}:</strong> ${data.replyContent}</p>
                         <p class="text-sm text-gray-500"><small>Posted on: ${data.createdAt}</small></p>
                     `;
                     repliesSection.appendChild(newReplyDiv);
@@ -65,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const repliesSection = document.getElementById(`replies-${commentID}`);
                     data.replies.forEach(reply => {
                         const replyDiv = document.createElement('div');
-                        replyDiv.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm');
+                        replyDiv.classList.add('reply', 'p-3', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm', 'rounded-md');
                         replyDiv.innerHTML = `
                             <p class="font-medium text-gray-800"><strong>User:</strong> ${reply.replyContent}</p>
                             <p class="text-sm text-gray-500"><small>Posted on: ${reply.createdAt}</small></p>

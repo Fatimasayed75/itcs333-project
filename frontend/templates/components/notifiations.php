@@ -157,18 +157,28 @@ usort($commentsWithReplies, function ($a, $b) {
                         </div>
                     <?php endif; ?>
 
+                    <?php
+                        $fullName = $isAdmin ? 'Admin' : $commentModel->getUserFullName($id);
+                    ?>
+
                     <?php if ($lastReplyIsAdmin && $isAdmin === false): ?>
                         <div class="reply-section mt-6 space-y-4" id="reply-section-<?= $commentID; ?>">
                             <textarea id="replyContent-<?= $commentID; ?>" required class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Write your reply here..."></textarea>
                             <div class="flex justify-center">
-                                <button class="reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" data-comment-id="<?= $commentID; ?>">Reply</button>
+                            <button class="reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" 
+                                data-comment-id="<?= $commentID; ?>" >
+                                Reply
+                            </button>
                             </div>
                         </div>
                     <?php elseif ($isAdmin): ?>
                         <div class="admin-reply-section mt-6 space-y-4" id="admin-reply-section-<?= $commentID; ?>">
                             <textarea id="adminReplyContent-<?= $commentID; ?>" required class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Write your reply here..."></textarea>
                             <div class="flex justify-center">
-                                <button class="admin-reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" data-comment-id="<?= $commentID; ?>">Reply</button>
+                                <button class="admin-reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" 
+                                data-comment-id="<?= $commentID; ?>">
+                                Reply
+                            </button>
                             </div>
                         </div>
                     <?php endif; ?>
