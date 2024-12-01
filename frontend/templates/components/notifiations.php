@@ -127,7 +127,7 @@ usort($commentsWithReplies, function ($a, $b) {
 
                 <!-- Notification Details -->
                 <div class="notification-details mt-4 hidden" id="details-<?= $commentID; ?>">
-                    <div class="reply bg-gray-50 border-l-4 border-gray-300 p-4 rounded-md shadow-sm">
+                    <div class="reply bg-gray-50 border-l-4 border-gray-300 p-4 shadow-sm">
                         <p class="text-sm text-gray-800">
                             <strong>Feedback:</strong> <?= $commentContent; ?>
                         </p>
@@ -144,7 +144,7 @@ usort($commentsWithReplies, function ($a, $b) {
                             $userFullName = $isAdminReply ? 'Admin' : $commentModel->getUserFullName( $reply['userID']);
                             $replyClass = $isAdminReply ? 'bg-green-50 border-l-4 border-green-400' : 'bg-gray-50 border-l-4 border-gray-300';
                             ?>
-                            <div class="reply p-3 <?= $replyClass; ?> rounded-md shadow-sm">
+                            <div class="reply p-3 <?= $replyClass; ?> shadow-sm">
                                 <p class="text-sm text-gray-800">
                                     <strong><?= $userFullName; ?>:</strong>
                                     <?= htmlspecialchars($reply['replyContent']); ?>

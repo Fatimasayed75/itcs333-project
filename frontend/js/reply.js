@@ -31,12 +31,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Append the new reply to the UI
                     const repliesSection = document.getElementById(`replies-${commentID}`);
                     const newReplyDiv = document.createElement('div');
-                    newReplyDiv.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm', 'rounded-md');
+                    newReplyDiv.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm');
                     newReplyDiv.innerHTML = ` 
-                        <p class="font-medium text-gray-800"><strong>${data.fullName}:</strong> ${data.replyContent}</p>
-                        <p class="text-sm text-gray-500"><small>Posted on: ${data.createdAt}</small></p>
+                        <p class="text-sm text-gray-800"><strong>${data.fullName}:</strong> ${data.replyContent}</p>
+                        <p class="text-xs text-gray-500">Posted on: ${data.createdAt}</p>
                     `;
-                    
+
                     repliesSection.appendChild(newReplyDiv);
 
                     // Clear the textarea and hide the reply section
