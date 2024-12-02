@@ -1,11 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Handle reply button click event using event delegation
-    document.body.addEventListener('click', function(event) {
+    document.body.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('admin-reply-button')) {
             const commentID = event.target.dataset.commentId;
             const replyContent = document.getElementById(`adminReplyContent-${commentID}`).value;
-
-            // const name = event.target.dataset.fullName;
 
             // Validate the reply content
             if (!replyContent.trim()) {
@@ -22,33 +20,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify({
                     commentID: commentID,
                     replyContent: replyContent,
-                    // name: name
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    // Append the new reply to the UI
-                    const repliesSection = document.getElementById(`replies-${commentID}`);
-                    const newReplyDiv = document.createElement('div');
-                    newReplyDiv.classList.add('reply', 'p-3', 'bg-green-50', 'border-l-4', 'border-green-300', 'shadow-sm');
-                    newReplyDiv.innerHTML = ` 
-                        <p class="text-sm text-gray-800"><strong>${data.fullName}:</strong> ${data.replyContent}</p>
-                        <p class="text-xs text-gray-500">Posted on: ${data.createdAt}</p>
-                    `;
-                    repliesSection.appendChild(newReplyDiv);
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Check if replies section exists
+                        let repliesSection = document.getElementById(`replies-${commentID}`);
+                        if (!repliesSection) {
+                            // Create a new replies section if it doesn't exist
+                            repliesSection = document.createElement('div');
+                            repliesSection.id = `replies-${commentID}`;
+                            repliesSection.classList.add('replies-container', 'space-y-4', 'mt-4');
+                        }
 
-                    // Clear the textarea and hide the reply section
-                    document.getElementById(`adminReplyContent-${commentID}`).value = '';
-                    // document.getElementById(`admin-reply-section-${commentID}`).style.display = 'none';
-                } else {
-                    alert(data.message);  // Show error message if reply wasn't saved
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting your reply');
-            });
+                        // Create the new reply element
+                        const newReplyDiv = document.createElement('div');
+                        newReplyDiv.classList.add('reply', 'p-3', 'bg-green-50', 'border-l-4', 'border-green-300', 'shadow-sm');
+                        newReplyDiv.innerHTML = `
+                            <p class="text-sm text-gray-800"><strong>${data.fullName}:</strong> ${data.replyContent}</p>
+                            <p class="text-xs text-gray-500">Posted on: ${data.createdAt}</p>
+                        `;
+
+                        // Append the new reply to the replies section
+                        repliesSection.appendChild(newReplyDiv);
+
+                        // Now we adjust the order, placing the replies section before the reply input section
+                        const replyInputSection = document.getElementById(`admin-reply-section-${commentID}`);
+                        if (replyInputSection && repliesSection) {
+                            replyInputSection.parentNode.insertBefore(repliesSection, replyInputSection);
+                        }
+
+                        // Clear the textarea
+                        document.getElementById(`adminReplyContent-${commentID}`).value = '';
+                    } else {
+                        alert(data.message);  // Show error message if reply wasn't saved
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error submitting your reply');
+                });
         }
     });
 
@@ -70,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const replyDiv = document.createElement('div');
                         replyDiv.classList.add('reply', 'p-3', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm', 'rounded-md');
                         replyDiv.innerHTML = `
-                            <p class="font-medium text-gray-800"><strong>User:</strong> ${reply.replyContent}</p>
+                            <p class="font-medium text-gray-800"><strong>Admin :</strong> ${reply.replyContent}</p>
                             <p class="text-sm text-gray-500"><small>Posted on: ${reply.createdAt}</small></p>
                         `;
                         repliesSection.appendChild(replyDiv);
@@ -79,14 +91,4 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => console.error('Error fetching replies:', error));
     }
-
-    // Loop through each comment to check if the last reply was from an admin
-    commentIDs.forEach(commentID => {
-        const lastReplyIsAdmin = document.getElementById(`reply-section-${commentID}`);
-
-        // Show the reply section only if the last reply is from the admin
-        if (lastReplyIsAdmin) {
-            lastReplyIsAdmin.style.display = 'block';
-        }
-    });
 });

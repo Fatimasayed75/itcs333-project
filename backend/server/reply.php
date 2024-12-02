@@ -48,6 +48,10 @@ $result = $replyModel->save();
 $commentModel = new CommentModel($pdo);
 $fullName = $commentModel->getUserFullName($userID);
 
+if ($userID === Constants::ADMIN_USER_ID) {
+    $fullName = 'Admin';
+}
+
 if ($result === Constants::FAILED) {
     echo json_encode(['status' => 'error', 'message' => 'Failed to save reply']);
     exit;
