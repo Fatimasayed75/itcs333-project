@@ -44,6 +44,8 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/addComment.js"></script>
   <script src="../../js/reply.js"></script>
   <script src="../../js/adminReply.js"></script>
+  <script src="../../js/search.js"></script>
+  <script src="../../js/floorsNav.js"></script>
 </body>
 
 </html>

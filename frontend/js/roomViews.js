@@ -19,6 +19,7 @@ function initializeHomeEventListeners() {
     });
   });
   initializeRoomViewToggle();
+  initializeRoomSearch(roomCards);
 }
 
 function initializeRoomViewToggle() {
@@ -26,6 +27,9 @@ function initializeRoomViewToggle() {
   const gridViewBtn = document.getElementById("gridViewBtn");
   const roomCards = document.querySelectorAll(".room-card");
   const roomSquares = document.querySelectorAll(".room-square");
+  const floorNav = document.querySelector(
+    ".flex.justify-center.space-x-8.mb-4"
+  ); // Floor navigation section
 
   function setActiveButton(button) {
     const buttons = document.querySelectorAll(".view-toggle-btn");
@@ -33,20 +37,41 @@ function initializeRoomViewToggle() {
     button.classList.add("border-b-4");
   }
 
+  // Card view event
   cardViewBtn.addEventListener("click", () => {
+    // Show room cards, hide room squares
     roomCards.forEach((card) => card.classList.remove("hidden"));
-    roomSquares.forEach((square) => square.classList.add("hidden"));
+    roomCards.forEach((card) => card.classList.remove("hidden"));
+    roomSquares.forEach((square) => {
+      square.style.display = "none";
+      // Removed square.style.display = "none";
+    });
+
     setActiveButton(cardViewBtn);
+
+    // Hide floor navigation in card view
+    if (floorNav) {
+      floorNav.classList.add("hidden");
+    }
   });
 
+  // Grid view event
   gridViewBtn.addEventListener("click", () => {
+    // Show room squares, hide room cards
     roomCards.forEach((card) => card.classList.add("hidden"));
     roomSquares.forEach((square) => square.classList.remove("hidden"));
     setActiveButton(gridViewBtn);
+    // Show floor navigation in grid view
+    if (floorNav) {
+      floorNav.classList.remove("hidden");
+    }
+    initializeFloorNavigation();
   });
 
-  // Set default active view
+  // Set default active view and ensure room cards are visible initially
   setActiveButton(cardViewBtn);
+  roomCards.forEach((card) => card.classList.remove("hidden"));
+  roomSquares.forEach((square) => square.classList.add("hidden"));
 }
 
 async function loadRoomDetails(roomId) {
@@ -76,7 +101,11 @@ async function loadRoomDetails(roomId) {
 
       .replace(/{{capacity}}/g, roomData.capacity)
       .replace(/{{floor}}/g, roomData.floor)
-      .replace(/{{isAvailable}}/g, roomData.isAvailable ? 'Available' : 'Not Available')      .replace(
+      .replace(
+        /{{isAvailable}}/g,
+        roomData.isAvailable ? "Available" : "Not Available"
+      )
+      .replace(
         /{{image}}/g,
         `https://placehold.co/300x200?text=Image+For+${roomData.roomID}`
       );
@@ -96,7 +125,8 @@ async function loadRoomDetails(roomId) {
     }
   } catch (error) {
     console.error("Error loading room details:", error);
-    document.getElementById("main-content").innerHTML = "Failed to load room details.";
+    document.getElementById("main-content").innerHTML =
+      "Failed to load room details.";
     // alert("Failed to load room details.");
   }
 }
@@ -105,26 +135,25 @@ async function navigateToHomePage() {
   initializeHomeEventListeners();
 }
 
-
 async function bookRoom(roomId) {
   try {
     const response = await fetch(`../../../backend/server/bookRoom.php`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ roomID: roomId })
+      body: JSON.stringify({ roomID: roomId }),
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
 
     const data = await response.json();
     if (data.success) {
-      alert('Room booked successfully!');
+      alert("Room booked successfully!");
     } else {
-      alert('Failed to book the room.');
+      alert("Failed to book the room.");
     }
   } catch (error) {
     console.error("Error booking room:", error);
