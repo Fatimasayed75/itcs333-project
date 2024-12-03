@@ -24,7 +24,7 @@ if (isset($_SESSION['active-user'])) {
   <!-- tailwind css framework  -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -47,7 +47,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/search.js"></script>
   <script src="../../js/floorsNav.js"></script>
   <script src="../../js/filter.js"></script>
-
+  <script src="../../js/dash.js"></script>
 </body>
 
 </html>

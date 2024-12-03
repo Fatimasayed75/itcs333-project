@@ -113,4 +113,24 @@ class UserModel
         $result = $crud->read('users', ['COUNT(*) as count']);
         return $result[0]['count'] ?? 0;
     }
+
+    function getNewUsersThisMonth() {
+        // SQL query to count new users this month
+        $query = "
+            SELECT COUNT(*) AS new_users
+            FROM users
+            WHERE MONTH(created_at) = MONTH(CURRENT_DATE())
+            AND YEAR(created_at) = YEAR(CURRENT_DATE())
+        ";
+    
+        // Prepare and execute the query
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+    
+        // Fetch the result and return the count of new users
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['new_users'] ?? 0; // Return the number of new users or 0 if no data
+    }
+
+    
 }

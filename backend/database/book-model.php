@@ -21,8 +21,8 @@ class BookModel
   public $feedback;
 
   // Constructor
-  function __construct($conn, $bookingID = null, $userID, $roomID, $bookingTime, $startTime, $endTime)
-  {
+  function __construct($conn, $userID, $roomID, $bookingTime, $startTime, $endTime, $bookingID = null)
+{
     $this->conn = $conn;
     $this->bookingID = $bookingID;
     $this->userID = $userID;
@@ -31,7 +31,7 @@ class BookModel
     $this->startTime = $startTime;
     $this->endTime = $endTime;
     $this->status = 'active';
-  }
+}
 
   // Create a new booking
   public function save()
@@ -330,5 +330,70 @@ class BookModel
     return $currentBooking;
 
   }
+
+  // Get the total number of bookings
+  public function getTotalBookings(): mixed
+  {
+      $crud = new Crud($this->conn);
+      $result = $crud->read('bookings', ['COUNT(*) as count']);
+      return $result[0]['count'] ?? 0;
+  }
+
+  // Get booking statistics by month
+  function getBookingsByMonth() {
+    // SQL query to get bookings by year and month
+    $query = "
+        SELECT YEAR(bookingTime) AS year, MONTH(bookingTime) AS month, COUNT(*) AS booking_count
+        FROM bookings
+        GROUP BY YEAR(bookingTime), MONTH(bookingTime)
+        ORDER BY year DESC, month DESC
+    ";
+
+    // Prepare and execute the query
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+
+    // Fetch the result and return it as an associative array
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+ 
+function getBookingsByDepartment() {
+  // SQL query to get bookings by department
+  $query = "
+      SELECT r.department, COUNT(b.bookingID) AS booking_count
+      FROM bookings b
+      JOIN room r ON b.roomID = r.roomID
+      GROUP BY r.department
+  ";
+
+  // Prepare and execute the query
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+
+  // Fetch the result and return it as an associative array
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+function getMostBookedRoom() {
+  // SQL query to get the most booked room
+  $query = "
+      SELECT roomID, COUNT(*) AS count
+      FROM bookings
+      GROUP BY roomID
+      ORDER BY count DESC
+      LIMIT 1
+  ";
+
+  // Prepare and execute the query
+  $stmt = $this->conn->prepare($query);
+  $stmt->execute();
+
+  // Fetch the result and return the room_id
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  return $result['roomID'] ?? null; // Return the room ID with the most bookings
+}
+
 
 }
