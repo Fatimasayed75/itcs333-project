@@ -73,8 +73,10 @@ async function loadRoomDetails(roomId) {
     const filledTemplate = template
       .replace(/{{roomID}}/g, roomData.roomID)
       .replace(/{{type}}/g, roomData.type)
+
       .replace(/{{capacity}}/g, roomData.capacity)
-      .replace(
+      .replace(/{{floor}}/g, roomData.floor)
+      .replace(/{{isAvailable}}/g, roomData.isAvailable ? 'Available' : 'Not Available')      .replace(
         /{{image}}/g,
         `https://placehold.co/300x200?text=Image+For+${roomData.roomID}`
       );
@@ -86,12 +88,46 @@ async function loadRoomDetails(roomId) {
     if (homeBtn) {
       homeBtn.addEventListener("click", navigateToHomePage);
     }
+
+    // Reinitialize any event listeners if needed
+    const bookRoomBtn = document.getElementById("bookRoomBtn");
+    if (bookRoomBtn) {
+      bookRoomBtn.addEventListener("click", () => bookRoom(roomId));
+    }
   } catch (error) {
     console.error("Error loading room details:", error);
+    document.getElementById("main-content").innerHTML = "Failed to load room details.";
     // alert("Failed to load room details.");
   }
 }
 async function navigateToHomePage() {
   await loadContent("home.php");
   initializeHomeEventListeners();
+}
+
+
+async function bookRoom(roomId) {
+  try {
+    const response = await fetch(`../../../backend/server/bookRoom.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ roomID: roomId })
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    if (data.success) {
+      alert('Room booked successfully!');
+    } else {
+      alert('Failed to book the room.');
+    }
+  } catch (error) {
+    console.error("Error booking room:", error);
+    alert("Failed to book the room. Please try again later.");
+  }
 }

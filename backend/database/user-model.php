@@ -50,29 +50,17 @@ class UserModel
         return !empty($crud->read('users', ['email'], $condition, $email));
     }
 
-    public function update($email, $password, $fname, $lname, $role)
+    public function update($userID, $firstName, $lastName, $email, $profilePic)
     {
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         $crud = new Crud($this->conn);
-        $colums = [
-            'email',
-            'password',
-            'firstName',
-            'lastName',
-            'role',
-            'profilePic'
+        $updates = [
+            'firstName' => $firstName,
+            'lastName' => $lastName,
+            'email' => $email,
+            'profilePic' => $profilePic
         ];
-        $data = [
-            $email,
-            $hashedPassword,
-            $fname,
-            $lname,
-            $role,
-            'default-profile.jpeg'
-        ];
-
-        $crud->create('users', $colums, $data);
-        return $this->conn->lastInsertId();
+        $condition = 'userID = ?';
+        return $crud->update('users', $updates, $condition, $userID);
     }
 
 

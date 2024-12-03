@@ -25,6 +25,8 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
   <link rel="stylesheet" href="../../css/profile.css">
+  <script src="../../js/profile.js" defer></script>
+  <script src="../../js/nav.js"></script>
 </head>
 
 <body>
@@ -33,8 +35,8 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <?php if (!empty($user)): ?>
       <div class="profile-details">
         <div class="profile-pic">
-        <!-- <img src="<?php echo !empty($user['profilePic']) ? htmlspecialchars($user['profilePic']) : '../../images/default-profile.jpeg'; ?>" alt="Profile Picture"> -->
-        <img src="../../images/default-profile.jpeg" alt="Profile Picture">
+          <img src="<?php echo !empty($user['profilePic']) ? htmlspecialchars($user['profilePic']) : '../../images/default-profile.jpeg'; ?>" alt="Profile Picture">
+          <!-- <img src="../../images/default-profile.jpeg" alt="Profile Picture"> -->
         </div>
         <div class="profile-info">
           <p><strong>First Name:</strong> <?php echo htmlspecialchars($user['firstName']); ?></p>
@@ -44,16 +46,24 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
         </div>
       </div>
       <div class="profile-actions">
-        <button class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="editProfile()">Edit
-          Profile</button>
+        <button class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600"  onclick="loadContent('editProfile.php')">Edit
+          Profile
+        </button>
       </div>
     <?php else: ?>
       <p>User profile not available.</p>
     <?php endif; ?>
   </div>
-  <div class="p-6 m-6 bg-white shadow-lg rounded-lg text-left pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10">
+  <!-- Modal Structure -->
+  <div id="editProfileModal"
+    class="modal hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md" id="editProfileContent">
+      <!-- Content will be loaded here -->
+    </div>
+  </div>
+  <!-- <div class="p-6 m-6 bg-white shadow-lg rounded-lg text-left pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10">
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Rooms</h1>
-    <!-- <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">Rooms</h2> -->
+     <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">Rooms</h2> 
     <?php if (!empty($rooms)): ?>
       <?php if (is_array($rooms) && !empty($rooms)): ?>
         <ul>
@@ -70,7 +80,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <?php else: ?>
       <p>No rooms booked.</p>
     <?php endif; ?>
-  </div>
+  </div> -->
   <div class="p-6 m-6 bg-white shadow-lg rounded-lg text-left pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10">
     <h1 class="text-3xl font-semibold text-gray-800 mb-6">Comments</h1>
     <!-- <h2 class="text-2xl font-semibold text-gray-800 mt-6 mb-4">Comments</h2> -->
@@ -114,12 +124,21 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <?php endif; ?>
   </div>
 
-  <script>
+  <!-- <script>
     function editProfile() {
-      // Redirect to edit profile page or open a modal for editing
-      window.location.href = 'editProfile.php';
+      fetch('editProfile.php')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('editProfileContent').innerHTML = data;
+          document.getElementById('editProfileModal').classList.remove('hidden');
+        })
+        .catch(error => console.error('Error loading edit profile:', error));
     }
-  </script>
+
+    function closeModal() {
+      document.getElementById('editProfileModal').classList.add('hidden');
+    }
+  </script> -->
 </body>
 
 </html>

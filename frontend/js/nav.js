@@ -58,6 +58,21 @@ async function loadContent(page) {
   }
 }
 
+async function loadEditProfile() {
+  try {
+      const response = await fetch('../components/editProfile.php');
+      if (!response.ok) {
+          throw new Error('Page not found');
+      }
+      const data = await response.text();
+      document.getElementById('main-content').innerHTML = data;
+      localStorage.setItem('current-page', 'editProfile.php');
+  } catch (error) {
+      console.error('Error loading content: ', error);
+      document.getElementById('main-content').innerHTML = 'Content not available.';
+  }
+}
+
 function setActiveLink(link) {
   // Remove active class from all sidebar and top-nav links
   [...sidebarLinks, ...topNavLinks].forEach((item) =>

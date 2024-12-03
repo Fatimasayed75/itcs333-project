@@ -4,6 +4,47 @@ html, body {
   box-sizing: border-box;
 }
 
+/* Room View Styles */
 .room-card, .room-square {
   cursor: pointer;
+  /* transition: transform 0.3s ease; */
 }
+/* 
+.room-card:hover, .room-square:hover {
+  transform: scale(1.05);
+}
+
+.room-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f0f4f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.room-square {
+  display: none; 
+  padding: 1rem;
+  background-color: #f0f4f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.view-toggle-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-bottom 0.3s ease;
+}
+
+.view-toggle-btn.border-b-4 {
+  border-bottom: 4px solid #D885A3;
+}
+
+.hidden {
+  display: none;
+} */

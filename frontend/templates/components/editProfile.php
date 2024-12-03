@@ -5,26 +5,36 @@ $id = isAuthorized();
 $userModel = new UserModel($pdo);
 $user = $userModel->getUserByID($id);
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $firstName = htmlspecialchars(trim($_POST['firstName']));
-    $lastName = htmlspecialchars(trim($_POST['lastName']));
-    $email = htmlspecialchars(trim($_POST['email']));
-    $profilePic = $user['profilePic'];
+    $response = ['success' => false, 'message' => ''];
+    try {
+        $firstName = htmlspecialchars(trim($_POST['firstName']));
+        $lastName = htmlspecialchars(trim($_POST['lastName']));
+        $email = htmlspecialchars(trim($_POST['email']));
+        $profilePic = $user['profilePic'];
 
-    // Handle profile picture upload
-    if (isset($_FILES['profilePic']) && $_FILES['profilePic']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../../images/';
-        $uploadFile = $uploadDir . basename($_FILES['profilePic']['name']);
-        if (move_uploaded_file($_FILES['profilePic']['tmp_name'], $uploadFile)) {
-            $profilePic = $uploadFile;
+        // Handle profile picture upload
+        if (isset($_FILES['profilePic']) && $_FILES['profilePic']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '../../images/';
+            $uploadFile = $uploadDir . basename($_FILES['profilePic']['name']);
+            if (move_uploaded_file($_FILES['profilePic']['tmp_name'], $uploadFile)) {
+                $profilePic = $uploadFile;
+            }
         }
-    }
 
-    // Update user details
-    $userModel->update($id, $firstName, $lastName, $email, $profilePic);
-    header('Location: profile.php');
+        // Update user details
+        $userModel->update($id, $firstName, $lastName, $email, $profilePic);
+        $response['success'] = true;
+        $response['message'] = 'Profile updated successfully';
+    } catch (Exception $e) {
+        $response['message'] = $e->getMessage();
+        error_log($e->getMessage());
+    }
+    echo json_encode($response);
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="profile-container">
         <h1>Edit Profile</h1>
-        <form action="editProfile.php" method="post" enctype="multipart/form-data">
-            <div class="profile-pic">
+        <form id="editProfileForm" method="post" enctype="multipart/form-data" onsubmit="loadContent('profile.php')">
+                <div class="profile-pic">
                 <img src="<?php echo !empty($user['profilePic']) ? htmlspecialchars($user['profilePic']) : '../../images/default-profile.png'; ?>" alt="Profile Picture">
                 <input type="file" name="profilePic">
             </div>
@@ -52,5 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </div>
+    <script src="../../js/nav.js"></script>
+    <script src="../../js/profile.js"></script>
 </body>
 </html>
