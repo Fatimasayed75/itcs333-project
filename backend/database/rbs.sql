@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2024 at 12:25 PM
+-- Generation Time: Dec 03, 2024 at 01:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -91,20 +91,75 @@ CREATE TABLE `room` (
   `type` enum('lab','class') DEFAULT 'class',
   `capacity` int(10) UNSIGNED NOT NULL,
   `isAvailable` tinyint(4) NOT NULL DEFAULT 0,
-  `floor` tinyint(4) NOT NULL
+  `floor` tinyint(4) NOT NULL,
+  `department` enum('IS','CS','CE') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `room`
 --
 
-INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`) VALUES
-('S40-021', 'class', 10, 0, 0),
-('S40-023', 'class', 10, 1, 0),
-('S40-028', 'class', 20, 0, 0),
-('S40-029', 'class', 20, 1, 0),
-('S40-030', 'class', 20, 1, 0),
-('S40-032', 'class', 30, 1, 0);
+INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`, `department`) VALUES
+('S40-021', 'lab', 30, 1, 0, 'IS'),
+('S40-023', 'lab', 30, 1, 0, 'IS'),
+('S40-028', 'lab', 30, 1, 0, 'IS'),
+('S40-029', 'class', 30, 1, 0, 'IS'),
+('S40-030', 'class', 30, 1, 0, 'IS'),
+('S40-032', 'class', 30, 1, 0, 'IS'),
+('S40-049', 'class', 30, 1, 0, 'CS'),
+('S40-051', 'lab', 30, 1, 0, 'CS'),
+('S40-056', 'class', 30, 1, 0, 'CS'),
+('S40-057', 'class', 30, 1, 0, 'CS'),
+('S40-058', 'lab', 30, 1, 0, 'CS'),
+('S40-060', 'class', 30, 1, 0, 'CS'),
+('S40-077', 'class', 30, 1, 0, 'CE'),
+('S40-079', 'lab', 30, 1, 0, 'CE'),
+('S40-084', 'class', 30, 1, 0, 'CE'),
+('S40-085', 'class', 30, 1, 0, 'CE'),
+('S40-086', 'lab', 30, 1, 0, 'CE'),
+('S40-088', 'class', 30, 1, 0, 'CE'),
+('S40-1006', 'lab', 30, 1, 1, 'IS'),
+('S40-1008', 'lab', 30, 1, 1, 'IS'),
+('S40-1009', 'lab', 30, 1, 1, 'IS'),
+('S40-1010', 'lab', 30, 1, 1, 'IS'),
+('S40-1012', 'lab', 30, 1, 1, 'IS'),
+('S40-1014', 'lab', 30, 1, 1, 'IS'),
+('S40-1043', 'lab', 30, 1, 1, 'CS'),
+('S40-1045', 'lab', 30, 1, 1, 'CS'),
+('S40-1047', 'class', 30, 1, 1, 'CS'),
+('S40-1048', 'class', 30, 1, 1, 'CS'),
+('S40-1050', 'lab', 30, 1, 1, 'CS'),
+('S40-1052', 'lab', 30, 1, 1, 'CS'),
+('S40-1081', 'lab', 30, 1, 1, 'CE'),
+('S40-1083', 'lab', 30, 1, 1, 'CE'),
+('S40-1085', 'class', 30, 1, 1, 'CE'),
+('S40-1086', 'class', 30, 1, 1, 'CE'),
+('S40-1087', 'lab', 30, 1, 1, 'CE'),
+('S40-1089', 'lab', 30, 1, 1, 'CE'),
+('S40-2005', 'lab', 30, 1, 1, 'IS'),
+('S40-2007', 'lab', 30, 1, 2, 'IS'),
+('S40-2008', 'class', 30, 1, 2, 'IS'),
+('S40-2010', 'class', 30, 1, 2, 'IS'),
+('S40-2011', 'class', 30, 1, 2, 'IS'),
+('S40-2012', 'class', 30, 1, 2, 'IS'),
+('S40-2013', 'lab', 30, 1, 2, 'IS'),
+('S40-2015', 'lab', 30, 1, 2, 'IS'),
+('S40-2043', 'lab', 30, 1, 2, 'CS'),
+('S40-2045', 'lab', 30, 1, 2, 'CS'),
+('S40-2046', 'class', 30, 1, 2, 'CS'),
+('S40-2048', 'class', 30, 1, 2, 'CS'),
+('S40-2049', 'class', 30, 1, 2, 'CS'),
+('S40-2050', 'class', 30, 1, 2, 'CS'),
+('S40-2051', 'lab', 30, 1, 2, 'CS'),
+('S40-2053', 'lab', 30, 1, 2, 'CS'),
+('S40-2081', 'lab', 30, 1, 2, 'CE'),
+('S40-2083', 'lab', 30, 1, 2, 'CE'),
+('S40-2084', 'class', 30, 1, 2, 'CE'),
+('S40-2086', 'class', 30, 1, 2, 'CE'),
+('S40-2087', 'class', 30, 1, 2, 'CE'),
+('S40-2088', 'class', 30, 1, 2, 'CE'),
+('S40-2089', 'lab', 30, 1, 2, 'CE'),
+('S40-2091', 'lab', 30, 1, 2, 'CE');
 
 -- --------------------------------------------------------
 
