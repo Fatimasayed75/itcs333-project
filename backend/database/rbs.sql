@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 01:19 PM
+-- Generation Time: Dec 03, 2024 at 02:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -118,6 +118,7 @@ INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`, `depar
 ('S40-085', 'class', 30, 1, 0, 'CE'),
 ('S40-086', 'lab', 30, 1, 0, 'CE'),
 ('S40-088', 'class', 30, 1, 0, 'CE'),
+('S40-1002', 'lab', 100, 0, 1, 'IS'),
 ('S40-1006', 'lab', 30, 1, 1, 'IS'),
 ('S40-1008', 'lab', 30, 1, 1, 'IS'),
 ('S40-1009', 'lab', 30, 1, 1, 'IS'),
@@ -136,6 +137,7 @@ INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`, `depar
 ('S40-1086', 'class', 30, 1, 1, 'CE'),
 ('S40-1087', 'lab', 30, 1, 1, 'CE'),
 ('S40-1089', 'lab', 30, 1, 1, 'CE'),
+('S40-2001', 'lab', 100, 0, 2, 'IS'),
 ('S40-2005', 'lab', 30, 1, 1, 'IS'),
 ('S40-2007', 'lab', 30, 1, 2, 'IS'),
 ('S40-2008', 'class', 30, 1, 2, 'IS'),
