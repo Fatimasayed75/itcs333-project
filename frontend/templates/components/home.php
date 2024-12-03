@@ -78,7 +78,9 @@ usort($rooms, function ($a, $b) {
       <?php foreach ($rooms as $room): ?>
         <div
           class="room-card relative p-4 bg-blue-100 rounded-lg shadow transform transition duration-300 hover:scale-105 hover:shadow-xl"
-          data-room-type="<?php echo strtolower($room['type']); ?>" data-room-capacity="<?php echo $room['capacity']; ?>">
+          data-room-type="<?php echo strtolower($room['type']); ?>" data-room-capacity="<?php echo $room['capacity']; ?>"
+          data-room-id="<?php echo htmlspecialchars($room['roomID']); ?>"
+          >
           <!-- Icon in Top-Right Corner -->
           <div class="absolute top-2 right-2">
             <?php if ($room['isAvailable'] == 1): ?>
