@@ -60,8 +60,9 @@ if (isset($_SESSION['register-error'])) {
 		<div class="form-container sign-in-container">
 			<form action="../../../backend/server/handleLogin.php" method="post">
 				<h1>Sign in</h1>
-				<input type="email" placeholder="Email" name="email" required value="<?php echo isset($_SESSION['old-input-signin']['email']) ? htmlspecialchars($_SESSION['old-input-signin']['email']) : ''; ?>">
-				<input type="password" placeholder="Password" name="password" required/>
+				<input type="email" placeholder="Email" name="email" required
+					value="<?php echo isset($_SESSION['old-input-signin']['email']) ? htmlspecialchars($_SESSION['old-input-signin']['email']) : ''; ?>">
+				<input type="password" placeholder="Password" name="password" required />
 
 				<!-- Display sign-in error message only if it exists -->
 				<?php if (!empty($signInErrMsg)): ?>
@@ -69,7 +70,11 @@ if (isset($_SESSION['register-error'])) {
 				<?php endif; ?>
 
 				<button type="submit" name="sign-in-btn">Sign In</button>
-				<a href="../../../backend/server/handleGuests.php" id="enterGuest">Enter as a guest?</a>
+				<div id="signInLinks">
+					<a href="#" id="signUpLink">Sign up?</a>
+					<a href="../../../backend/server/handleGuests.php" id="enterGuest">Enter as a guest?</a>
+				</div>
+
 			</form>
 		</div>
 

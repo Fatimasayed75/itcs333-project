@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const signUpButton = document.getElementById("signUp");
   const haveAccount = document.getElementById("haveAccount");
+  const signUpLink = document.getElementById("signUpLink");
 
   const signInButton = document.getElementById("signIn");
   const container = document.getElementById("container");
@@ -12,5 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   haveAccount.addEventListener("click", () => {
     container.classList.remove("right-panel-active");
+  });
+
+  signUpLink.addEventListener("click", () => {
+    container.classList.add("right-panel-active");
   });
 });
