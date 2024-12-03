@@ -1,6 +1,7 @@
 // Call this function after re-rendering the room cards
 document.addEventListener("DOMContentLoaded", () => {
   initializeHomeEventListeners();
+  initFilter();
 });
 
 function initializeHomeEventListeners() {
@@ -19,7 +20,9 @@ function initializeHomeEventListeners() {
     });
   });
   initializeRoomViewToggle();
-  initializeRoomSearch(roomCards);
+  initializeRoomSearch(roomCards, roomSquares);
+  initFilter();
+  document.getElementById("filterIcon").classList.remove("hidden");
 }
 
 function initializeRoomViewToggle() {
@@ -41,10 +44,8 @@ function initializeRoomViewToggle() {
   cardViewBtn.addEventListener("click", () => {
     // Show room cards, hide room squares
     roomCards.forEach((card) => card.classList.remove("hidden"));
-    roomCards.forEach((card) => card.classList.remove("hidden"));
     roomSquares.forEach((square) => {
       square.style.display = "none";
-      // Removed square.style.display = "none";
     });
 
     setActiveButton(cardViewBtn);
@@ -53,6 +54,9 @@ function initializeRoomViewToggle() {
     if (floorNav) {
       floorNav.classList.add("hidden");
     }
+    document.getElementById("grid-rooms").classList.add("hidden");
+    document.getElementById("filterDiv").classList.remove("hidden");
+    initFilter();
   });
 
   // Grid view event
@@ -65,6 +69,8 @@ function initializeRoomViewToggle() {
     if (floorNav) {
       floorNav.classList.remove("hidden");
     }
+    document.getElementById("filterDiv").classList.add("hidden");
+    clearFilters();
     initializeFloorNavigation();
   });
 

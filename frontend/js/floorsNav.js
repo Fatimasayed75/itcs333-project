@@ -1,12 +1,16 @@
 function initializeFloorNavigation() {
   let currentFloor = 0; // Start at floor 0
   const totalFloors = 2; // 0 1 2
-  const roomSquares = document.querySelectorAll(".room-square");
+  // remove hidden from #grid-rooms
+  document.getElementById("grid-rooms").classList.remove("hidden");
+  const roomSquares = document.querySelectorAll("#grid-rooms .dep .room-square");
+  const roomCards = document.querySelectorAll(".room-card"); // Add room cards here for consistency
 
   // Function to update the current floor and filter rooms
   function updateFloor() {
     // Update the floor display
-    const floorDisplay = currentFloor === 0 ? "Ground Floor" : `Floor ${currentFloor}`;
+    const floorDisplay =
+      currentFloor === 0 ? "Ground Floor" : `Floor ${currentFloor}`;
     document.getElementById("currentFloor").textContent = floorDisplay;
 
     // Show/hide rooms based on the current floor
@@ -18,6 +22,9 @@ function initializeFloorNavigation() {
         card.style.display = "none"; // Hide room card
       }
     });
+
+    // Reinitialize the room search with the updated floor value
+    initializeRoomSearch(roomCards, roomSquares, currentFloor);
   }
 
   // Event listener for the previous floor button
