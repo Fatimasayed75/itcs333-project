@@ -112,7 +112,13 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
                     maintainAspectRatio: false,
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            ticks: { 
+                                stepSize: 1,
+                                callback: function(value) {
+                                    return value % 1 === 0 ? value : '';
+                                }
+                            }
                         }
                     }
                 }
