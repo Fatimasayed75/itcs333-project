@@ -20,17 +20,18 @@ date_default_timezone_set('Asia/Bahrain');
                 <p id="mostBookedRoom" class="text-3xl font-bold text-purple-600">...</p>
             </div>
 
-            <!-- Most Booked Room -->
+            <!-- Total Users -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
                 <h3 class="text-xl font-medium text-gray-600">Total Users</h3>
-                <p id="mostBookedRoom" class="text-3xl font-bold text-purple-600">...</p>
+                <p id="totalUsers" class="text-3xl font-bold text-blue-600">...</p>
             </div>
 
-            <!-- Most Booked Room -->
+            <!-- New Feedbacks -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
                 <h3 class="text-xl font-medium text-gray-600">New Feedbacks</h3>
-                <p id="mostBookedRoom" class="text-3xl font-bold text-purple-600">...</p>
+                <p id="newFeedbacks" class="text-3xl font-bold text-green-600">...</p>
             </div>
+
         </div>
 
         <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Statistics</h3>

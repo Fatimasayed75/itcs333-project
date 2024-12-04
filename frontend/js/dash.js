@@ -7,11 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeDashboard() {
     const bookingCountElement = document.getElementById("bookingCount");
     const mostBookedRoomElement = document.getElementById("mostBookedRoom");
+    const totalUsersElement = document.getElementById("totalUsers");
+    const newFeedbacksElement = document.getElementById("newFeedbacks");
     const bookingChartElement = document.getElementById("bookingChart");
     const departmentChartElement = document.getElementById("departmentChart");
 
-    if (!bookingCountElement || !mostBookedRoomElement || !bookingChartElement || !departmentChartElement) {
-        // console.error("Dashboard elements not found!");
+    if (!bookingCountElement || !mostBookedRoomElement || !totalUsersElement || !newFeedbacksElement || !bookingChartElement || !departmentChartElement) {
         return;
     }
 
@@ -20,6 +21,8 @@ function initializeDashboard() {
             // Populate dashboard with fetched data
             initializeBookingCount(bookingCountElement, data.bookingCount);
             initializeMostBookedRoom(mostBookedRoomElement, data.mostBookedRoom);
+            initializeTotalUsers(totalUsersElement, data.totalUsers);
+            initializeNewFeedbacks(newFeedbacksElement, data.newFeedbacks);
             initializeBookingChart(bookingChartElement, data.bookingStats);
             initializeDepartmentChart(departmentChartElement, data.departmentStats);
         } else {
@@ -29,6 +32,8 @@ function initializeDashboard() {
         console.error("Error during dashboard initialization: ", error);
     });
 }
+
+
 
 async function fetchDashboardData() {
     try {
@@ -58,6 +63,14 @@ function initializeMostBookedRoom(mostBookedRoomElement, mostBookedRoomData) {
     mostBookedRoomElement.textContent = mostBookedRoomData; // Populate element
 }
 
+
+function initializeTotalUsers(totalUsersElement, totalUsersData) {
+    totalUsersElement.textContent = totalUsersData; // Populate element
+}
+
+function initializeNewFeedbacks(newFeedbacksElement, newFeedbacksData) {
+    newFeedbacksElement.textContent = newFeedbacksData; // Populate element
+}
 
 function initializeBookingChart(bookingChartElement, bookingStats) {
     if (bookingChartElement) {

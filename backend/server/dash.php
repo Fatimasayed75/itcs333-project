@@ -20,9 +20,13 @@ $bookingCount = $bookingModel->getTotalBookings();
 $mostBookedRoom = $bookingModel->getMostBookedRoom();
 $bookingStats = $bookingModel->getBookingsByMonth();
 $departmentStats = $bookingModel->getBookingsByDepartment();
+// Fetch total users count
+$totalUsers = $userModel->getTotalUsers();
+
+$newFeedbacks = $bookingModel->getNewFeedbacks();
 
 // Error handling
-if (!$bookingCount || !$mostBookedRoom || !$bookingStats || !$departmentStats) {
+if (!$bookingCount || !$mostBookedRoom || !$bookingStats || !$departmentStats || !$totalUsers) {
     echo json_encode(['error' => 'Database error or missing data']);
     exit();
 }
@@ -32,8 +36,11 @@ $data = [
     'bookingCount' => $bookingCount,
     'mostBookedRoom' => $mostBookedRoom,
     'bookingStats' => $bookingStats,
-    'departmentStats' => $departmentStats
+    'departmentStats' => $departmentStats,
+    'totalUsers' => $totalUsers,
+    'newFeedbacks' => $newFeedbacks
 ];
+
 
 echo json_encode($data);
 ?>
