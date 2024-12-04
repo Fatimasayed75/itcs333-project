@@ -108,4 +108,10 @@ class RoomModel
         return $this->crud->read('room', [], $condition, $userId);
     }
 
+    // get bookings by room id
+    public function getBookingsByRoomId($roomId)
+    {
+        $condition = 'roomID = ?';
+        return $this->crud->read('bookings', [], $condition, $roomId);
+    }
 }

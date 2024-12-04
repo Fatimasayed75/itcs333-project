@@ -48,7 +48,7 @@
   <button type="button" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="applyFilters()">
     Apply Filters
   </button>
-  <button type="button" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="clearFilters()">
+  <!-- <button type="button" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="clearFilters()">
     Clear Filters
-  </button>
+  </button> -->
 </div>

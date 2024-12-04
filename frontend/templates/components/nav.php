@@ -59,7 +59,7 @@
 
     <div class="bottom-content">
       <li>
-        <a href="logout.php">
+        <a href="../../../backend/server/logout.php">
           <i class="bx bx-log-out icon"></i>
           <span class="text nav-text">Logout</span>
         </a>
@@ -88,6 +88,6 @@
     <!-- <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li> -->
     <li class="nav-link"><a id="profile-tab"><i class="bx bx-user-circle"></i></a></li>
     <li class="nav-link"><a id="notifiations-tab"><i class="bx bx-bell"></i></a></li>
-    <li class="nav-link"><a href="logout.php"><i class="bx bx-log-out"></i></a></li>
+    <li class="nav-link"><a href="../../../backend/server/logout.php"><i class="bx bx-log-out"></i></a></li>
   </ul>
 </nav>

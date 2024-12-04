@@ -47,29 +47,81 @@ html, body {
 }
 
 /* Shine border effect */
-.shine-border {
-  border: 3px solid #48bb78; /* Green border (from Tailwind's green-500) */
-  background-color: #f0fdf4;  /* bg-green-50 */
-  box-shadow: 0 0 10px #48bb78, 0 0 15px rgba(72, 187, 120, 0.6), 0 0 20px rgba(72, 187, 120, 0.5); /* Enhanced glow */
+/* Shine border effect for red */
+.shine-border.bg-red-300 {
+  border: 3px solid rgb(227, 94, 94); /* Red border */
+  box-shadow: 0 0 10px red, 0 0 15px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.5); /* Enhanced red glow */
   transition: all 0.3s ease;
 }
 
-/* Animation for the glowing effect */
-@keyframes shine {
+/* Animation for the glowing effect (red) */
+@keyframes shine-red {
   0% {
-    box-shadow: 0 0 2px #48bb78, 0 0 20px rgba(72, 187, 120, 0.6), 0 0 30px rgba(72, 187, 120, 0.5);
+    box-shadow: 0 0 2px red, 0 0 20px rgba(255, 0, 0, 0.6), 0 0 30px rgba(255, 0, 0, 0.5);
   }
   50% {
-    box-shadow: 0 0 5px #48bb78, 0 0 30px rgba(72, 187, 120, 0.7), 0 0 40px rgba(72, 187, 120, 0.6);
+    box-shadow: 0 0 5px red, 0 0 30px rgba(255, 0, 0, 0.7), 0 0 40px rgba(255, 0, 0, 0.6);
   }
   100% {
-    box-shadow: 0 0 10px #48bb78, 0 0 40px rgba(72, 187, 120, 0.7), 0 0 50px rgba(72, 187, 120, 0.8);
+    box-shadow: 0 0 10px red, 0 0 40px rgba(255, 0, 0, 0.7), 0 0 50px rgba(255, 0, 0, 0.8);
   }
 }
 
-/* Apply the shine animation */
-.shine-border {
-  animation: shine 1.5s infinite alternate;
+/* Apply the shine animation (red) */
+.shine-border.bg-red-300 {
+  animation: shine-red 1.5s infinite alternate;
+}
+
+
+/* Shine border effect for blue */
+/* Shine border effect for blue */
+.shine-border.bg-blue-300 {
+  border: 3px solid #3b82f6; /* Blue border */
+  box-shadow: 0 0 10px #3b82f6, 0 0 15px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.5); /* Enhanced blue glow */
+  transition: all 0.3s ease;
+}
+
+/* Animation for the glowing effect (blue) */
+@keyframes shine-blue {
+  0% {
+    box-shadow: 0 0 2px #3b82f6, 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 5px #3b82f6, 0 0 30px rgba(59, 130, 246, 0.7), 0 0 40px rgba(59, 130, 246, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px #3b82f6, 0 0 40px rgba(59, 130, 246, 0.7), 0 0 50px rgba(59, 130, 246, 0.8);
+  }
+}
+
+/* Apply the shine animation (blue) */
+.shine-border.bg-blue-300 {
+  animation: shine-blue 1.5s infinite alternate;
+}
+
+/* Shine border effect for yellow */
+.shine-border.bg-yellow-300 {
+  border: 3px solid rgb(244, 244, 6); /* Yellow border */
+  box-shadow: 0 0 10px yellow, 0 0 15px rgba(255, 255, 0, 0.6), 0 0 20px rgba(255, 255, 0, 0.5); /* Enhanced yellow glow */
+  transition: all 0.3s ease;
+}
+
+/* Animation for the glowing effect (yellow) */
+@keyframes shine-yellow {
+  0% {
+    box-shadow: 0 0 2px yellow, 0 0 20px rgba(255, 255, 0, 0.6), 0 0 30px rgba(255, 255, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 5px yellow, 0 0 30px rgba(255, 255, 0, 0.7), 0 0 40px rgba(255, 255, 0, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px yellow, 0 0 40px rgba(255, 255, 0, 0.7), 0 0 50px rgba(255, 255, 0, 0.8);
+  }
+}
+
+/* Apply the shine animation (yellow) */
+.shine-border.bg-yellow-300 {
+  animation: shine-yellow 1.5s infinite alternate;
 }
 
 #filterBox {
@@ -81,4 +133,3 @@ html, body {
   background-color: rgba(0, 0, 0, 0.5);  /* Adjust opacity as needed */
   z-index: 999;
 }
-

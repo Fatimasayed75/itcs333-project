@@ -90,6 +90,34 @@ async function loadRoomDetails(roomId) {
       throw new Error(data.error);
     }
 
+    let roomData = data[0];
+    let bookings = roomData["roomBookings"];
+
+    console.log(bookings);
+
+    const ctx = document.getElementById("roomAvailability");
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [
+          {
+            label: "# of Votes",
+            data: [12, 19, 3, 5, 2, 3],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
     // Fetch room details HTML template
     const templateResponse = await fetch("../components/roomDetails.php");
     if (!templateResponse.ok) {
@@ -98,13 +126,11 @@ async function loadRoomDetails(roomId) {
 
     const template = await templateResponse.text();
 
-    let roomData = data[0];
-
     // Replace placeholders in the HTML template
     const filledTemplate = template
       .replace(/{{roomID}}/g, roomData.roomID)
       .replace(/{{type}}/g, roomData.type)
-
+      .replace(/{{department}}/g, roomData.department)
       .replace(/{{capacity}}/g, roomData.capacity)
       .replace(/{{floor}}/g, roomData.floor)
       .replace(
@@ -119,6 +145,7 @@ async function loadRoomDetails(roomId) {
     // Update the page content with room details
     const mainContent = document.getElementById("main-content");
     mainContent.innerHTML = filledTemplate;
+
     const homeBtn = document.getElementById("backToHomeBtn");
     if (homeBtn) {
       homeBtn.addEventListener("click", navigateToHomePage);
@@ -133,9 +160,9 @@ async function loadRoomDetails(roomId) {
     console.error("Error loading room details:", error);
     document.getElementById("main-content").innerHTML =
       "Failed to load room details.";
-    // alert("Failed to load room details.");
   }
 }
+
 async function navigateToHomePage() {
   await loadContent("home.php");
   initializeHomeEventListeners();
