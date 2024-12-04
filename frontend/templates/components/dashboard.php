@@ -38,7 +38,7 @@ if ($id === Constants::ADMIN_USER_ID) {
 
             <!-- New Feedbacks -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 text-center">New Feedbacks</h3>
+                <h3 class="text-xl font-medium text-gray-600 text-center">Recent Feedbacks</h3>
                 <p id="newFeedbacks" class="text-3xl font-bold" style="color: #D885A3;">...</p>
             </div>
         </div>

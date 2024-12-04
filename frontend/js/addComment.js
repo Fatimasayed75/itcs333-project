@@ -103,7 +103,7 @@ function saveComment() {
             if (bookingCard) {
                 // Create the feedback submitted status element
                 const feedbackStatus = document.createElement('span');
-                feedbackStatus.className = 'text-emerald-600 text-xs font-semibold flex items-center justify-center';
+                feedbackStatus.className = 'text-gray-600 text-xs font-semibold flex items-center justify-center';
                 feedbackStatus.textContent = '✔ Feedback Submitted';
                 
                 // Find the container (like the one in HTML) where the button exists, and append to it
@@ -124,5 +124,4 @@ function saveComment() {
         alert('An error occurred while saving the comment.');
     });
 }
-
 
