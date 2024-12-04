@@ -1,3 +1,11 @@
+<?php
+require_once '../../../backend/utils/helpers.php';
+require_once '../../../backend/utils/constants.php';
+
+use Utils\Constants;
+$id = isAuthorized();
+?>
+
 <nav class="sidebar close">
   <header>
     <div class="open-logo-text">
@@ -25,6 +33,7 @@
         </a>
       </li>
 
+      <?php if ($id === Constants::ADMIN_USER_ID) { ?>
       <ul class="menu-links">
         <li class="nav-link">
           <a id="dashboard-tab">
@@ -32,6 +41,7 @@
             <span class="text nav-text">Dashboard</span>
           </a>
         </li>
+        <?php } ?>
 
         <li class="nav-link">
           <a id="bookings-tab">
@@ -83,7 +93,9 @@
 <nav class="top-nav">
   <ul>
     <li class="nav-link active"><a id="home-tab"><i class="bx bx-building"></i></a></li>
+    <?php if ($id === Constants::ADMIN_USER_ID) { ?>
     <li class="nav-link"><a id="dashboard-tab"><i class="bx bx-home-alt"></i></a></li>
+    <?php } ?>
     <li class="nav-link"><a id="bookings-tab"><i class="bx bx-calendar"></i></a></li>
     <!-- <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li> -->
     <li class="nav-link"><a id="profile-tab"><i class="bx bx-user-circle"></i></a></li>
