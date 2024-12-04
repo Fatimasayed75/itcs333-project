@@ -20,10 +20,9 @@
     <!-- Booking Form Section -->
     <div class="w-full lg:w-1/2 pr-6 mb-6">
       <!-- Room Availability -->
-
       <div>
         <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Room Availability</h3>
-        <canvas id="roomAvailability" width="400" height="400"></canvas>
+        <canvas id="roomAvailability" width="400" height="400" class="p-4"></canvas>
 
       </div>
       <div class="">
@@ -35,7 +34,7 @@
           <select id="startTime" name="startTime" class="w-full p-2 border rounded mb-4" required>
             <?php
             $startTime = 8; // Starting hour (8:00 AM)
-            $endTime = 20; // Ending hour (8:00 PM)
+            $endTime = 17.5; // Ending hour (8:00 PM)
             while ($startTime <= $endTime) {
               $hours = floor($startTime);
               $minutes = ($startTime - $hours) * 60;

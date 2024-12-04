@@ -49,6 +49,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/floorsNav.js"></script>
   <script src="../../js/filter.js"></script>
   <script src="../../js/dash.js"></script>
+  <script src="../../js/roomDetails.js"></script>
 </body>
 
 </html>

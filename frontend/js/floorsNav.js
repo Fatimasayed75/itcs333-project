@@ -4,7 +4,7 @@ function initializeFloorNavigation() {
   // remove hidden from #grid-rooms
   document.getElementById("grid-rooms").classList.remove("hidden");
   const roomSquares = document.querySelectorAll("#grid-rooms .dep .room-square");
-  const roomCards = document.querySelectorAll(".room-card"); // Add room cards here for consistency
+  const roomCards = document.querySelectorAll(".room-card"); 
 
   // Function to update the current floor and filter rooms
   function updateFloor() {
