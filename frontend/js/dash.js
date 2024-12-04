@@ -76,12 +76,12 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
         // Replace zero values with an empty string to hide them
         const adjustedBookingCounts = bookingCounts.map(count => (count === 0 ? "" : count));
 
-        // If the chart instance already exists, just update it
-        if (bookingChartInstance) {
-            bookingChartInstance.data.labels = monthNames;
-            bookingChartInstance.data.datasets[0].data = adjustedBookingCounts;
-            bookingChartInstance.update();
-        } else {
+        
+        // if (bookingChartInstance) {
+        //     bookingChartInstance.data.labels = monthNames;
+        //     bookingChartInstance.data.datasets[0].data = adjustedBookingCounts;
+        //     bookingChartInstance.update();
+        // } else {
             bookingChartInstance = new Chart(bookingChartElement, {
                 type: "bar",
                 data: {
@@ -104,7 +104,7 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
                     }
                 }
             });
-        }
+        // }
     }
 }
 
