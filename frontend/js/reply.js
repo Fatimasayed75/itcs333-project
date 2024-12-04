@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Clear the textarea and hide the reply section
                     document.getElementById(`replyContent-${commentID}`).value = '';
                     document.getElementById(`reply-section-${commentID}`).style.display = 'none';
-                    const iconElement = event.target;
-                    toggleDetails(commentID, iconElement);
+                    // const iconElement = event.target;
+                    // toggleDetails(commentID, iconElement);
                 } else {
                     alert(data.message);  // Show error message if reply wasn't saved
                 }
