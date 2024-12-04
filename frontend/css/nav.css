@@ -172,7 +172,6 @@ header .image-text .system {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow-y: scroll;
 }
 .menu-bar::-webkit-scrollbar {
   display: none;
