@@ -35,8 +35,8 @@ try {
         $commentModel->save();
 
         // Update feedback status for the booking
-        $bookingModel = new BookModel($pdo, $bookingID, $userID, $roomID, $data['bookingTime'], $data['startTime'], $data['endTime']);
-        $bookingModel->submitFeedback(); // This should set the feedback status to 1
+        $bookingModel = new BookModel($pdo, $userID, $roomID, $data['bookingTime'],  $data['startTime'], $data['endTime'], $bookingID);
+        $bookingModel->submitFeedback();
 
         // Return the updated feedback status
         echo json_encode(['success' => true, 'feedbackExists' => true]);

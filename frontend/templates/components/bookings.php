@@ -42,7 +42,7 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                     <div class="flex justify-center">
                         <button 
                             type="button" 
-                            class="cancel-booking-btn bg-blue-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-blue-600 mt-4"
+                            class="cancel-booking-btn bg-blue-400 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-blue-500 mt-4"
                             onclick="showConfirmation('<?php echo $booking['bookingID']; ?>')"
                         >
                             Cancel Booking
@@ -65,7 +65,7 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                                 </button>
                                 <button 
                                     type="button" 
-                                    class="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600"
+                                    class="bg-blue-400 text-white py-2 px-6 rounded-lg hover:bg-blue-500"
                                     onclick="cancelBooking('<?php echo $booking['bookingID']; ?>')"
                                 >
                                     Yes, Cancel
@@ -117,7 +117,7 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                     $bookingDetails = formatBookingDetails($booking['startTime'], $booking['endTime']);
                 ?>
                 <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" 
-                     class="bg-orange-50 rounded-lg shadow p-6 relative w-full previous-booking-card" 
+                     class="bg-gray-100 rounded-lg shadow p-6 relative w-full previous-booking-card" 
                      data-booking-id="<?php echo $booking['bookingID']; ?>">
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
                     <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
@@ -130,7 +130,7 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                     <div class="flex justify-center gap-4 mt-4 items-center">
                         <!-- Rebook Button -->
                         <button 
-                            class="rebook-btn bg-orange-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-orange-600"
+                            class="rebook-btn bg-gray-400 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-gray-500"
                             data-room-id="<?php echo $booking['roomID']; ?>"
                             onclick="handleRebook('<?php echo $booking['bookingID']; ?>')">
                             Rebook
@@ -140,14 +140,14 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                         <?php if ($booking['feedback'] == 0): ?>
                             <button 
                                 id="feedback-btn-<?php echo $booking['bookingID']; ?>"
-                                class="add-comment-btn bg-emerald-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-emerald-600"
+                                class="add-comment-btn bg-gray-500 text-white py-2 px-3 text-xs rounded transition duration-200 hover:bg-gray-600" 
                                 onclick="showModal('<?php echo $booking['bookingID']; ?>', '<?php echo $booking['roomID']; ?>')">
                                 Feedback
                             </button>
                         <?php else: ?>
                             <!-- Feedback Submitted Status -->
                             <span id="feedback-status-<?php echo $booking['bookingID']; ?>" 
-                                class="text-emerald-600 text-xs font-semibold flex items-center justify-center">
+                                class="text-gray-600 text-xs font-semibold flex items-center justify-center">
                                 ✔ Feedback Submitted
                             </span>
                         <?php endif; ?>
@@ -185,7 +185,7 @@ $previousBookings = $bookModel->getPreviousBookingsByUser($id);
                 Cancel
             </button>
             <button 
-                class="save-comment-btn bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
+                class="save-comment-btn bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
                 onclick="saveComment()"
             >
                 Save

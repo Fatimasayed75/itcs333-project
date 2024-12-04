@@ -395,6 +395,18 @@ function getMostBookedRoom() {
   return $result['roomID'] ?? null; // Return the room ID with the most bookings
 }
 
+public function getNewFeedbacks() {
+  // Count feedbacks provided in the last 30 days where feedback is 1
+  $query = "
+      SELECT COUNT(*) AS newFeedbacks 
+      FROM bookings 
+      WHERE feedback = 1 
+      AND bookingTime >= NOW() - INTERVAL 30 DAY
+  ";
+  $stmt = $this->conn->query($query);  // Use the correct PDO instance
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  return $result ? $result['newFeedbacks'] : 0;  // Return 0 if no feedbacks found
+}
 
 
 }

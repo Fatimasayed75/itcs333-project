@@ -3,6 +3,7 @@ const toggle = document.querySelector(".toggle");
 const modeSwitch = document.querySelector(".toggle-switch");
 const sidebarLinks = document.querySelectorAll(".sidebar .nav-link");
 const topNavLinks = document.querySelectorAll(".top-nav .nav-link");
+let isDashboardInitialized = false; // Flag to track dashboard initialization state
 
 // Sidebar toggle
 toggle.addEventListener("click", () => {
@@ -23,8 +24,14 @@ sidebarLinks.forEach((link) => {
       link.querySelector("a").getAttribute("id").replace("-tab", "").trim() +
       ".php";
     await loadContent(page);
-    if (page == "home.php") {
+
+    if (page === "home.php") {
       initializeHomeEventListeners();
+    } else if (page === "dashboard.php") {
+      if (!isDashboardInitialized) {
+        initializeDashboard(); // Initialize dashboard only once
+        isDashboardInitialized = true; // Set flag to true to prevent reinitialization
+      }
     }
   });
 });
@@ -36,8 +43,14 @@ topNavLinks.forEach((link) => {
       link.querySelector("a").getAttribute("id").replace("-tab", "").trim() +
       ".php";
     await loadContent(page);
-    if (page == "home.php") {
+
+    if (page === "home.php") {
       initializeHomeEventListeners();
+    } else if (page === "dashboard.php") {
+      if (!isDashboardInitialized) {
+        initializeDashboard(); // Initialize dashboard only once
+        isDashboardInitialized = true; // Set flag to true to prevent reinitialization
+      }
     }
   });
 });
@@ -51,6 +64,11 @@ async function loadContent(page) {
     const data = await response.text();
     document.getElementById("main-content").innerHTML = data;
     localStorage.setItem("current-page", page);
+
+    // Reset dashboard initialization flag when leaving the dashboard page
+    if (page !== "dashboard.php") {
+      isDashboardInitialized = false;
+    }
   } catch (error) {
     console.error("Error loading content: ", error);
     document.getElementById("main-content").innerHTML =
