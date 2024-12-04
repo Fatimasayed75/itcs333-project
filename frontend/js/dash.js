@@ -20,7 +20,7 @@ function initializeDashboard() {
             // Populate dashboard with fetched data
             initializeBookingCount(bookingCountElement, data.bookingCount);
             initializeMostBookedRoom(mostBookedRoomElement, data.mostBookedRoom);
-            // initializeBookingChart(bookingChartElement, data.bookingStats);
+            initializeBookingChart(bookingChartElement, data.bookingStats);
             initializeDepartmentChart(departmentChartElement, data.departmentStats);
         } else {
             console.error("No data available to update the dashboard");
@@ -58,38 +58,58 @@ function initializeMostBookedRoom(mostBookedRoomElement, mostBookedRoomData) {
     mostBookedRoomElement.textContent = mostBookedRoomData; // Populate element
 }
 
-// function initializeBookingChart(bookingChartElement, bookingStats) {
-//     if (bookingChartElement) {
-//         // If the chart instance already exists, just update it
-//         if (bookingChartInstance) {
-//             bookingChartInstance.data.labels = bookingStats.map(stat => `${stat.month}/${stat.year}`);
-//             bookingChartInstance.data.datasets[0].data = bookingStats.map(stat => stat.booking_count);
-//             bookingChartInstance.update(); // Update the chart with new data
-//         } else {
-//             // If no chart exists, create a new one
-//             bookingChartInstance = new Chart(bookingChartElement, {
-//                 type: "line",
-//                 data: {
-//                     labels: bookingStats.map(stat => `${stat.month}/${stat.year}`),
-//                     datasets: [{
-//                         label: "Monthly Bookings",
-//                         data: bookingStats.map(stat => stat.booking_count),
-//                         borderColor: "rgba(75,192,192,1)",
-//                         borderWidth: 1
-//                     }]
-//                 },
-//                 options: {
-//                     responsive: true,
-//                     maintainAspectRatio: false
-//                 }
-//             });
-//         }
-//     }
-// }
+
+function initializeBookingChart(bookingChartElement, bookingStats) {
+    if (bookingChartElement) {
+        // Define an array of month names
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        // Create an array with booking data for each month (initialized to 0)
+        const bookingCounts = new Array(12).fill(0);
+
+        // Populate the bookingCounts array with the actual booking data
+        bookingStats.forEach(stat => {
+            const monthIndex = stat.month - 1;
+            bookingCounts[monthIndex] = stat.booking_count;
+        });
+
+        // Replace zero values with an empty string to hide them
+        const adjustedBookingCounts = bookingCounts.map(count => (count === 0 ? "" : count));
+
+        // If the chart instance already exists, just update it
+        if (bookingChartInstance) {
+            bookingChartInstance.data.labels = monthNames;
+            bookingChartInstance.data.datasets[0].data = adjustedBookingCounts;
+            bookingChartInstance.update();
+        } else {
+            bookingChartInstance = new Chart(bookingChartElement, {
+                type: "bar",
+                data: {
+                    labels: monthNames,
+                    datasets: [{
+                        label: "Number of Monthly Bookings",
+                        data: adjustedBookingCounts,
+                        backgroundColor: "rgba(216, 133, 163, 0.4)",
+                        borderColor: "#D885A3",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
 
 
-// Register chartjs-plugin-datalabels with Chart.js
-// Register the chartjs-plugin-datalabels with Chart.js
+
 Chart.register(ChartDataLabels);
 
 function initializeDepartmentChart(departmentChartElement, departmentStats) {
@@ -126,14 +146,14 @@ function initializeDepartmentChart(departmentChartElement, departmentStats) {
                             const percentage = ((value / totalBookings) * 100).toFixed(2);
                             return `${percentage}%`; // Display percentage on the slice
                         },
-                        color: '#fff', // Label text color (white)
+                        color: '#fff',
                         font: {
-                            weight: 'bold', // Make the font bold
-                            size: 12, // Font size
-                            family: 'sans-serif', // Font family
+                            weight: 'bold',
+                            size: 12,
+                            family: 'sans-serif',
                         },
-                        anchor: 'center', // Position in the center of the slice
-                        align: 'center'  // Align to the center of the slice
+                        anchor: 'center',
+                        align: 'center'
                     }
                 }
             }

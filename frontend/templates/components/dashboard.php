@@ -37,7 +37,7 @@ date_default_timezone_set('Asia/Bahrain');
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <!-- Line Chart -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Statistics by Month</h3>
+                <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Rate by Month</h3>
                 <div id="chart-container" class="w-full h-72 flex justify-center items-center">
                     <canvas id="bookingChart" class="w-full h-full"></canvas>
                 </div>
