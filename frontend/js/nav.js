@@ -124,23 +124,26 @@ async function loadContent(page) {
         e.preventDefault();
         const formData = new FormData(this);
         
-        fetch('components/editProfile.php', {
+        fetch('../components/editProfile.php', {
           method: 'POST',
           body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
+        .then(response => {
+          if (response.ok) {
             alert('Profile updated successfully!');
             closeEditProfileModal();
             window.location.reload();
-          } else {
-            alert(data.message || 'Error updating profile');
+            return response.json();
           }
+          throw new Error('Response not okay');
+        })
+        .then(data => {
+          alert('Profile updated successfully!');
+          closeEditProfileModal();
         })
         .catch(error => {
           console.error('Error:', error);
-          alert('An error occurred while updating the profile');
+          // alert('An error occurred while updating the profile');
         });
       });
 

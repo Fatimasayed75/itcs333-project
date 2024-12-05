@@ -104,11 +104,11 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
                   </div>
 
                   <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email (Cannot be changed)</label>
                     <input type="email" id="email" name="email" 
                            value="<?php echo htmlspecialchars($user['email']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                           required>
+                           class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 cursor-not-allowed shadow-sm"
+                           readonly disabled>
                   </div>
                 </div>
               </form>
@@ -116,7 +116,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
           </div>
         </div>
         <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button type="button" onclick="document.getElementById('editProfileForm').submit()" 
+          <button type="submit" form="editProfileForm"
                   class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
             Save Changes
           </button>
@@ -170,7 +170,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
       
       const formData = new FormData(this);
       
-      fetch('components/editProfile.php', {
+      fetch('editProfile.php', {
         method: 'POST',
         body: formData
       })
