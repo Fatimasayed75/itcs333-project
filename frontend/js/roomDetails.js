@@ -235,7 +235,7 @@ async function loadRoomDetails(roomId) {
       .replace(/{{department}}/g, roomData.department)
       .replace(
         /{{isAvailable}}/g,
-        roomData.isAvailable ? "Available" : "Not Available"
+        roomData.isAvailable ? "Available for booking" : "Not Available for Booking"
       )
       .replace(
         /{{image}}/g,
@@ -258,6 +258,9 @@ async function loadRoomDetails(roomId) {
     const bookRoomBtn = document.getElementById("bookRoomBtn");
     if (bookRoomBtn) {
       bookRoomBtn.addEventListener("click", () => bookRoom(roomId));
+    }
+    if(!roomData.isAvailable){
+      document.getElementById("bookingForm").classList.add("hidden");
     }
   } catch (error) {
     console.error("Error loading room details:", error);

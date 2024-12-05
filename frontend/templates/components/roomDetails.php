@@ -38,7 +38,7 @@
       </div>
       <canvas id="roomAvailability" width="400" height="400" class="p-6"></canvas>
 
-      <div>
+      <div id="bookingForm">
         <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Book This Room</h3>
         <form id="bookingForm" class="flex flex-col items-center" action="roomDetails.php" method="POST">
 
