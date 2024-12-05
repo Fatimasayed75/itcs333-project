@@ -167,7 +167,7 @@ usort($CErooms, function ($a, $b) {
     <div id="roomsContainer"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center items-center">
       <!-- No Results Message (Initially Hidden) -->
-      <p id="noResultsMessage" class="text-center text-red-500 font-semibold hidden col-span-full">
+      <p id="noResultsMessage" class="text-center p-4 text-red-500 font-semibold hidden col-span-full">
         No rooms found based on your filter/search criteria.
       </p>
 

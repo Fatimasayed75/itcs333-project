@@ -36,17 +36,13 @@ function applyFilters() {
     const roomCapacityInt = parseInt(roomCapacity, 10);
     const capacityInt = parseInt(capacity, 10);
 
-    if (roomCapacityInt >= capacityInt) {
-      console.log(roomCapacityInt);
-      console.log(capacityInt);
-    }
     if (
       (available === "any" || roomAvailable === available) &&
       (type === "any" || roomType === type) &&
       (capacity === "any" || roomCapacityInt >= capacityInt)
     ) {
       card.style.display = "block";
-      console.log(card);
+      found = true;
     } else {
       card.style.display = "none";
     }

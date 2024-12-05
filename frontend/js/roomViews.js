@@ -57,6 +57,7 @@ function initializeRoomViewToggle() {
     document.getElementById("grid-rooms").classList.add("hidden");
     document.getElementById("filterDiv").classList.remove("hidden");
     initFilter();
+    clearFilters();
   });
 
   // Grid view event

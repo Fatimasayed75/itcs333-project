@@ -18,9 +18,24 @@
     </div>
 
     <!-- Booking Form Section -->
-    <div class="w-full lg:w-1/2 mb-6">
+    <div class="w-full lg:w-1/2 mb-6 bookingSection">
       <!-- Room Availability -->
-      <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Room Availability</h3>
+      <div class="flex justify-center mb-4">
+        <h3 class="text-xl font-semibold text-gray-800">Room Availability</h3>
+        <button id="refreshBtn" class="ml-4">
+          <i class="fa fa-refresh"></i>
+        </button>
+      </div>
+
+      <div class="flex justify-center">
+        <button id="prevWeek" class="mx-16">
+          <i class="fa fa-arrow-left"></i>
+        </button>
+        <p id="weekOffset">Current Week</p>
+        <button id="nextWeek" class="mx-16">
+          <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
       <canvas id="roomAvailability" width="400" height="400" class="p-6"></canvas>
 
       <div>
