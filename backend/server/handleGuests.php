@@ -1,9 +1,12 @@
 <?php
 require_once '../db-connection.php';
 session_start();
-if (isset($_SESSION['id'])){
-  unserialize($_SESSION['id']);
-  header("Location: ../../frontend/templates/layout/base.php");
+// if user is already logged in, destroy the session and redirect to the home page
+
+if(isset($_SESSION['active-user'])) {
+  session_destroy();
 }
 
-echo "Welcome Guest!";
+// 0 means Guest User (not registered)
+$_SESSION['active-user'] = 0;
+header("Location: ../../frontend/templates/layout/base.php");

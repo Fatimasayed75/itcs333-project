@@ -122,7 +122,6 @@ var_dump($id);
 <?php if ($id == Constants::GUEST_USER_ID): ?>
   <nav class="top-nav">
     <ul>
-      <!-- Always visible to everyone -->
       <li class="nav-link active">
         <a id="home-tab">
           <i class="bx bx-building mr-2"></i>
