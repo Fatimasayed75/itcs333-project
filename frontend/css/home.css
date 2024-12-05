@@ -124,6 +124,164 @@ html, body {
   animation: shine-yellow 1.5s infinite alternate;
 }
 
+/* Dark mode styles for cards */
+body.dark-mode .room-card {
+  background-color: var(--dark-sidebar-color);
+  border: 1px solid var(--dark-border-color);
+  color: var(--dark-text-color);
+}
+
+body.dark-mode .room-card:hover {
+  background-color: var(--dark-primary-color-light);
+}
+
+body.dark-mode .room-id-tooltip {
+  background-color: var(--dark-sidebar-color);
+  color: var(--dark-text-color);
+  border: 1px solid var(--dark-border-color);
+}
+
+/* Adjust shine effects for dark mode */
+body.dark-mode .shine-border.bg-red-300 {
+  border: 3px solid #9E4E6B;
+  box-shadow: 0 0 10px #9E4E6B, 0 0 15px rgba(158, 78, 107, 0.6), 0 0 20px rgba(158, 78, 107, 0.5);
+}
+
+body.dark-mode .shine-border.bg-blue-300 {
+  border: 3px solid #4E6B9E;
+  box-shadow: 0 0 10px #4E6B9E, 0 0 15px rgba(78, 107, 158, 0.6), 0 0 20px rgba(78, 107, 158, 0.5);
+}
+
+/* Animation for the glowing effect in dark mode (red) */
+@keyframes shine-red-dark {
+  0% {
+    box-shadow: 0 0 2px #9E4E6B, 0 0 20px rgba(158, 78, 107, 0.6), 0 0 30px rgba(158, 78, 107, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 5px #9E4E6B, 0 0 30px rgba(158, 78, 107, 0.7), 0 0 40px rgba(158, 78, 107, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px #9E4E6B, 0 0 40px rgba(158, 78, 107, 0.7), 0 0 50px rgba(158, 78, 107, 0.8);
+  }
+}
+
+/* Animation for the glowing effect in dark mode (blue) */
+@keyframes shine-blue-dark {
+  0% {
+    box-shadow: 0 0 2px #4E6B9E, 0 0 20px rgba(78, 107, 158, 0.6), 0 0 30px rgba(78, 107, 158, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 5px #4E6B9E, 0 0 30px rgba(78, 107, 158, 0.7), 0 0 40px rgba(78, 107, 158, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 10px #4E6B9E, 0 0 40px rgba(78, 107, 158, 0.7), 0 0 50px rgba(78, 107, 158, 0.8);
+  }
+}
+
+/* Apply dark mode animations */
+body.dark-mode .shine-border.bg-red-300 {
+  animation: shine-red-dark 1.5s infinite alternate;
+}
+
+body.dark-mode .shine-border.bg-blue-300 {
+  animation: shine-blue-dark 1.5s infinite alternate;
+}
+
+/* Improve text contrast in dark mode */
+body.dark-mode .room-card h3,
+body.dark-mode .room-card p,
+body.dark-mode .room-card span {
+  color: var(--dark-text-color);
+}
+
+/* Keep reminder card text black in dark mode */
+body.dark-mode .reminder-card h3,
+body.dark-mode .reminder-card p,
+body.dark-mode .reminder-card span,
+body.dark-mode .reminder-card div {
+  color: #000000 !important;
+}
+
+/* Keep reminder card background light */
+body.dark-mode .reminder-card {
+  background-color: #ffffff !important;
+  border: 1px solid var(--dark-border-color);
+}
+
+/* Adjust card backgrounds in dark mode */
+body.dark-mode .bg-white {
+  background-color: var(--dark-sidebar-color) !important;
+}
+
+body.dark-mode .bg-gray-50,
+body.dark-mode .bg-gray-100 {
+  background-color: var(--dark-primary-color-light) !important;
+}
+
+/* Room status colors in dark mode */
+body.dark-mode .room-card[data-status="available"] {
+  border-left: 4px solid #4E9E6B;  /* Darker green */
+}
+
+body.dark-mode .room-card[data-status="occupied"] {
+  border-left: 4px solid #9E4E6B;  /* Darker red */
+}
+
+body.dark-mode .room-card[data-status="maintenance"] {
+  border-left: 4px solid #9E8E4E;  /* Darker yellow */
+}
+
+/* Keep specific reminder cards text black in dark mode */
+body.dark-mode .bg-blue-50,
+body.dark-mode .bg-green-50,
+body.dark-mode .bg-red-50 {
+  background-color: inherit !important;
+}
+
+body.dark-mode .bg-blue-50 .text-gray-800,
+body.dark-mode .bg-green-50 .text-gray-800,
+body.dark-mode .bg-red-50 .text-gray-800 {
+  color: #1f2937 !important; /* dark gray for headers */
+}
+
+body.dark-mode .bg-blue-50 .text-gray-600,
+body.dark-mode .bg-green-50 .text-gray-600,
+body.dark-mode .bg-red-50 .text-gray-600 {
+  color: #4b5563 !important; /* medium gray for body text */
+}
+
+body.dark-mode .bg-blue-50 .text-blue-600,
+body.dark-mode .bg-green-50 .text-blue-600,
+body.dark-mode .bg-red-50 .text-blue-600 {
+  color: #2563eb !important; /* blue for links */
+}
+
+/* Keep border colors */
+body.dark-mode .border-blue-500 {
+  border-color: #3b82f6 !important;
+}
+
+body.dark-mode .border-green-500 {
+  border-color: #22c55e !important;
+}
+
+body.dark-mode .border-red-500 {
+  border-color: #ef4444 !important;
+}
+
+/* Keep background colors */
+body.dark-mode .bg-blue-50 {
+  background-color: #eff6ff !important;
+}
+
+body.dark-mode .bg-green-50 {
+  background-color: #f0fdf4 !important;
+}
+
+body.dark-mode .bg-red-50 {
+  background-color: #fef2f2 !important;
+}
+
 #filterBox {
   position: fixed;
   top: 0;

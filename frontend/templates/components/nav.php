@@ -109,14 +109,11 @@ var_dump($id);
       ?>
 
       <li class="mode">
-        <div class="sun-moon">
-          <i class="bx bx-moon icon moon"></i>
-        </div>
-        <span class="mode-text text">Dark mode</span>
-
-        <div class="toggle-switch">
-          <span class="switch"></span>
-        </div>
+        <a class="toggle-dark-mode" role="switch" aria-checked="false" tabindex="0">
+          <i class='bx bx-sun icon sun'></i>
+          <i class='bx bx-moon icon moon'></i>
+          <!-- <div class="toggle-ball"></div> -->
+        </a>
       </li>
     </div>
   </div>
@@ -144,8 +141,9 @@ var_dump($id);
         </li>
       </div>
       <li class="nav-link">
-        <a id="" class="toggle-dark-mode">
-          <i class="bx bx-moon icon moon mr-2"></i>
+        <a class="toggle-dark-mode" role="switch" aria-checked="false" tabindex="0">
+          <i class='bx bx-sun icon sun'></i>
+          <i class='bx bx-moon icon moon'></i>
         </a>
       </li>
 
@@ -166,7 +164,12 @@ var_dump($id);
       <?php } ?>
       <li class="nav-link"><a id="profile-tab"><i class="bx bx-user-circle"></i></a></li>
       <li class="nav-link"><a id="notifiations-tab"><i class="bx bx-bell"></i></a></li>
-      <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li>
+      <li class="nav-link">
+        <a class="toggle-dark-mode" role="switch" aria-checked="false" tabindex="0">
+          <i class='bx bx-sun icon sun'></i>
+          <i class='bx bx-moon icon moon'></i>
+        </a>
+      </li>
       <li class="nav-link"><a href="../../../backend/server/logout.php"><i class="bx bx-log-out"></i></a></li>
     </ul>
   </nav>

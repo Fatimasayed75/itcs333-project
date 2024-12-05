@@ -11,9 +11,56 @@ toggle.addEventListener("click", () => {
   document.body.classList.toggle("sidebar-expanded");
 });
 
-// Dark mode switch
-modeSwitch.addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
+// Dark mode functionality
+function updateDarkModeUI(isDark) {
+  document.body.classList.toggle('dark-mode', isDark);
+  document.querySelectorAll('[role="switch"]').forEach(toggle => {
+    toggle.setAttribute('aria-checked', isDark.toString());
+  });
+}
+
+function initializeDarkMode() {
+  // Check if user has a saved preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    updateDarkModeUI(savedTheme === 'dark');
+  } else {
+    // Check system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    updateDarkModeUI(prefersDark);
+    localStorage.setItem('theme', prefersDark ? 'dark' : 'light');
+  }
+}
+
+// Initialize dark mode on page load
+initializeDarkMode();
+
+// Handle dark mode toggle clicks
+function handleDarkModeToggle() {
+  const isDark = !document.body.classList.contains('dark-mode');
+  updateDarkModeUI(isDark);
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// Add click listeners to all dark mode toggles
+document.querySelectorAll('.toggle-switch, .toggle-dark-mode').forEach(toggle => {
+  toggle.addEventListener('click', handleDarkModeToggle);
+  
+  // Add keyboard support
+  toggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleDarkModeToggle();
+    }
+  });
+});
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) {  // Only react if user hasn't set a preference
+    updateDarkModeUI(e.matches);
+    localStorage.setItem('theme', e.matches ? 'dark' : 'light');
+  }
 });
 
 // Set active for sidebar and top-nav links
