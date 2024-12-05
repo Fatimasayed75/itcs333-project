@@ -69,6 +69,41 @@ async function loadContent(page) {
     if (page !== "dashboard.php") {
       isDashboardInitialized = false;
     }
+
+    // Initialize page-specific JavaScript
+    if (page === "profile.php") {
+      // Reinitialize profile event listeners
+      document.getElementById('editProfileForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch('components/editProfile.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Profile updated successfully!');
+            closeEditProfileModal();
+            window.location.reload();
+          } else {
+            alert(data.message || 'Error updating profile');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while updating the profile');
+        });
+      });
+
+      // Initialize modal close on outside click
+      document.getElementById('editProfileModal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeEditProfileModal();
+        }
+      });
+    }
   } catch (error) {
     console.error("Error loading content: ", error);
     document.getElementById("main-content").innerHTML =

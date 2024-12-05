@@ -1,48 +1,87 @@
-function editProfile() {
-    console.log('Starting to fetch profile template...');
-    fetch('frontend/templates/components/profile.php')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+// Function to open the edit profile modal
+window.openEditProfileModal = function() {
+    const modal = document.getElementById('editProfileModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Function to close the edit profile modal
+window.closeEditProfileModal = function() {
+    const modal = document.getElementById('editProfileModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+}
+
+// Function to preview the selected image
+window.previewImage = function(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('profilePreview');
+            if (preview) {
+                preview.src = e.target.result;
             }
-            console.log('Profile template fetched successfully.');
-            return response.text();
-        })
-        .then(data => {
-            console.log('Profile template loaded, updating DOM...');
-            document.getElementById('editProfileContent').innerHTML = data;
-            document.getElementById('editProfileModal').classList.remove('hidden');
-            console.log('Profile modal displayed.');
-        })
-        .catch(error => {
-            console.error('Error loading edit profile:', error);
-        });
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
-function closeModal() {
-    console.log('Closing modal...');
-    document.getElementById('editProfileModal').classList.add('hidden');
-}
-
-document.getElementById('editProfileForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
+// Handle form submission
+document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
     const formData = new FormData(this);
+    
+    // Show loading state
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    submitButton.innerHTML = 'Saving...';
+    submitButton.disabled = true;
 
-    fetch('editProfile.php', {
+    fetch('components/editProfile.php', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            console.log('Profile updated successfully');
-            // Optionally, you can close the modal or update the UI here
+            // Show success message
+            alert('Profile updated successfully!');
+            // Close the modal
+            closeEditProfileModal();
+            // Reload the page to show updated information
+            window.location.reload();
         } else {
-            console.error('Error updating profile:', data.message);
+            // Show error message
+            alert(data.message || 'Error updating profile');
         }
     })
     .catch(error => {
         console.error('Error:', error);
+        alert('An error occurred while updating the profile');
+    })
+    .finally(() => {
+        // Restore button state
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
     });
+});
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('editProfileModal');
+    if (e.target === modal) {
+        closeEditProfileModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeEditProfileModal();
+    }
 });

@@ -50,6 +50,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/filter.js"></script>
   <script src="../../js/dash.js"></script>
   <script src="../../js/roomDetails.js"></script>
+  <script src="../../js/profile.js"></script>
 </body>
 
 </html>
