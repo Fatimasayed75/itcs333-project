@@ -189,7 +189,7 @@ usort($commentsWithReplies, function ($a, $b) {
                     <div>
                         <p class="text-sm text-gray-500">
                             <strong>Room:</strong> <?= $openLabBooking['roomID']; ?> | 
-                            <strong>Date:</strong> <?= date("M d, Y", strtotime($openLabBooking['bookingTime'])); ?>
+                            <strong>Date:</strong> <?= date("M d, Y", strtotime($openLabBooking['startTime'])); ?>
                         </p>
                         <p class="text-sm text-gray-500">
                             <strong>Time:</strong> <?= date("h:i A", strtotime($openLabBooking['startTime'])); ?> - 
