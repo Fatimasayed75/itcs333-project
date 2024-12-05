@@ -7,6 +7,7 @@ $id = isAuthorized();
 var_dump($id);
 ?>
 
+<!-- SIDEBAR -->
 <nav class="sidebar close">
   <header>
     <div class="open-logo-text">
@@ -27,6 +28,7 @@ var_dump($id);
 
   <div class="menu-bar">
     <div class="menu">
+      <!-- HOME TAB -->
       <li class="nav-link active">
         <a id="home-tab">
           <i class="bx bx-building icon"></i>
@@ -34,6 +36,7 @@ var_dump($id);
         </a>
       </li>
 
+      <!-- LOG IN TAB FOR GUESTS -->
       <?php
       if ($id == Constants::GUEST_USER_ID) {
         echo '<li class="nav-link">
@@ -42,10 +45,10 @@ var_dump($id);
                   <span class="text nav-text">Log in for more!</span>
                 </a>
               </li>';
-        }
+      }
       ?>
 
-
+      <!-- DASHBOARD TAB FOR ADMINS -->
       <?php if ($id == Constants::ADMIN_USER_ID) { ?>
         <ul class="menu-links">
           <li class="nav-link">
@@ -56,8 +59,9 @@ var_dump($id);
           </li>
         <?php } ?>
 
+        <!-- BOOKINGS TAB -->
         <?php
-        if ($id != Constants::GUEST_USER_ID) {
+        if ($id != Constants::GUEST_USER_ID && $id != Constants::ADMIN_USER_ID) {
           echo "<li class='nav-link'>
           <a id='bookings-tab'>
             <i class='bx bx-calendar icon'></i>
@@ -66,6 +70,7 @@ var_dump($id);
         }
         ?>
 
+        <!-- PROFILE TAB -->
         <?php
         if ($id != Constants::GUEST_USER_ID) {
           echo "<li class='nav-link'>
@@ -77,6 +82,7 @@ var_dump($id);
         }
         ?>
 
+        <!-- NOTIFICATIONS TAB -->
         <?php
         if ($id != Constants::GUEST_USER_ID) {
           echo "<li class='nav-link'>
@@ -122,23 +128,24 @@ var_dump($id);
 <?php if ($id == Constants::GUEST_USER_ID): ?>
   <nav class="top-nav">
     <ul>
-      <li class="nav-link active">
-        <a id="home-tab">
-          <i class="bx bx-building mr-2"></i>
-          <span class="text text-xs">Browse Rooms</span>
-        </a>
-      </li>
+      <div class="flex justify-start gap-2">
+        <li class="nav-link active">
+          <a id="home-tab">
+            <i class="bx bx-building mr-2"></i>
+            <span class="text text-xs">Browse Rooms</span>
+          </a>
+        </li>
 
-      <li class="nav-link">
-        <a href="../../../backend/server/logout.php">
-          <i class="bx bxs-party icon mr-2"></i>
-          <span class="text text-xs">Log in for more!</span>
-        </a>
-      </li>
+        <li class="nav-link">
+          <a href="../../../backend/server/logout.php">
+            <i class="bx bxs-party icon mr-2"></i>
+            <span class="text text-xs">Log in for more!</span>
+          </a>
+        </li>
+      </div>
       <li class="nav-link">
         <a id="" class="toggle-dark-mode">
           <i class="bx bx-moon icon moon mr-2"></i>
-          <span class="text text-xs">Dark mode</span>
         </a>
       </li>
 
@@ -154,7 +161,9 @@ var_dump($id);
       <?php if ($id === Constants::ADMIN_USER_ID) { ?>
         <li class="nav-link"><a id="dashboard-tab"><i class="bx bx-home-alt"></i></a></li>
       <?php } ?>
-      <li class="nav-link"><a id="bookings-tab"><i class="bx bx-calendar"></i></a></li>
+      <?php if ($id != Constants::ADMIN_USER_ID) { ?>
+        <li class="nav-link"><a id="bookings-tab"><i class="bx bx-calendar"></i></a></li>
+      <?php } ?>
       <li class="nav-link"><a id="profile-tab"><i class="bx bx-user-circle"></i></a></li>
       <li class="nav-link"><a id="notifiations-tab"><i class="bx bx-bell"></i></a></li>
       <li class="nav-link"><a id="" class="toggle-dark-mode"><i class="bx bx-moon"></i></a></li>
