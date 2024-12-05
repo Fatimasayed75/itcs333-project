@@ -79,7 +79,6 @@ async function loadRoomDetails(roomId) {
 
     let roomData = data[0];
     let bookings = roomData["roomBookings"];
-    console.log(bookings);
 
     // Replace placeholders in the HTML template
     const filledTemplate = template
@@ -149,8 +148,8 @@ function createRoomAvailabilityChart(bookings) {
           y: dateIndex, // Corresponding date index for the y-axis
           startTime: startTime, // Store the actual start time for the tooltip
           endTime: endTime, // Store the actual end time for the tooltip
-          backgroundColor: 'rgba(255, 165, 0, 0.7)', // Orange color with transparency
-          borderColor: 'rgba(255, 165, 0, 1)', // Solid orange border
+          backgroundColor: 'rgba(216,133,163,0.7)', // Orange color with transparency
+          borderColor: 'rgba(216,133,163,1)', // Solid orange border
           borderWidth: 1
         };
       }
@@ -165,8 +164,8 @@ function createRoomAvailabilityChart(bookings) {
           {
             label: 'Booked Slot',
             data: [], // Empty dataset to avoid rendering points
-            backgroundColor: 'rgba(255, 165, 0, 0.7)',
-            borderColor: 'rgba(255, 165, 0, 1)',
+            backgroundColor: 'rgba(216,133,163,0.7)',
+            borderColor: 'rgba(216,133,163,1)',
             borderWidth: 1
           }
         ]
@@ -265,10 +264,62 @@ function createRoomAvailabilityChart(bookings) {
   }
 }
 
-
-
-
 async function navigateToHomePage() {
   await loadContent("home.php");
   initializeHomeEventListeners();
+}
+
+// dynamically load available times based on selected date
+function loadAvailableTimes(roomID) {
+  console.log("Load Available time");
+  const date = document.getElementById('date').value;
+  const startTimeSelect = document.getElementById('startTime');
+
+  // Clear previous options
+  startTimeSelect.innerHTML = '';
+
+  if (date) {
+    fetch(`../../../backend/server/roomAvailableTime.php?roomID=${roomID}&date=${date}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        // Log the raw response text before parsing it
+        return response.text(); // Use .text() to see the raw response
+      })
+      .then(rawText => {
+        console.log('Raw Response:', rawText);
+
+        // Now try parsing the raw response text as JSON
+        try {
+          const data = JSON.parse(rawText); // Explicitly parse the response as JSON
+          
+          if (data.error) {
+            console.error(data.error);
+          } else {
+            // Handle the available times if they are available
+            if (data && data.length > 0) {
+              data.forEach(time => {
+                const option = document.createElement('option');
+                option.value = time;
+                option.textContent = time;
+                startTimeSelect.appendChild(option);
+              });
+            } else {
+              const option = document.createElement('option');
+              option.value = '';
+              option.textContent = 'No available times';
+              startTimeSelect.appendChild(option);
+            }
+          }
+        } catch (err) {
+          console.error('Error parsing JSON:', err);
+          alert('There was an issue with the response format.');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching available times:', error);
+      });
+  }
 }

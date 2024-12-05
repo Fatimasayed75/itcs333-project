@@ -6,15 +6,25 @@ function initializeRoomSearch(roomCards, roomSquares, currentFloor) {
   searchInput.addEventListener("input", (e) => {
     const searchTerm = e.target.value.toLowerCase();
 
+    let found = false;
+
     // Handle room cards visibility
     roomCards.forEach((card) => {
       const roomId = card.querySelector("h3").textContent.toLowerCase();
       if (roomId.includes(searchTerm)) {
         card.style.display = "";
+        found = true;
       } else {
         card.style.display = "none";
       }
     });
+
+    // Show or hide the "No Results" message based on the results found
+    if (found) {
+      document.getElementById("noResultsMessage").style.display = "none";
+    } else {
+      document.getElementById("noResultsMessage").style.display = "block";
+    }
 
     // Handle room squares
     roomSquares.forEach((square) => {

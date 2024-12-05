@@ -164,7 +164,13 @@ usort($CErooms, function ($a, $b) {
     </div>
 
     <!-- Rooms Container -->
-    <div id="roomsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div id="roomsContainer"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center items-center">
+      <!-- No Results Message (Initially Hidden) -->
+      <p id="noResultsMessage" class="text-center text-red-500 font-semibold hidden col-span-full">
+        No rooms found based on your filter/search criteria.
+      </p>
+
       <!-- Dynamically Generated Room Cards (Card View) -->
       <?php foreach ($rooms as $room): ?>
         <div
@@ -194,6 +200,7 @@ usort($CErooms, function ($a, $b) {
         </div>
       <?php endforeach; ?>
     </div>
+
 
 
     <!-- Dynamically Generated Room Squares (Grid View) -->

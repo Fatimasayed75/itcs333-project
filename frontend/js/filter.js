@@ -26,6 +26,7 @@ function applyFilters() {
   const capacity = document.getElementById("capacity").value;
   const cardRooms = document.querySelectorAll(".room-card");
 
+  let found = false;
   cardRooms.forEach((card) => {
     const roomAvailable =
       card.getAttribute("data-room-available") == 1 ? "yes" : "no";
@@ -50,6 +51,14 @@ function applyFilters() {
       card.style.display = "none";
     }
   });
+
+  // If no rooms are found, display the "No results" message
+  const noResultsMessage = document.getElementById("noResultsMessage");
+  if (!found) {
+    noResultsMessage.style.display = "block"; // Show the message
+  } else {
+    noResultsMessage.style.display = "none"; // Hide the message if rooms are found
+  }
 
   // hide the filter modal after applying filters
   hideFilterBox();
@@ -76,5 +85,8 @@ function clearFilters() {
     card.style.display = "";
   });
   document.getElementById("clearFilterIcon").classList.add("hidden");
+  document.getElementById("noResultsMessage").style.display = "none";
   hideFilterBox();
+  // clear search input
+  document.getElementById("roomSearch").value = "";
 }
