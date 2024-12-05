@@ -8,12 +8,14 @@ date_default_timezone_set('Asia/Bahrain');
 $id = isAuthorized();
 
 $userModel = new UserModel($pdo);
-$bookModel = new BookModel($pdo, null, null, null, null, null, null);
+$bookModel = new BookModel($pdo, $id, null, null, null, null, null);
 
 $user = $userModel->getUserByID($id);
 $upcomingBookings = $bookModel->getUpcomingBookingsByUser($id);
 $currentBookings = $bookModel->getCurrentBookingsByUser($id);
 $previousBookings = $bookModel->getPreviousBookingsByUser($id);
+
+$bookModel->updateExpiredBookings();
 
 ?>
 

@@ -264,7 +264,7 @@ class BookModel
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
     // Query to get previous bookings ordered by endTime DESC
-    $condition = 'userID = ? AND endTime < ? ORDER BY endTime DESC';
+    $condition = 'userID = ? AND endTime < ? AND status = "expired" ORDER BY endTime DESC';
     $result = $crud->read('bookings', [], $condition, $userID, $currentTime);
 
     return !empty($result) ? $result : [];
@@ -313,7 +313,7 @@ class BookModel
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
     // Query to get all past bookings ordered by endTime DESC
-    $condition = 'endTime < ? ORDER BY endTime DESC';
+    $condition = 'endTime < ? AND status = "active" ORDER BY endTime DESC';
     $result = $crud->read('bookings', [], $condition, $currentTime);
 
     return !empty($result) ? $result : [];
@@ -335,16 +335,28 @@ class BookModel
   public function getTotalBookings(): mixed
   {
       $crud = new Crud($this->conn);
-      $result = $crud->read('bookings', ['COUNT(*) as count']);
-      return $result[0]['count'] ?? 0;
+      
+      //count only 'active' or 'expired' bookings
+      $query = "
+          SELECT COUNT(*) as count
+          FROM bookings
+          WHERE status IN ('active', 'expired')
+      ";
+      
+      $stmt = $this->conn->prepare($query);
+      $stmt->execute();
+  
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $result['count'] ?? 0;
   }
+  
 
   // Get booking statistics by month
   function getBookingsByMonth() {
-    // SQL query to get bookings by year and month
     $query = "
         SELECT YEAR(bookingTime) AS year, MONTH(bookingTime) AS month, COUNT(*) AS booking_count
         FROM bookings
+        WHERE status IN ('active', 'expired')
         GROUP BY YEAR(bookingTime), MONTH(bookingTime)
         ORDER BY year DESC, month DESC
     ";
@@ -353,17 +365,15 @@ class BookModel
     $stmt = $this->conn->prepare($query);
     $stmt->execute();
 
-    // Fetch the result and return it as an associative array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
  
 function getBookingsByDepartment() {
-  // SQL query to get bookings by department
   $query = "
       SELECT r.department, COUNT(b.bookingID) AS booking_count
       FROM bookings b
       JOIN room r ON b.roomID = r.roomID
+      WHERE b.status IN ('active', 'expired')
       GROUP BY r.department
   ";
 
@@ -371,16 +381,14 @@ function getBookingsByDepartment() {
   $stmt = $this->conn->prepare($query);
   $stmt->execute();
 
-  // Fetch the result and return it as an associative array
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
 function getMostBookedRoom() {
-  // SQL query to get the most booked room
   $query = "
       SELECT roomID, COUNT(*) AS count
       FROM bookings
+      WHERE status IN ('active', 'expired')
       GROUP BY roomID
       ORDER BY count DESC
       LIMIT 1
@@ -390,10 +398,10 @@ function getMostBookedRoom() {
   $stmt = $this->conn->prepare($query);
   $stmt->execute();
 
-  // Fetch the result and return the room_id
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  return $result['roomID'] ?? null; // Return the room ID with the most bookings
+  return $result['roomID'] ?? null;
 }
+
 
 public function getNewFeedbacks() {
   // Count feedbacks provided in the last 30 days where feedback is 1
@@ -403,10 +411,77 @@ public function getNewFeedbacks() {
       WHERE feedback = 1 
       AND bookingTime >= NOW() - INTERVAL 30 DAY
   ";
-  $stmt = $this->conn->query($query);  // Use the correct PDO instance
+  $stmt = $this->conn->query($query);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
   return $result ? $result['newFeedbacks'] : 0;  // Return 0 if no feedbacks found
 }
 
+  public function getPendingBookings()
+  {
+    $currentDateTime = (new DateTime())->format('Y-m-d H:i:s'); // Get current date and time
+    $result = $this->getBookingsBy('status', 'pending');
+
+    if ($result === Constants::NO_RECORDS) {
+      return [];
+    }
+
+    // Filter the results to ensure startTime is in the future
+    $pendingBookings = array_filter($result, function ($booking) use ($currentDateTime) {
+      return strtotime($booking['startTime']) > strtotime($currentDateTime); // Ensure startTime is in the future
+    });
+
+    return $pendingBookings;
+  }
+
+
+  public function getOpenLabBookings($userID)
+  {
+    $currentDateTime = (new DateTime())->format('Y-m-d H:i:s'); // Get current date and time
+
+    // SQL to get the bookings for user with status 'active' or 'rejected' and room in specified list
+    $sql = "SELECT * FROM bookings WHERE userID = :userID AND roomID IN ('S40-1002', 'S40-2001') AND status IN ('active', 'rejected') ORDER BY startTime DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Filter the results to ensure endTime is in the future
+    $openLabBookings = array_filter($result, function ($booking) use ($currentDateTime) {
+      return strtotime($booking['endTime']) > strtotime($currentDateTime); // Ensure endTime is in the future
+    });
+
+    return $openLabBookings;
+  }
+
+
+  public function updateExpiredBookings()
+{
+    // Get the previous bookings by the user
+    $previousBookings = $this->getAllBookings();
+
+    // If there are no previous bookings, return a constant indicating no records
+    if (empty($previousBookings)) {
+        return Constants::NO_RECORDS;
+    }
+
+    // Iterate through each previous booking
+    foreach ($previousBookings as $previousBooking) {
+        // If the room is not 'S40-1002' or 'S40-2001' and the status is not 'rejected'
+        if (!(($previousBooking['roomID'] === 'S40-1002' || $previousBooking['roomID'] === 'S40-2001') && $previousBooking['status'] === 'rejected')) {
+            
+            $currentDateTime = (new DateTime())->format('Y-m-d H:i:s');
+            if (strtotime($previousBooking['endTime']) < strtotime($currentDateTime) && $previousBooking['status'] !== 'expired') {
+                // Update status to 'expired'
+                $update = ['status' => 'expired'];
+                $condition = 'bookingID = ?';
+                $crud = new Crud($this->conn);
+                $result = $crud->update('bookings', $update, $condition, $previousBooking['bookingID']);
+            }
+        }
+    }
+
+    return Constants::SUCCESS;
+}
 
 }
