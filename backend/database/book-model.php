@@ -341,7 +341,6 @@ class BookModel
 
   // Get booking statistics by month
   function getBookingsByMonth() {
-    // SQL query to get bookings by year and month
     $query = "
         SELECT YEAR(bookingTime) AS year, MONTH(bookingTime) AS month, COUNT(*) AS booking_count
         FROM bookings
@@ -353,13 +352,11 @@ class BookModel
     $stmt = $this->conn->prepare($query);
     $stmt->execute();
 
-    // Fetch the result and return it as an associative array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
  
 function getBookingsByDepartment() {
-  // SQL query to get bookings by department
   $query = "
       SELECT r.department, COUNT(b.bookingID) AS booking_count
       FROM bookings b
@@ -371,7 +368,6 @@ function getBookingsByDepartment() {
   $stmt = $this->conn->prepare($query);
   $stmt->execute();
 
-  // Fetch the result and return it as an associative array
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -390,9 +386,8 @@ function getMostBookedRoom() {
   $stmt = $this->conn->prepare($query);
   $stmt->execute();
 
-  // Fetch the result and return the room_id
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  return $result['roomID'] ?? null; // Return the room ID with the most bookings
+  return $result['roomID'] ?? null;
 }
 
 public function getNewFeedbacks() {
@@ -403,10 +398,28 @@ public function getNewFeedbacks() {
       WHERE feedback = 1 
       AND bookingTime >= NOW() - INTERVAL 30 DAY
   ";
-  $stmt = $this->conn->query($query);  // Use the correct PDO instance
+  $stmt = $this->conn->query($query);
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
   return $result ? $result['newFeedbacks'] : 0;  // Return 0 if no feedbacks found
 }
 
+  public function getPendingBookings()
+  {
+    $result = $this->getBookingsBy('status', 'pending');
+    if ($result === Constants::NO_RECORDS) {
+      return [];
+    }
+    return $result;
+  }
+
+  public function getOpenLabBookings($userID)
+  {
+      $sql = "SELECT * FROM bookings WHERE userID = :userID AND roomID IN ('S40-1002', 'S40-2001') AND status IN ('active', 'rejected')";
+      $stmt = $this->conn->prepare($sql);
+      $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+      $stmt->execute();
+      
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 
 }

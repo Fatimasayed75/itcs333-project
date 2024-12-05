@@ -16,6 +16,7 @@ $id = isAuthorized();
 
 // Instantiate models
 $commentModel = new CommentModel($pdo);
+$roomModel = new RoomModel($pdo);
 $commentReplyModel = new CommentReplyModel($pdo);
 $userModel = new UserModel($pdo);
 $bookModel = new BookModel($pdo, null, null, null, null, null, null); // Instantiate BookModel
@@ -31,6 +32,10 @@ $isAdmin = $userDetails['role'] === 'admin';
 $bookingDetails = $isAdmin 
     ? $bookModel->getAllBookings() // Admins see all bookings
     : $bookModel->getPreviousBookingsByUser($id); // Normal users see their bookings only
+
+$pendingBookings = $isAdmin ? $bookModel->getPendingBookings() : "";
+$openLabBookings = $isAdmin ? "" : $bookModel->getOpenLabBookings($id);
+
 
 // Prepare an associative array for comments with replies and booking details
 $commentsWithReplies = [];
@@ -88,8 +93,131 @@ usort($commentsWithReplies, function ($a, $b) {
 
 ?>
 
-<div class="notifications p-6 space-y-6 bg-gray-100 rounded-lg pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10">
+<div class="notifications p-6 space-y-6 bg-gray-100 rounded-lg pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10 min-h-screen">
+
+    <!-- Pending Bookings Section -->
+    <?php if($isAdmin && !empty($pendingBookings)) { ?>
+        <h1 class="text-3xl font-semibold text-gray-800 mb-4">Pending Bookings</h1>
+        <div class="pending-bookings max-w-4xl mx-auto p-6 space-y-6 bg-gray-100 rounded-lg pb-6 mt-10 w-full">
+        <!-- <div class="pending-booking bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative mb-6" > -->
+
+            <?php foreach ($pendingBookings as $booking):
+                $bookingID = $booking['bookingID'];
+                $userID = $booking['userID'];
+                $roomID = $booking['roomID'];
+                $startTime = $booking['startTime'];
+                $endTime = $booking['endTime'];
+
+                $userDetails = $userModel->getUserByID($userID);
+                
+            ?>
+
+    <div class="pending-booking bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative" id="pending-booking-<?= $bookingID; ?>">
+        <div class="booking-header flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <i class="fa fa-calendar text-2xl text-orange-600" style="color: #D885A3;"></i>
+                <div>
+                    <p class="text-sm text-gray-500">
+                        <strong>User:</strong> <?= $userDetails['firstName'] . ' ' . $userDetails['lastName']; ?> | <strong>Room:</strong> <?= $roomID ?>
+                    </p>
+                    <p class="text-sm text-gray-500">
+                        <strong>Date:</strong> <?= date("M d, Y", strtotime($startTime)); ?> | 
+                        <strong>Time:</strong> <?= date("h:i A", strtotime($startTime)); ?> - <?= date("h:i A", strtotime($endTime)); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-actions flex justify-center mt-4 space-x-4">
+            <button class="approve-booking px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" style="background-color: #D885A3;" data-booking-id="<?= $bookingID; ?>" data-status="approved">
+                Approve
+            </button>
+            <button class="reject-booking px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-600" style="background-color: #B0B0B0;" data-booking-id="<?= $bookingID; ?>" data-status="rejected">
+                Reject
+            </button>
+        </div>
+
+
+        <!-- Hidden fields for AJAX request -->
+        <input type="hidden" id="roomID-<?= $bookingID; ?>" value="<?= $roomID; ?>" />
+        <input type="hidden" id="bookingTime-<?= $bookingID; ?>" value="<?= $bookingTime; ?>" />
+        <input type="hidden" id="startTime-<?= $bookingID; ?>" value="<?= $startTime; ?>" />
+        <input type="hidden" id="endTime-<?= $bookingID; ?>" value="<?= $endTime; ?>" />
+        <input type="hidden" id="userID-<?= $bookingID; ?>" value="<?= $userID; ?>" />
+    </div>
+
+            <?php endforeach; ?>
+    </div>
+
+    <?php } ?>
+
+    <!-- Modal for Success/Failure -->
+<div id="status-modal" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="bg-white rounded-lg p-6 w-1/3 max-w-sm">
+        <div class="flex justify-between items-center">
+            <h3 id="modal-title" class="text-xl font-semibold">Booking Status</h3>
+            <button id="close-modal" class="text-gray-500 hover:text-gray-800">&times;</button>
+        </div>
+        <p id="modal-message" class="mt-4 text-gray-700"></p>
+        <div class="mt-4 flex justify-end">
+            <button id="close-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Close</button>
+        </div>
+    </div>
+</div>
+
+
     <h1 class="text-3xl font-semibold text-gray-800 mb-4">Notifications</h1>
+
+    <?php if (!empty($openLabBookings)): ?>
+    <?php foreach ($openLabBookings as $openLabBooking): ?>
+        <div class="notification bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative" 
+            id="notification-<?= $openLabBooking['bookingID']; ?>">
+
+            <!-- Notification Header -->
+            <div class="notification-header flex items-center justify-between">
+            <!-- <div class="important-notification-label absolute top-3 right-10 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold" style="background-color: #D885A3;">
+                    Important
+                </div> -->
+                <div class="flex items-center space-x-4">
+                <?php if ($openLabBooking['status'] === 'active'): ?>
+                    <i class="fa fa-bell text-2xl text-red-700" style="color: #D885A3;"></i>
+                <?php elseif ($openLabBooking['status'] === 'rejected'): ?>
+                    <i class="fa fa-bell text-2xl text-green-700" style="color: #D885A3;"></i>
+                <?php endif; ?>
+                    <div>
+                        <p class="text-sm text-gray-500">
+                            <strong>Room:</strong> <?= $openLabBooking['roomID']; ?> | 
+                            <strong>Date:</strong> <?= date("M d, Y", strtotime($openLabBooking['bookingTime'])); ?>
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            <strong>Time:</strong> <?= date("h:i A", strtotime($openLabBooking['startTime'])); ?> - 
+                            <?= date("h:i A", strtotime($openLabBooking['endTime'])); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Body -->
+            <div class="notification-details mt-4">
+                <p class="text-base text-gray-700" style="color: #D885A3;">
+                    <?php if ($openLabBooking['status'] === 'active'): ?>
+                        Your booking has been approved!
+                    <?php elseif ($openLabBooking['status'] === 'rejected'): ?>
+                        Unfortunately, your booking has been rejected.
+                    <?php endif; ?>
+                </p>
+            </div>
+
+            <!-- Close Button -->
+            <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="this.parentElement.style.display='none';">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+
+
 
     <?php foreach ($commentsWithReplies as $commentData): 
         $comment = $commentData['comment'];
