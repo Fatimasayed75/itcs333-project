@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Update user details
-        $userModel->update($id, $firstName, $lastName, $email, $profilePic);
+        $userModel->update($id, $firstName, $lastName,$user['email'], $profilePic);
         $response['success'] = true;
         $response['message'] = 'Profile updated successfully';
     } catch (Exception $e) {
@@ -78,57 +78,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <form id="editProfileForm" method="post" enctype="multipart/form-data" class="space-y-4">
-            <div class="text-center mb-4">
-                <div class="relative inline-block">
-                    <img src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default-profile.png'; ?>" 
-                         alt="Profile Picture" 
-                         class="w-24 h-24 rounded-full object-cover mx-auto mb-2">
-                    <label for="profilePic" class="cursor-pointer absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 text-white">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                    </label>
-                    <input type="file" id="profilePic" name="profilePic" accept="image/*" class="hidden">
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <div>
-                    <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
-                    <input type="text" id="firstName" name="firstName" 
-                           value="<?php echo htmlspecialchars($user['firstName']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                           required>
-                </div>
-
-                <div>
-                    <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" 
-                           value="<?php echo htmlspecialchars($user['lastName']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                           required>
-                </div>
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" name="email" 
-                           value="<?php echo htmlspecialchars($user['email']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                           required>
-                </div>
-            </div>
-
-            <div class="flex justify-end space-x-3 mt-6">
-                <button type="button" onclick="closeModal()" 
-                        class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Cancel
-                </button>
-                <button type="submit" 
-                        class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600">
-                    Save Changes
-                </button>
-            </div>
-        </form>
+    <div class="text-center mb-4">
+        <div class="relative inline-block">
+            <img src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
+                 alt="Profile Picture" 
+                 class="w-24 h-24 rounded-full object-cover mx-auto mb-2">
+            <label for="profilePic" class="cursor-pointer absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+            </label>
+            <input type="file" id="profilePic" name="profilePic" class="hidden" onchange="previewImage(this)">
+        </div>
+    </div>
+    <div class="mb-4">
+        <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+        <input type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($user['firstName']); ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+    </div>
+    <div class="mb-4">
+        <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+        <input type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($user['lastName']); ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+    </div>
+    <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+    </div>
+    <!-- <div class="text-right">
+        <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-200">Save</button>
+    </div> -->
+</form>
     </div>
     <script src="../../js/nav.js"></script>
     <script src="../../js/profile.js"></script>

@@ -34,7 +34,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <?php if (!empty($user)): ?>
       <div class="profile-details">
         <div class="profile-pic">
-          <img src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default-profile.png'; ?>" 
+          <img src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
                alt="Profile Picture" 
                class="w-24 h-24 rounded-full object-cover">
         </div>
@@ -74,7 +74,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
                 <div class="mb-6 text-center">
                   <div class="relative inline-block">
                     <img id="profilePreview" 
-                         src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default-profile.png'; ?>" 
+                         src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
                          alt="Profile Picture" 
                          class="w-24 h-24 rounded-full object-cover mx-auto">
                     <label for="profilePic" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
