@@ -21,6 +21,8 @@ $commentReplyModel = new CommentReplyModel($pdo);
 $userModel = new UserModel($pdo);
 $bookModel = new BookModel($pdo, null, null, null, null, null, null); // Instantiate BookModel
 
+$bookModel->updateExpiredBookings();
+
 // Fetch all comments made by users
 $comments = $commentModel->getAllComments();
 
