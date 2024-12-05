@@ -2,11 +2,17 @@
 require_once '../../../backend/database/user-model.php';
 require_once '../../../backend/database/room-model.php';
 require_once '../../../backend/utils/helpers.php';
+require_once '../../../backend/utils/constants.php';
+
+use Utils\Constants;
 
 $id = isAuthorized();
 
 $userModel = new UserModel($pdo);
-$user = $userModel->getUserByID($id);
+
+$id == Constants::GUEST_USER_ID ?
+  $user = ['firstName' => 'Guest', 'lastName' => 'User'] :
+  $user = $userModel->getUserByID($id);
 
 $roomModel = new RoomModel($pdo);
 $rooms = $roomModel->getAllRooms();
@@ -84,7 +90,12 @@ usort($CErooms, function ($a, $b) {
   <!-- Welcome Message -->
   <div class="text-left pb-6 pt-20 sm:pt-15 lg:pt-5 md:pt-10">
     <h1 class="text-xl sm:text-3xl lg:text-4xl font-bold text-gray-800 welcome-message">
-      Welcome, <?php echo $user["firstName"] . " " . $user["lastName"] . "!"; ?>
+      <?php if (is_array($user)) {
+        echo "Welcome, " . $user["firstName"] . " " . $user["lastName"] . "!";
+      } else {
+        echo "Welcome, Guest!";
+      }
+      ?>
     </h1>
   </div>
 

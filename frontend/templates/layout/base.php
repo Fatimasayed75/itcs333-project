@@ -33,7 +33,7 @@ if (isset($_SESSION['active-user'])) {
   <?php include "../components/nav.php"; ?>
 
   <!-- Main Content -->
-  <div id="main-content" class="content md:ml-28">
+  <div id="main-content" class="content lg:ml-24 md:ml-12">
     <?php include "../components/home.php" ?>
   </div>
   <!-- <script src="../../js/fetchNotification.js" defer></script> -->

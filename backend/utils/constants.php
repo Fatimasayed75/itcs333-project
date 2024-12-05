@@ -49,5 +49,6 @@ class Constants
     // Admin Email
     public const ADMIN_EMAIL = 'admin@uob.edu.bh';
     public const ADMIN_USER_ID = 62;
+    public const GUEST_USER_ID = 0;
 
 }
