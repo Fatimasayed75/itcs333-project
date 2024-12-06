@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Authorization check
         $id = isAuthorized();
         if (!$id) {
-            throw new Exception('User is not authorized.');
+            throw new Exception('User is not authorized you have to regiter/log in.');
         }
 
         // Validate the startTime format (optional)

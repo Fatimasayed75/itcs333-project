@@ -101,9 +101,9 @@ usort($CErooms, function ($a, $b) {
 
   <!-- Reminders Section -->
   <?php
-    if($id != Constants::GUEST_USER_ID) {
-      require_once 'reminders.php';
-    }
+  if ($id != Constants::GUEST_USER_ID) {
+    require_once 'reminders.php';
+  }
   ?>
 
   <!-- Browse All Rooms Section -->
@@ -172,7 +172,7 @@ usort($CErooms, function ($a, $b) {
             <?php if ($room['isAvailable'] == 1): ?>
               <i class="fa fa-check-circle text-green-500 text-xl" title="Available"></i>
             <?php else: ?>
-              <i class="fa fa-times-circle text-red-500 text-xl" title="Not Available"></i>
+              <i class="fa fa-minus-circle text-red-500 text-xl" title="Not Available"></i>
             <?php endif; ?>
           </div>
 
