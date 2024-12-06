@@ -1,4 +1,3 @@
-// Function to confirm booking and show modal
 function confirmBooking(roomID) {
   const startTime = document.getElementById('startTime').value;
   const duration = document.getElementById('duration').value;
@@ -34,19 +33,34 @@ function confirmBooking(roomID) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Show success modal
-        const successModal = document.getElementById('successModal');
-        successModal.classList.remove('hidden');
+        // Show the appropriate modal based on roomID
+        if (roomID === 'S40-1002' || roomID === 'S40-2001') {
+          // Show special success modal
+          const specialModal = document.getElementById('specialSuccessModal');
+          specialModal.classList.remove('hidden');
 
-        // Attach event listener for close button inside the modal
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        if (closeModalBtn) {
-          closeModalBtn.addEventListener('click', function () {
-            successModal.classList.add('hidden'); // Hide the modal when the close button is clicked
-          });
+          // Attach event listener for close button in the special modal
+          const closeSpecialModalBtn = document.getElementById('closeSpecialModalBtn');
+          if (closeSpecialModalBtn) {
+            closeSpecialModalBtn.addEventListener('click', function () {
+              specialModal.classList.add('hidden');
+            });
+          }
+        } else {
+          // Show default success modal
+          const successModal = document.getElementById('successModal');
+          successModal.classList.remove('hidden');
+
+          // Attach event listener for close button in the default modal
+          const closeModalBtn = document.getElementById('closeModalBtn');
+          if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', function () {
+              successModal.classList.add('hidden');
+            });
+          }
         }
       } else {
-        alert('Error: ' + data.message); 
+        alert('Error: ' + data.message);
       }
     })
     .catch(error => {

@@ -131,14 +131,19 @@ usort($commentsWithReplies, function ($a, $b) {
         </div>
 
         <div class="booking-actions flex justify-center mt-4 space-x-4">
-            <button class="approve-booking px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700" style="background-color: #D885A3;" data-booking-id="<?= $bookingID; ?>" data-status="approved">
+            <button class="approve-booking px-4 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700" 
+                style="background-color: #D885A3;" 
+                data-booking-id="<?= $bookingID; ?>" 
+                data-status="approved">
                 Approve
             </button>
-            <button class="reject-booking px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-600" style="background-color: #B0B0B0;" data-booking-id="<?= $bookingID; ?>" data-status="rejected">
+            <button class="reject-booking px-4 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-600" 
+                style="background-color: #B0B0B0;" 
+                data-booking-id="<?= $bookingID; ?>" 
+                data-status="rejected">
                 Reject
             </button>
         </div>
-
 
         <!-- Hidden fields for AJAX request -->
         <input type="hidden" id="roomID-<?= $bookingID; ?>" value="<?= $roomID; ?>" />

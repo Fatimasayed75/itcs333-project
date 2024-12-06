@@ -73,12 +73,18 @@
 
 <!-- Success Modal -->
 <div id="successModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
-  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full flex flex-col items-center text-center">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Booking Successful!</h2>
     <p class="text-lg text-gray-600 mb-4">Your booking has been confirmed successfully</p>
-    <div class="flex justify-center">
-      <button id="closeModalBtn" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Close</button>
-    </div>
+    <button id="closeModalBtn" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Close</button>
   </div>
+</div>
 
+<!-- Special Success Modal for S40-1002 and S40-2001 -->
+<div id="specialSuccessModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full flex flex-col items-center text-center">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Pending Approval</h2>
+    <p class="text-lg text-gray-600 mb-4">Your request has been sent to the admin for approval.</p>
+    <button id="closeSpecialModalBtn" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Close</button>
+  </div>
 </div>

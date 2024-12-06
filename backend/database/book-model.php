@@ -40,6 +40,16 @@ class BookModel
     $startTime = new DateTime($this->startTime);
     $endTime = new DateTime($this->endTime);
 
+     // Check if the day is Friday
+     if ($startTime->format('N') == 5) { // 5 corresponds to Friday in ISO-8601 (1 = Monday, 7 = Sunday)
+      return Constants::INVALID_BOOKING_DAY; // Define this constant to represent the error
+    }
+
+    $currentDateTime = new DateTime();
+    if ($startTime < $currentDateTime) {
+        return Constants::START_TIME_IN_PAST; 
+    }
+
     // Booking must be at least after 1 hour
     $currentPlusOneHour = new DateTime();
     $currentPlusOneHour->modify('+1 hour');
@@ -62,9 +72,10 @@ class BookModel
       return Constants::BOOKING_DURATION_TOO_LONG;
     }
 
-    if ($this->checkConflicts($this->roomID, $this->startTime, $this->endTime)) {
+    if ($this->checkConflict($this->roomID, $this->startTime, $this->endTime, $this->userID)) {
       return Constants::BOOKING_CONFLICT;
     }
+  
 
     // if booking duration valid, insert it
     $crud = new Crud($this->conn);
@@ -80,13 +91,49 @@ class BookModel
     ];
 
     if ($crud->create('bookings', $columns, $values)) {
-      $this->bookingID = $this->conn->lastInsertId(); // Set the new bookingID
+      $this->bookingID = $this->conn->lastInsertId();
       return true;  // Return true if the insert was successful
    } else {
       return false; // Return false if the insert failed
    }
    
   }
+
+  private function checkConflict($roomID, $startTime, $newEndTime, $userID)
+  {
+    $crud = new Crud($this->conn);
+
+    // 10 MINUTES GAP BETWEEN BOOKINGS
+    $condition = '(
+        (roomID = ? OR userID = ?) AND status = ? AND (
+            (endTime + INTERVAL 10 MINUTE > ? AND startTime < ?) OR
+            (endTime > ? AND startTime - INTERVAL 10 MINUTE < ?) OR
+            (startTime >= ? AND endTime <= ?)
+        )
+    )';
+
+    // Case 1: New booking starts before an existing booking ends
+    // Case 2: New booking ends after an existing booking starts
+    // Case 3: New booking is fully within an existing booking
+
+    // Check conflicts for roomID and userID
+    $params = [
+      $roomID,
+      $userID,
+      'active',
+      $startTime,
+      $newEndTime,
+      $startTime,
+      $newEndTime,
+      $startTime,
+      $newEndTime
+    ];
+
+    $result = $crud->read('bookings', [], $condition, ...$params);
+
+    return !empty($result); // Return true if there's any conflict
+  }
+
 
   // check for a specific room is a startTime and endTime are valid
   private function checkConflicts($roomID, $startTime, $newEndTime)
