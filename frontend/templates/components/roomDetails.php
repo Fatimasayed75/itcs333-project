@@ -40,7 +40,7 @@
 
       <div id="bookingForm">
         <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Book This Room</h3>
-        <form id="bookingForm" class="flex flex-col items-center" action="roomDetails.php" method="POST">
+        <div id="bookingForm" class="flex flex-col items-center" action="roomDetails.php" method="POST">
 
           <!-- Select Available Date -->
           <label for="date" class="block text-gray-700">Select Date:</label>
@@ -63,19 +63,22 @@
             <option value="150">150 minutes</option>
           </select>
 
-          <button type="submit" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Confirm
-            Booking</button>
-        </form>
-
-        <p id="formMessage" class="mt-4 text-sm text-gray-700">
-          <?php
-          if (isset($_POST['date'])) {
-            echo "Booking successful!";
-          }
-          ?>
-        </p>
+          <button type="button" onclick="confirmBooking('{{roomID}}')" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Confirm Booking</button>
+        </div>
       </div>
     </div>
 
   </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Booking Successful!</h2>
+    <p class="text-lg text-gray-600 mb-4">Your booking has been confirmed successfully</p>
+    <div class="flex justify-center">
+      <button id="closeModalBtn" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Close</button>
+    </div>
+  </div>
+
 </div>

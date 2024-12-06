@@ -81,28 +81,28 @@ function initializeRoomViewToggle() {
   roomSquares.forEach((square) => square.classList.add("hidden"));
 }
 
-async function bookRoom(roomId) {
-  try {
-    const response = await fetch(`../../../backend/server/bookRoom.php`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ roomID: roomId }),
-    });
+// async function bookRoom(roomId) {
+//   try {
+//     const response = await fetch(`../../../backend/server/bookRoom.php`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ roomID: roomId }),
+//     });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
+//     if (!response.ok) {
+//       throw new Error("Network response was not ok");
+//     }
 
-    const data = await response.json();
-    if (data.success) {
-      alert("Room booked successfully!");
-    } else {
-      alert("Failed to book the room.");
-    }
-  } catch (error) {
-    console.error("Error booking room:", error);
-    alert("Failed to book the room. Please try again later.");
-  }
-}
+//     const data = await response.json();
+//     if (data.success) {
+//       alert("Room booked successfully!");
+//     } else {
+//       alert("Failed to book the room.");
+//     }
+//   } catch (error) {
+//     console.error("Error booking room:", error);
+//     alert("Failed to book the room. Please try again later.");
+//   }
+// }
