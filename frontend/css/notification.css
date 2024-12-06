@@ -13,3 +13,8 @@
 .admin-reply-section button.admin-reply-button:hover {
     background-color: #c77492;
 }
+
+#successModal {
+    z-index: 9999; /* Ensure modal is above other content */
+  }
+  

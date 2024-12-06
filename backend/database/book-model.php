@@ -75,13 +75,17 @@ class BookModel
       $this->bookingTime,
       $this->startTime,
       $this->endTime,
-      $this->status = $this->roomID == "S40-1002" ? 'pending' : 'active' // Set status to 'pending' if roomID is 1002
+      $this->status = ($this->roomID == "S40-1002" || $this->roomID == "S40-2001") ? 'pending' : 'active',
+      $this->feedback = 0
     ];
 
     if ($crud->create('bookings', $columns, $values)) {
-      // Fetch the last inserted ID if insert was successful
       $this->bookingID = $this->conn->lastInsertId(); // Set the new bookingID
-    }
+      return true;  // Return true if the insert was successful
+   } else {
+      return false; // Return false if the insert failed
+   }
+   
   }
 
   // check for a specific room is a startTime and endTime are valid
