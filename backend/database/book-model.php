@@ -45,6 +45,14 @@ class BookModel
       return Constants::INVALID_BOOKING_DAY; // Define this constant to represent the error
     }
 
+    if($startTime->format('H:i') < '08:00') {
+      return Constants::INVALID_START_TIME;
+    }
+
+    if($endTime->format('H:i') > '18:00') {
+      return Constants::INVALID_END_TIME;
+    }
+
     $currentDateTime = new DateTime();
     if ($startTime < $currentDateTime) {
         return Constants::START_TIME_IN_PAST; 

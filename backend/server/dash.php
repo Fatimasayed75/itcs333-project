@@ -16,31 +16,30 @@ $userModel = new UserModel($pdo);
 $roomModel = new RoomModel($pdo);
 
 // Fetch data
+// Fetch data with proper validation
 $bookingCount = $bookingModel->getTotalBookings();
 $mostBookedRoom = $bookingModel->getMostBookedRoom();
 $bookingStats = $bookingModel->getBookingsByMonth();
 $departmentStats = $bookingModel->getBookingsByDepartment();
-// Fetch total users count
 $totalUsers = $userModel->getTotalUsers();
-
 $newFeedbacks = $bookingModel->getNewFeedbacks();
 
-// Error handling
-if (!$bookingCount || !$mostBookedRoom || !$bookingStats || !$departmentStats || !$totalUsers) {
-    echo json_encode(['error' => 'Database error or missing data']);
-    exit();
-}
+// Prepare fallback values
+$bookingCount = is_numeric($bookingCount) ? $bookingCount : 0;
+$mostBookedRoom = $mostBookedRoom ?? '...';
+$bookingStats = !empty($bookingStats) ? $bookingStats : [];
+$departmentStats = !empty($departmentStats) ? $departmentStats : [];
+$totalUsers = is_numeric($totalUsers) ? $totalUsers : 0;
+$newFeedbacks = is_numeric($newFeedbacks) ? $newFeedbacks : 0;
 
 // Return JSON data
-$data = [
+echo json_encode([
     'bookingCount' => $bookingCount,
     'mostBookedRoom' => $mostBookedRoom,
     'bookingStats' => $bookingStats,
     'departmentStats' => $departmentStats,
     'totalUsers' => $totalUsers,
     'newFeedbacks' => $newFeedbacks
-];
+]);
 
-
-echo json_encode($data);
 ?>
