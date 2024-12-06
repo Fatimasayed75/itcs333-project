@@ -53,6 +53,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/openLab.js"></script>
   <script src="../../js/booking.js"></script>
   <script src="../../js/profile.js"></script>
+  <script src="../../js/modal.js"></script>
 </body>
 
 </html>
