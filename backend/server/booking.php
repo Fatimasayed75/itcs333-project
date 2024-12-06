@@ -41,10 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Save the booking
         $bookModel = new BookModel($pdo, $id, $roomID, null, $startTime, $endTime, null);
 
-        if ($bookModel->save()) {
+        $result = $bookModel->save();
+        // echo $result;
+
+        if ($result === true) {
             echo json_encode(['success' => true]);
         } else {
-            throw new Exception('Unable to save booking due to conflict or other error.');
+            throw new Exception($result);
         }
     } catch (Exception $e) {
         // Return JSON error message

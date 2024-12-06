@@ -23,8 +23,9 @@ class Constants
     public const BOOKING_DURATION_TOO_LONG = 'Booking duration must be at most 2 hours and 30 minutes';
     public const BOOKING_CONFLICT = 'Booking conflicts with another booking';
     public const INVALID_END_TIME = 'End time must be later than start time';
-
     public const INVALID_START_TIME = 'Start time must be at least after an hour from now';
+    public const START_TIME_IN_PAST = 'Start time must not be in the past';
+    public const INVALID_BOOKING_DAY = 'Booking is not allowed on Friday';
 
     // Records-related
     public const RECORD_NOT_FOUND = 'Record not found';
