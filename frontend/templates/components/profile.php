@@ -44,10 +44,8 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
           <p class="mb-2"><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
           <p class="mb-2"><strong>Role:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
         </div>
-      </div>
-      <div class="profile-actions mt-6">
         <button onclick="openEditProfileModal()" 
-                class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-200">
+                class="font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 editbtn">
           Edit Profile
         </button>
       </div>
@@ -57,72 +55,67 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
   </div>
 
   <!-- Edit Profile Modal -->
-  <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
-    <div class="min-h-screen px-4 text-center">
-      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-      </div>
-
-      <!-- Modal panel -->
-      <div class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
-            <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Edit Profile</h3>
-              
-              <form id="editProfileForm" method="post" enctype="multipart/form-data">
-                <div class="mb-6 text-center">
-                  <div class="relative inline-block">
-                    <img id="profilePreview" 
-                         src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
-                         alt="Profile Picture" 
-                         class="w-24 h-24 rounded-full object-cover mx-auto">
-                    <label for="profilePic" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
-                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                      </svg>
-                    </label>
-                    <input type="file" id="profilePic" name="profilePic" accept="image/*" class="hidden" onchange="previewImage(this)">
-                  </div>
-                </div>
-
-                <div class="space-y-4">
-                  <div>
-                    <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
-                    <input type="text" id="firstName" name="firstName" 
-                           value="<?php echo htmlspecialchars($user['firstName']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                           required>
-                  </div>
-
-                  <div>
-                    <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" 
-                           value="<?php echo htmlspecialchars($user['lastName']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                           required>
-                  </div>
-
-                  <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email (Cannot be changed)</label>
-                    <input type="email" id="email" name="email" 
-                           value="<?php echo htmlspecialchars($user['email']); ?>" 
-                           class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 cursor-not-allowed shadow-sm"
-                           readonly disabled>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button type="submit" form="editProfileForm"
-                  class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-            Save Changes
+  <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center">
+      <div class="modal-content rounded-lg shadow-xl max-w-md w-full">
+        <div class="modal-header">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Profile</h3>
+          <button type="button" id="closeEditProfileModalBtn" class="text-gray-400 hover:text-gray-500" onclick="closeEditProfileModal()">
+            <span class="sr-only">Close</span>
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="closeEditProfileModalBtn">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
-          <button type="button" onclick="closeEditProfileModal()" 
-                  class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+        </div>
+        
+        <div class="modal-body p-6">
+          <form id="editProfileForm" method="post" enctype="multipart/form-data">
+            <div class="mb-6 text-center">
+              <div class="relative inline-block">
+                <img id="profilePreview" 
+                     src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
+                     alt="Profile Picture" 
+                     class="w-24 h-24 rounded-full object-cover mx-auto">
+                <label for="profilePic" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                  </svg>
+                </label>
+                <input type="file" id="profilePic" name="profilePic" accept="image/*" class="hidden" onchange="previewImage(this)">
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" 
+                       value="<?php echo htmlspecialchars($user['firstName']); ?>" 
+                       required>
+              </div>
+
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" 
+                       value="<?php echo htmlspecialchars($user['lastName']); ?>" 
+                       required>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email (Cannot be changed)</label>
+                <input type="email" id="email" name="email" 
+                       value="<?php echo htmlspecialchars($user['email']); ?>" 
+                       readonly disabled>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelEditProfileBtn" class="btn-cancel" onclick="closeEditProfileModal()">
             Cancel
+          </button>
+          <button type="submit" form="editProfileForm" class="btn-save">
+            Save Changes
           </button>
         </div>
       </div>
@@ -132,13 +125,29 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
   <script>
     function openEditProfileModal() {
       document.getElementById('editProfileModal').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
     }
 
     function closeEditProfileModal() {
       document.getElementById('editProfileModal').classList.add('hidden');
-      document.body.style.overflow = 'auto';
     }
+
+    // Add event listeners for closing the modal
+    document.getElementById('closeEditProfileModalBtn').addEventListener('click', function() {
+      closeEditProfileModal();
+    });
+  
+    document.getElementById('cancelEditProfileBtn').addEventListener('click', function() {
+      closeEditProfileModal();
+    });
+
+    console.log(document.getElementById('closeEditProfileModalBtn'));
+  
+    // Close modal when clicking outside
+    document.getElementById('editProfileModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeEditProfileModal();
+      }
+    });
 
     function previewImage(input) {
       if (input.files && input.files[0]) {
@@ -149,20 +158,6 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
         reader.readAsDataURL(input.files[0]);
       }
     }
-
-    // Close modal when clicking outside
-    document.getElementById('editProfileModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeEditProfileModal();
-      }
-    });
-
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeEditProfileModal();
-      }
-    });
 
     // Handle form submission
     document.getElementById('editProfileForm').addEventListener('submit', function(e) {
