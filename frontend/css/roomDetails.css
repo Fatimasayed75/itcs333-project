@@ -1,0 +1,32 @@
+/* General Adjustments */
+#date,
+#startTime,
+#duration {
+  font-size: 0.9rem; /* Scale font size for smaller screens */
+  padding: 0.5rem;   /* Adjust padding */
+}
+
+/* Input and Calendar Responsiveness */
+input[type="date"] {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}
+
+select {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}
+
+/* For Small Screens */
+@media (max-width: 768px) {
+  #date, #startTime, #duration {
+    font-size: 0.8rem; /* Adjust font size */
+    padding: 0.4rem;
+  }
+
+  #bookingForm {
+    padding: 1rem; /* Add more spacing */
+  }
+}
