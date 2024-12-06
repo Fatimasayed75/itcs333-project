@@ -3,8 +3,13 @@ function confirmBooking(roomID) {
   const duration = document.getElementById('duration').value;
   const date = document.getElementById('date').value;
 
+  // Error message container
+  const errorMessageContainer = document.getElementById('errorMessage');
+
   if (!startTime || !duration || !date) {
-    alert('Please select a start time, duration, and date.');
+    // Display the error message
+    errorMessageContainer.textContent = 'Please select a start time, duration, and date.';
+    errorMessageContainer.classList.remove('hidden'); 
     return;
   }
 
@@ -22,6 +27,10 @@ function confirmBooking(roomID) {
     duration: duration,
   };
 
+  // Clear any previous error messages
+  errorMessageContainer.classList.add('hidden');
+  errorMessageContainer.textContent = '';
+
   // Make a POST request to the server
   fetch('../../../backend/server/booking.php', {
     method: 'POST',
@@ -35,35 +44,31 @@ function confirmBooking(roomID) {
       if (data.success) {
         // Show the appropriate modal based on roomID
         if (roomID === 'S40-1002' || roomID === 'S40-2001') {
-          // Show special success modal
           const specialModal = document.getElementById('specialSuccessModal');
           specialModal.classList.remove('hidden');
 
-          // Attach event listener for close button in the special modal
           const closeSpecialModalBtn = document.getElementById('closeSpecialModalBtn');
-          if (closeSpecialModalBtn) {
-            closeSpecialModalBtn.addEventListener('click', function () {
-              specialModal.classList.add('hidden');
-            });
-          }
+          closeSpecialModalBtn.addEventListener('click', () => {
+            specialModal.classList.add('hidden');
+          });
         } else {
-          // Show default success modal
           const successModal = document.getElementById('successModal');
           successModal.classList.remove('hidden');
 
-          // Attach event listener for close button in the default modal
           const closeModalBtn = document.getElementById('closeModalBtn');
-          if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', function () {
-              successModal.classList.add('hidden');
-            });
-          }
+          closeModalBtn.addEventListener('click', () => {
+            successModal.classList.add('hidden');
+          });
         }
       } else {
-        alert('Error: ' + data.message);
+        // Display the server error message in the UI
+        errorMessageContainer.textContent = `Error: ${data.message}`;
+        errorMessageContainer.classList.remove('hidden');
       }
     })
     .catch(error => {
       console.error('Error making booking:', error);
+      errorMessageContainer.textContent = 'An unexpected error occurred. Please try again.';
+      errorMessageContainer.classList.remove('hidden');
     });
 }
