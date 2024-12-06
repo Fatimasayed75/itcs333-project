@@ -321,7 +321,7 @@ usort($commentsWithReplies, function ($a, $b) {
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
-    <?php if(empty($commentsWithReplies)) { ?>
+    <?php if((empty($openLabBookings) && empty($commentsWithReplies)) || (empty($commentsWithReplies) && $isAdmin)) { ?>
         <p>No Notifications available.</p>
     <?php } ?>
 </div>
