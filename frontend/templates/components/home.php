@@ -106,6 +106,73 @@ usort($CErooms, function ($a, $b) {
     }
   ?>
 
+  <?php if ($id === Constants::ADMIN_USER_ID) { ?>
+    <!-- Room Management Section -->
+    <div class="container mx-auto p-6 mt-6">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-6">Room Management</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Add Room Card -->
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
+                <div onclick="openAddRoomModal()" class="w-full cursor-pointer">
+                    <div class="flex flex-col items-center">
+                        <i class="bx bx-plus-circle text-5xl mb-4" style="color: #D885A3;"></i>
+                        <h4 class="text-xl font-medium text-gray-600">Add New Room</h4>
+                        <p class="text-sm text-gray-500 mt-2">Manage and add new rooms to the system</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Container -->
+    <div id="modalContainer" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center overflow-y-auto py-8 max-h-screen w-full">
+        <div class="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+            <!-- Add Room Modal -->
+            <div id="addRoomModal" class="bg-white p-8 rounded-lg shadow-xl w-96 self-center mx-auto hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center">Add New Room</h2>
+                <form id="addRoomForm" action="#" method="post" class="space-y-4">
+                    <div>
+                        <label for="roomID" class="block text-sm font-medium text-gray-700">Room ID</label>
+                        <input type="text" id="roomID" name="roomID" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="roomName" class="block text-sm font-medium text-gray-700">Room Name</label>
+                        <input type="text" id="roomName" name="roomName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                        <select id="department" name="department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="CS">Computer Science</option>
+                            <option value="IS">Information Systems</option>
+                            <option value="CE">Computer Engineering</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="floor" class="block text-sm font-medium text-gray-700">Floor</label>
+                        <input type="number" id="floor" name="floor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
+                        <input type="number" id="capacity" name="capacity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="roomType" class="block text-sm font-medium text-gray-700">Room Type</label>
+                        <select id="roomType" name="roomType" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="lab">Lab</option>
+                            <option value="classroom">Classroom</option>
+                            <option value="meeting">Meeting Room</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="closeAddRoomModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
+                        <button type="submit" class="px-4 py-2 text-white rounded-md" style="background-color: #D885A3;">Add Room</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  <?php } ?>
+
   <!-- Browse All Rooms Section -->
   <div class="w-full bg-white shadow-lg my-8 py-6 px-4 sm:px-8 lg:px-16">
     <div class="flex justify-between mb-6">
@@ -264,3 +331,5 @@ usort($CErooms, function ($a, $b) {
   </div>
   </div>
 </body>
+<script src="../../js/modal.js"></script>
+</html>

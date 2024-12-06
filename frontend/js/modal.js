@@ -30,15 +30,57 @@ function closeModal() {
 }
 
 function editRoom(roomID) {
-    // Implement edit room functionality
-    alert('Edit room: ' + roomID);
+    const roomName = document.getElementById(`roomName_${roomID}`).value;
+    const roomPrice = document.getElementById(`roomPrice_${roomID}`).value;
+    const roomCapacity = document.getElementById(`roomCapacity_${roomID}`).value;
+
+    const formData = new FormData();
+    formData.append('roomID', roomID);
+    formData.append('name', roomName);
+    formData.append('price', roomPrice);
+    formData.append('capacity', roomCapacity);
+
+    fetch('/backend/server/editRoom.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Room updated successfully!');
+            location.reload();
+        } else {
+            alert('Failed to update room: ' + (data.message || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the room');
+    });
 }
 
 function deleteRoom(roomID) {
-    // Implement delete room functionality
     if(confirm('Are you sure you want to delete room ' + roomID + '?')) {
-        // Add AJAX call to delete room
-        alert('Deleting room: ' + roomID);
+        const formData = new FormData();
+        formData.append('roomID', roomID);
+
+        fetch('/backend/server/deleteRoom.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Room deleted successfully!');
+                location.reload();
+            } else {
+                alert('Failed to delete room: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the room');
+        });
     }
 }
 
@@ -48,9 +90,27 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addRoomForm) {
         addRoomForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            // Add AJAX call to submit room data
-            alert('Adding new room');
-            closeModal();
+            
+            const formData = new FormData(addRoomForm);
+
+            fetch('/backend/server/addRoom.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Room added successfully!');
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert('Failed to add room: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the room');
+            });
         });
     }
 });
