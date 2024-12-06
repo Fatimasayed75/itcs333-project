@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 02:33 PM
+-- Generation Time: Dec 06, 2024 at 02:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+03:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -34,7 +34,7 @@ CREATE TABLE `bookings` (
   `bookingTime` timestamp NOT NULL DEFAULT current_timestamp(),
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
-  `status` enum('active','pending','expired', 'rejected') NOT NULL DEFAULT 'active',
+  `status` enum('active','pending','expired','rejected') NOT NULL DEFAULT 'active',
   `feedback` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -138,7 +138,7 @@ INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`, `depar
 ('S40-1087', 'lab', 30, 1, 1, 'CE'),
 ('S40-1089', 'lab', 30, 1, 1, 'CE'),
 ('S40-2001', 'lab', 100, 0, 2, 'IS'),
-('S40-2005', 'lab', 30, 1, 1, 'IS'),
+('S40-2005', 'lab', 30, 1, 2, 'IS'),
 ('S40-2007', 'lab', 30, 1, 2, 'IS'),
 ('S40-2008', 'class', 30, 1, 2, 'IS'),
 ('S40-2010', 'class', 30, 1, 2, 'IS'),
