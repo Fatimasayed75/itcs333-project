@@ -321,4 +321,7 @@ usort($commentsWithReplies, function ($a, $b) {
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
+    <?php if(empty($commentsWithReplies)) { ?>
+        <p>No Notifications available.</p>
+    <?php } ?>
 </div>

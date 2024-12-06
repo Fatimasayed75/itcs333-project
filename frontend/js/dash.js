@@ -42,7 +42,7 @@ async function fetchDashboardData() {
             throw new Error("Failed to fetch dashboard data");
         }
         const data = await response.json();
-        console.log('Fetched dashboard data:', data); // Debugging log
+        // console.log('Fetched dashboard data:', data);
 
         if (data.error) {
             throw new Error(data.error);
@@ -56,23 +56,28 @@ async function fetchDashboardData() {
 }
 
 function initializeBookingCount(bookingCountElement, bookingCountData) {
-    bookingCountElement.textContent = bookingCountData; // Populate element
+    bookingCountElement.textContent = bookingCountData > 0 ? bookingCountData : "...";
 }
 
 function initializeMostBookedRoom(mostBookedRoomElement, mostBookedRoomData) {
-    mostBookedRoomElement.textContent = mostBookedRoomData; // Populate element
+    mostBookedRoomElement.textContent = mostBookedRoomData || "...";
 }
 
 
 function initializeTotalUsers(totalUsersElement, totalUsersData) {
-    totalUsersElement.textContent = totalUsersData; // Populate element
+    totalUsersElement.textContent = totalUsersData > 0 ? totalUsersData : "...";
 }
 
 function initializeNewFeedbacks(newFeedbacksElement, newFeedbacksData) {
-    newFeedbacksElement.textContent = newFeedbacksData; // Populate element
+    newFeedbacksElement.textContent = newFeedbacksData > 0 ? newFeedbacksData : "...";
 }
 
 function initializeBookingChart(bookingChartElement, bookingStats) {
+    if (bookingStats.length === 0) {
+        bookingChartElement.textContent = "No booking data to display.";
+        return;
+    }
+
     if (bookingChartElement) {
         // Define an array of month names
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -132,6 +137,11 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
 Chart.register(ChartDataLabels);
 
 function initializeDepartmentChart(departmentChartElement, departmentStats) {
+    if (departmentStats.length === 0) {
+        departmentChartElement.textContent = "No department data to display.";
+        return;
+    }
+    
     if (departmentChartElement) {
         const departments = departmentStats.map(stat => stat.department);
         const bookingCounts = departmentStats.map(stat => stat.booking_count);
