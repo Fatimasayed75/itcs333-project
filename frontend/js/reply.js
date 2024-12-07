@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const newReplyDiv = document.createElement('div');
                     newReplyDiv.classList.add('reply', 'p-4', 'bg-gray-50', 'border-l-4', 'border-gray-300', 'shadow-sm');
                     newReplyDiv.innerHTML = ` 
-                        <p class="text-sm text-gray-800"><strong>${data.fullName}:</strong> ${data.replyContent}</p>
+                        <p class="text-sm text-gray-800"><strong>You:</strong> ${data.replyContent}</p>
                         <p class="text-xs text-gray-500">Posted on: ${data.createdAt}</p>
                     `;
 
