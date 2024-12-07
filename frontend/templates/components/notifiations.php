@@ -264,7 +264,11 @@ usort($commentsWithReplies, function ($a, $b) {
                 <div class="notification-details mt-4 hidden" id="details-<?= $commentID; ?>">
                     <div class="reply bg-gray-50 border-l-4 border-gray-300 p-4 shadow-sm">
                         <p class="text-sm text-gray-800">
-                            <strong>Feedback:</strong> <?= $commentContent; ?>
+                            <?php if($isAdmin) { ?>
+                            <strong><?php echo htmlspecialchars($commentModel->getUserFullName( $comment['userID'])); ?> Feedback:</strong> <?= $commentContent; ?>
+                            <?php } elseif(!$isAdmin) { ?>
+                            <strong>Your Feedback:</strong> <?= $commentContent; ?>
+                            <?php } ?>
                         </p>
                     </div>
 
@@ -281,7 +285,14 @@ usort($commentsWithReplies, function ($a, $b) {
                             ?>
                             <div class="reply p-3 <?= $replyClass; ?> shadow-sm">
                                 <p class="text-sm text-gray-800">
-                                    <strong><?= $userFullName; ?>:</strong>
+                                <?php if ($isAdmin && $userFullName === 'Admin') { ?>
+                                    <strong>You:</strong>
+                                <?php } elseif (!$isAdmin && $userFullName !== 'Admin') { ?>
+                                    <strong>You:</strong>
+                                <?php } else { ?>
+                                    <strong><?= htmlspecialchars($userFullName); ?>:</strong>
+                                <?php } ?>
+                                        
                                     <?= htmlspecialchars($reply['replyContent']); ?>
                                 </p>
                                 <p class="text-xs text-gray-500">
