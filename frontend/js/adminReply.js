@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         // Create the new reply element
                         const newReplyDiv = document.createElement('div');
-                        newReplyDiv.classList.add('reply', 'p-3', 'bg-green-50', 'border-l-4', 'border-green-300', 'shadow-sm');
+                        newReplyDiv.classList.add('reply', 'p-3', 'bg-[#FDF6F6]', 'border-l-4', 'border-[#D885A3]', 'shadow-sm');
                         newReplyDiv.innerHTML = `
                             <p class="text-sm text-gray-800"><strong>You:</strong> ${data.replyContent}</p> 
                             <p class="text-xs text-gray-500">Posted on: ${data.createdAt}</p>

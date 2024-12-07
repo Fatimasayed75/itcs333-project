@@ -281,7 +281,7 @@ usort($commentsWithReplies, function ($a, $b) {
                             }
 
                             $userFullName = $isAdminReply ? 'Admin' : $commentModel->getUserFullName( $reply['userID']);
-                            $replyClass = $isAdminReply ? 'bg-green-50 border-l-4 border-green-400' : 'bg-gray-50 border-l-4 border-gray-300';
+                            $replyClass = $isAdminReply ? 'bg-[#FDF6F6] border-l-4 border-[#D885A3]' : 'bg-gray-50 border-l-4 border-gray-300';
                             ?>
                             <div class="reply p-3 <?= $replyClass; ?> shadow-sm">
                                 <p class="text-sm text-gray-800">
