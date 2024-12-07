@@ -29,24 +29,43 @@ function closeModal() {
     if (roomListModal) roomListModal.classList.add('hidden');
 }
 
-function editRoom(roomID) {
-    const roomName = document.getElementById(`roomName_${roomID}`).value;
-    const roomPrice = document.getElementById(`roomPrice_${roomID}`).value;
-    const roomCapacity = document.getElementById(`roomCapacity_${roomID}`).value;
+function toggleEditMode(roomID) {
+    const row = document.getElementById('room_' + roomID);
+    if (!row) return;
+
+    // Toggle view/edit modes
+    const viewCells = row.querySelectorAll('.view-mode');
+    const editCells = row.querySelectorAll('.edit-mode');
+
+    viewCells.forEach(cell => cell.classList.toggle('hidden'));
+    editCells.forEach(cell => cell.classList.toggle('hidden'));
+}
+
+function cancelEdit(roomID) {
+    toggleEditMode(roomID);
+}
+
+function saveRoom(roomID) {
+    const row = document.getElementById('room_' + roomID);
+    if (!row) return;
 
     const formData = new FormData();
     formData.append('roomID', roomID);
-    formData.append('name', roomName);
-    formData.append('price', roomPrice);
-    formData.append('capacity', roomCapacity);
+    formData.append('action', 'edit');
 
-    fetch('/backend/server/editRoom.php', {
+    // Get all input values
+    const inputs = row.querySelectorAll('.edit-mode input, .edit-mode select');
+    inputs.forEach(input => {
+        formData.append(input.name, input.value);
+    });
+
+    fetch('../../../backend/server/room.php', {
         method: 'POST',
         body: formData
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data.status === 'success') {
             alert('Room updated successfully!');
             location.reload();
         } else {
@@ -63,14 +82,15 @@ function deleteRoom(roomID) {
     if(confirm('Are you sure you want to delete room ' + roomID + '?')) {
         const formData = new FormData();
         formData.append('roomID', roomID);
+        formData.append('action', 'delete');
 
-        fetch('/backend/server/deleteRoom.php', {
+        fetch('../../../backend/server/room.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+            if (data.status === 'success') {
                 alert('Room deleted successfully!');
                 location.reload();
             } else {
@@ -86,30 +106,39 @@ function deleteRoom(roomID) {
 
 // Add event listeners after DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    var addRoomForm = document.getElementById('addRoomForm');
+    const addRoomForm = document.getElementById('addRoomForm');
     if (addRoomForm) {
+        let isSubmitting = false;
         addRoomForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const formData = new FormData(addRoomForm);
-
-            fetch('/backend/server/addRoom.php', {
+            if (isSubmitting) return; // Prevent multiple submissions
+            isSubmitting = true;
+            
+            const formData = new FormData(this);
+            formData.append('action', 'add');
+            
+            fetch('../../../backend/server/room.php', {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
+                if (data.status === 'success') {
                     alert('Room added successfully!');
+                    addRoomForm.reset();
                     closeModal();
                     location.reload();
                 } else {
-                    alert('Failed to add room: ' + (data.message || 'Unknown error'));
+                    alert('Error: ' + (data.message || 'Unknown error occurred'));
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred while adding the room');
+                alert('Failed to add room. Please try again.');
+            })
+            .finally(() => {
+                isSubmitting = false; // Reset the flag regardless of success/failure
             });
         });
     }

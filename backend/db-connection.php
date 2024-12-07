@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/utils/crud.php';
-require_once __DIR__ . '/server/room.php';
-
 
 // Database connection settings
 $dbhost = "localhost";

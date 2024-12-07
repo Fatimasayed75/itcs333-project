@@ -84,5 +84,4 @@ if ($id === Constants::ADMIN_USER_ID) {
 </div>
 
 </html>
-<script src="../../js/modal.js"></script>
 <?php } ?>

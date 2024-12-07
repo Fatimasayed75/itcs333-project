@@ -45,47 +45,6 @@ usort($CErooms, function ($a, $b) {
 
 ?>
 
-<?php
-require_once '../../../backend/database/user-model.php';
-require_once '../../../backend/database/room-model.php';
-require_once '../../../backend/utils/helpers.php';
-
-$id = isAuthorized();
-
-$userModel = new UserModel($pdo);
-$user = $userModel->getUserByID($id);
-
-$roomModel = new RoomModel($pdo);
-$rooms = $roomModel->getAllRooms();
-usort($rooms, function ($a, $b) {
-  return $a['roomID'] <=> $b['roomID'];
-});
-$CSrooms = [];
-$ISrooms = [];
-$CErooms = [];
-
-// filter by department
-foreach ($rooms as $room) {
-  if ($room['department'] === 'CS') {
-    $CSrooms[] = $room;
-  } elseif ($room['department'] === 'IS') {
-    $ISrooms[] = $room;
-  } elseif ($room['department'] === 'CE') {
-    $CErooms[] = $room;
-  }
-}
-usort($CSrooms, function ($a, $b) {
-  return $a['roomID'] <=> $b['roomID'];
-});
-usort($ISrooms, function ($a, $b) {
-  return $a['roomID'] <=> $b['roomID'];
-});
-usort($CErooms, function ($a, $b) {
-  return $a['roomID'] <=> $b['roomID'];
-});
-
-?>
-
 <body class="bg-gray-100 min-h-screen mr-5">
   <!-- Welcome Message -->
   <div class="text-left pb-6 pt-20 sm:pt-15 lg:pt-5 md:pt-10">
@@ -121,6 +80,25 @@ usort($CErooms, function ($a, $b) {
                     </div>
                 </div>
             </div>
+             <!-- Manage Rooms Card -->
+          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
+              <div onclick="openRoomListModal()" class="w-full cursor-pointer">
+                  <div class="flex flex-col items-center">
+                      <i class="bx bx-door-open text-5xl mb-4" style="color: #D885A3;"></i>
+                      <h4 class="text-xl font-medium text-gray-600">Manage Rooms</h4>
+                      <p class="text-sm text-gray-500 mt-2">Update, edit, or remove existing rooms</p>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Room Occupancy Card -->
+          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
+              <div class="flex flex-col items-center">
+                  <i class="bx bx-bar-chart text-5xl mb-4" style="color: #D885A3;"></i>
+                  <h4 class="text-xl font-medium text-gray-600">Room Occupancy</h4>
+                  <p id="roomOccupancy" class="text-3xl font-bold mt-2" style="color: #D885A3;">...</p>
+              </div>
+          </div>
         </div>
     </div>
 
@@ -130,42 +108,148 @@ usort($CErooms, function ($a, $b) {
             <!-- Add Room Modal -->
             <div id="addRoomModal" class="bg-white p-8 rounded-lg shadow-xl w-96 self-center mx-auto hidden">
                 <h2 class="text-2xl font-bold mb-6 text-center">Add New Room</h2>
-                <form id="addRoomForm" action="#" method="post" class="space-y-4">
+                <form id="addRoomForm" class="space-y-4">
                     <div>
-                        <label for="roomID" class="block text-sm font-medium text-gray-700">Room ID</label>
-                        <input type="text" id="roomID" name="roomID" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="roomName" class="block text-sm font-medium text-gray-700">Room Name</label>
-                        <input type="text" id="roomName" name="roomName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
-                        <select id="department" name="department" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="CS">Computer Science</option>
-                            <option value="IS">Information Systems</option>
-                            <option value="CE">Computer Engineering</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="floor" class="block text-sm font-medium text-gray-700">Floor</label>
-                        <input type="number" id="floor" name="floor" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
-                        <input type="number" id="capacity" name="capacity" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label for="roomType" class="block text-sm font-medium text-gray-700">Room Type</label>
-                        <select id="roomType" name="roomType" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <option value="lab">Lab</option>
-                            <option value="classroom">Classroom</option>
+                        <label for="type" class="block text-sm font-medium text-gray-700">Room Type</label>
+                        <select id="type" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="class">Classroom</option>
+                            <option value="lab">Laboratory</option>
                             <option value="meeting">Meeting Room</option>
                         </select>
                     </div>
+                    <div>
+                        <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
+                        <input type="number" id="capacity" name="capacity" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="floor" class="block text-sm font-medium text-gray-700">Floor</label>
+                        <input type="number" id="floor" name="floor" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
                     <div class="flex justify-end space-x-4 mt-6">
-                        <button type="button" onclick="closeAddRoomModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
                         <button type="submit" class="px-4 py-2 text-white rounded-md" style="background-color: #D885A3;">Add Room</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Room List Modal -->
+            <div id="roomListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center">Room List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full bg-white shadow-md rounded">
+                        <thead>
+                            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">Room ID</th>
+                                <!-- <th class="py-3 px-6 text-left">Name</th> -->
+                                <th class="py-3 px-6 text-left">Type</th>
+                                <th class="py-3 px-6 text-left">Capacity</th>
+                                <th class="py-3 px-6 text-left">Floor</th>
+                                <th class="py-3 px-6 text-left">Status</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($rooms as $room): ?>
+                            <tr class="border-b border-gray-200 hover:bg-gray-100" id="room_<?php echo htmlspecialchars($room['roomID']); ?>">
+                                <!-- Normal View -->
+                                <td class="py-3 px-6 text-left whitespace-nowrap view-mode"><?php echo htmlspecialchars($room['roomID']); ?></td>
+                                <!-- <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['name']); ?></td> -->
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['type']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['capacity']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['floor']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo $room['isAvailable'] ? 'Available' : 'Unavailable'; ?></td>
+                                <td class="py-3 px-6 text-center view-mode">
+                                    <div class="flex item-center justify-center space-x-4">
+                                        <button onclick="toggleEditMode('<?php echo htmlspecialchars($room['roomID']); ?>')" class="text-blue-500 hover:text-blue-700">
+                                            <i class="bx bx-edit-alt"></i>
+                                        </button>
+                                        <button onclick="deleteRoom('<?php echo htmlspecialchars($room['roomID']); ?>')" class="text-red-500 hover:text-red-700">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                                <!-- Edit Mode -->
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden"><?php echo htmlspecialchars($room['roomID']); ?></td>
+                                <!-- <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="text" name="name" value="<?php echo htmlspecialchars($room['name']); ?>" 
+                                           class="w-full px-2 py-1 border rounded">
+                                </td> -->
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <select name="type" class="w-full px-2 py-1 border rounded">
+                                        <option value="class" <?php echo $room['type'] === 'class' ? 'selected' : ''; ?>>Classroom</option>
+                                        <option value="lab" <?php echo $room['type'] === 'lab' ? 'selected' : ''; ?>>Laboratory</option>
+                                        <option value="meeting" <?php echo $room['type'] === 'meeting' ? 'selected' : ''; ?>>Meeting Room</option>
+                                    </select>
+                                </td>
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="number" name="capacity" value="<?php echo htmlspecialchars($room['capacity']); ?>" 
+                                           class="w-full px-2 py-1 border rounded">
+                                </td>
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="number" name="floor" value="<?php echo htmlspecialchars($room['floor']); ?>" 
+                                           class="w-full px-2 py-1 border rounded">
+                                </td>
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <select name="isAvailable" class="w-full px-2 py-1 border rounded">
+                                        <option value="1" <?php echo $room['isAvailable'] ? 'selected' : ''; ?>>Available</option>
+                                        <option value="0" <?php echo !$room['isAvailable'] ? 'selected' : ''; ?>>Unavailable</option>
+                                    </select>
+                                </td>
+                                <td class="py-3 px-6 text-center edit-mode hidden">
+                                    <div class="flex item-center justify-center space-x-4">
+                                        <button onclick="saveRoom('<?php echo htmlspecialchars($room['roomID']); ?>')" class="text-green-500 hover:text-green-700">
+                                            <i class="bx bx-check"></i>
+                                        </button>
+                                        <button onclick="cancelEdit('<?php echo htmlspecialchars($room['roomID']); ?>')" class="text-gray-500 hover:text-gray-700">
+                                            <i class="bx bx-x"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button onclick="closeModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">Close</button>
+                </div>
+            </div>
+
+            <!-- Edit Room Modal -->
+            <div id="editRoomModal" class="bg-white p-8 rounded-lg shadow-xl w-96 self-center mx-auto hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center">Edit Room</h2>
+                <form id="editRoomForm" class="space-y-4">
+                    <input type="hidden" id="edit_roomID" name="roomID">
+                    <div>
+                        <label for="edit_name" class="block text-sm font-medium text-gray-700">Room Name</label>
+                        <input type="text" id="edit_name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="edit_type" class="block text-sm font-medium text-gray-700">Room Type</label>
+                        <select id="edit_type" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="class">Classroom</option>
+                            <option value="lab">Laboratory</option>
+                            <option value="meeting">Meeting Room</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="edit_capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
+                        <input type="number" id="edit_capacity" name="capacity" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label for="edit_floor" class="block text-sm font-medium text-gray-700">Floor</label>
+                        <input type="number" id="edit_floor" name="floor" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" id="edit_isAvailable" name="isAvailable" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm text-gray-600">Available</span>
+                        </label>
+                    </div>
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
+                        <button type="submit" class="px-4 py-2 text-white rounded-md" style="background-color: #D885A3;">Update Room</button>
                     </div>
                 </form>
             </div>
@@ -331,5 +415,4 @@ usort($CErooms, function ($a, $b) {
   </div>
   </div>
 </body>
-<script src="../../js/modal.js"></script>
 </html>

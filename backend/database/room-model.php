@@ -1,118 +1,170 @@
 <?php
 
-// comment this in case we won't use the Crud class
 require_once __DIR__ . '/../utils/crud.php';
+require_once __DIR__ . '/../utils/constants.php';
+
+use Utils\Constants;
 use Utils\Crud;
 
 class RoomModel
 {
-    // a struct that we can use.
-
     private $conn;
-    private $crud;
     public $roomID;
     public $type;
     public $capacity;
     public $isAvailable;
     public $floor;
 
-    public function __construct($dbConnection, $roomID = null, $type = "class", $capacity = null, $isAvailable = false, $floor = null)
+    public function __construct($conn, $roomID = null, $type = "class", $capacity = null, $isAvailable = false, $floor = null)
     {
-        $this->conn = $dbConnection;
-        $this->crud = new Crud($dbConnection);
+        $this->conn = $conn;
         $this->roomID = $roomID;
         $this->type = $type;
         $this->capacity = $capacity;
         $this->isAvailable = $isAvailable;
         $this->floor = $floor;
     }
-    // end of the struct
 
-    // Save, function to save a room to the database
+    // Generate a unique room ID
+    private function generateRoomID()
+    {
+        $crud = new Crud($this->conn);
+        $prefix = 'R';
+        $floor = str_pad($this->floor, 2, '0', STR_PAD_LEFT);
+        
+        // Get the highest room number for this floor
+        $condition = "roomID LIKE ?";
+        $pattern = $prefix . $floor . '%';
+        $result = $crud->read('room', ['roomID'], $condition, $pattern);
+        
+        $maxNum = 0;
+        foreach ($result as $row) {
+            $num = (int)substr($row['roomID'], 3); // Extract number after floor
+            $maxNum = max($maxNum, $num);
+        }
+        
+        $nextNum = str_pad($maxNum + 1, 3, '0', STR_PAD_LEFT);
+        return $prefix . $floor . $nextNum;
+    }
+
+    // Save a new room
     public function save()
     {
-        $crud = new Crud($this->conn);
-        $columns = ['roomID', 'type', 'capacity', 'isAvailable', 'floor'];
-        $values = [$this->roomID, $this->type, $this->capacity, $this->isAvailable, $this->floor];
-        return $crud->create('room', $columns, $values);
+        try {
+            if ($this->roomID === null) {
+                $this->roomID = $this->generateRoomID();
+            }
+            
+            $crud = new Crud($this->conn);
+            $columns = ['roomID', 'type', 'capacity', 'isAvailable', 'floor'];
+            $values = [$this->roomID, $this->type, $this->capacity, $this->isAvailable ? 1 : 0, $this->floor];
+            return $crud->create('room', $columns, $values);
+        } catch (Exception $e) {
+            error_log("Error saving room: " . $e->getMessage());
+            return false;
+        }
     }
 
-    // Update, function to update a room to the database
+    // Update a room
     public function update()
     {
-        $crud = new Crud($this->conn);
-        $updates = ['type' => $this->type, 'capacity' => $this->capacity, 'isAvailable' => $this->isAvailable, 'floor' => $this->floor];
-        $condition = 'roomID = ?';
-        return $crud->update('room', $updates, $condition, $this->roomID);
+        try {
+            $crud = new Crud($this->conn);
+            $updates = [
+                'type' => $this->type,
+                'capacity' => $this->capacity,
+                'isAvailable' => $this->isAvailable ? 1 : 0,
+                'floor' => $this->floor
+            ];
+            $condition = 'roomID = ?';
+            return $crud->update('room', $updates, $condition, $this->roomID);
+        } catch (Exception $e) {
+            error_log("Error updating room: " . $e->getMessage());
+            return false;
+        }
     }
 
-    // Delete, function to delete a room from the database
+    // Delete a room
     public function delete()
     {
-        $crud = new Crud($this->conn);
-        $condition = 'roomID = ?';
-        return $crud->delete('room', $condition, $this->roomID);
+        try {
+            $crud = new Crud($this->conn);
+            $condition = 'roomID = ?';
+            return $crud->delete('room', $condition, $this->roomID);
+        } catch (Exception $e) {
+            error_log("Error deleting room: " . $e->getMessage());
+            return false;
+        }
     }
 
     // Get a room by ID
     public function getRoomById($id)
     {
-        return $this->crud->read('room', [], 'roomID = ?', $id);
+        $crud = new Crud($this->conn);
+        return $crud->read('room', [], 'roomID = ?', $id);
     }
 
     // Get all rooms
     public function getAllRooms()
     {
-        return $this->crud->read('room');
+        $crud = new Crud($this->conn);
+        return $crud->read('room');
     }
 
     // Get all available rooms
     public function getAvailableRooms()
     {
+        $crud = new Crud($this->conn);
         $condition = 'isAvailable = ?';
-        return $this->crud->read('room', [], $condition, true);
+        return $crud->read('room', [], $condition, true);
     }
 
-    // Get all rooms by type
+    // Get rooms by type
     public function getRoomsByType($type)
     {
+        $crud = new Crud($this->conn);
         $condition = 'type = ?';
-        return $this->crud->read('room', [], $condition, $type);
+        return $crud->read('room', [], $condition, $type);
     }
 
-    // Get all rooms by floor
+    // Get rooms by floor
     public function getRoomsByFloor($floor)
     {
+        $crud = new Crud($this->conn);
         $condition = 'floor = ?';
-        return $this->crud->read('room', [], $condition, $floor);
+        return $crud->read('room', [], $condition, $floor);
     }
 
     // Get all rooms by capacity
     public function getRoomsByCapacity($capacity)
     {
+        $crud = new Crud($this->conn);
         $condition = 'capacity = ?';
-        return $this->crud->read('room', [], $condition, $capacity);
+        return $crud->read('room', [], $condition, $capacity);
     }
 
     // Get all rooms by type and floor
     public function getRoomsByTypeAndFloor($type, $floor)
     {
+        $crud = new Crud($this->conn);
         $condition = 'type = ? AND floor = ?';
-        return $this->crud->read('room', [], $condition, $type, $floor);
+        return $crud->read('room', [], $condition, $type, $floor);
     }
 
     // get all rooms by user id by the crud class
     public function getRoomsByUserId($userId)
     {
+        $crud = new Crud($this->conn);
         $condition = 'roomID IN (SELECT roomID FROM bookings WHERE userID = ?)';
-        return $this->crud->read('room', [], $condition, $userId);
+        return $crud->read('room', [], $condition, $userId);
     }
 
     // get bookings by room id
     public function getBookingsByRoomId($roomId)
     {
+        $crud = new Crud($this->conn);
         $condition = 'roomID = ?';
-        return $this->crud->read('bookings', [], $condition, $roomId);
+        return $crud->read('bookings', [], $condition, $roomId);
     }
 
     // get available time slots for a room
@@ -182,8 +234,11 @@ class RoomModel
         return $availableTimes;
     }
 
-
-
-
-
+    // Check if room exists
+    public function isRoomExists($roomID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'roomID = ?';
+        return !empty($crud->read('room', ['roomID'], $condition, $roomID));
+    }
 }
