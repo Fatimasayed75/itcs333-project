@@ -366,13 +366,24 @@ class BookModel
     return $crud->update('bookings', $update, $condition, $this->bookingID);
   }
 
-  public function getAllBookings()
+  public function getAllActiveBookings()
   {
     $crud = new Crud($this->conn);
     $currentTime = (new DateTime())->format('Y-m-d H:i:s');
 
     // Query to get all past bookings ordered by endTime DESC
     $condition = 'endTime < ? AND status = "active" ORDER BY endTime DESC';
+    $result = $crud->read('bookings', [], $condition, $currentTime);
+
+    return !empty($result) ? $result : [];
+  }
+  public function getAllBookings()
+  {
+    $crud = new Crud($this->conn);
+    $currentTime = (new DateTime())->format('Y-m-d H:i:s');
+
+    // Query to get all past bookings ordered by endTime DESC
+    $condition = 'endTime < ? ORDER BY endTime DESC';
     $result = $crud->read('bookings', [], $condition, $currentTime);
 
     return !empty($result) ? $result : [];
@@ -517,7 +528,7 @@ public function getNewFeedbacks() {
   public function updateExpiredBookings()
 {
     // Get the previous bookings by the user
-    $previousBookings = $this->getAllBookings();
+    $previousBookings = $this->getAllActiveBookings();
 
     // If there are no previous bookings, return a constant indicating no records
     if (empty($previousBookings)) {
