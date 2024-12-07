@@ -34,9 +34,9 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <?php if (!empty($user)): ?>
       <div class="profile-details">
         <div class="profile-pic">
-          <img src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
-               alt="Profile Picture" 
-               class="w-24 h-24 rounded-full object-cover">
+          <img
+            src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>"
+            alt="Profile Picture" class="w-24 h-24 rounded-full object-cover">
         </div>
         <div class="profile-info mt-4">
           <p class="mb-2"><strong>First Name:</strong> <?php echo htmlspecialchars($user['firstName']); ?></p>
@@ -44,8 +44,8 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
           <p class="mb-2"><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
           <p class="mb-2"><strong>Role:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
         </div>
-        <button onclick="openEditProfileModal()" 
-                class="font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 editbtn">
+        <button onclick="openEditProfileModal()"
+          class="font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 editbtn">
           Edit Profile
         </button>
       </div>
@@ -59,52 +59,52 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <div class="min-h-screen px-4 text-center flex items-center justify-center">
       <div class="modal-content rounded-lg shadow-xl max-w-md w-full">
         <div class="modal-header">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Profile</h3>
-          <button type="button" id="closeEditProfileModalBtn" class="text-gray-400 hover:text-gray-500" onclick="closeEditProfileModal()">
+          <h3 class="text-lg leading-6 font-medium text-white">Edit Profile</h3>
+          <button type="button" id="closeEditProfileModalBtn" class="text-gray-400 hover:text-gray-500"
+            onclick="closeEditProfileModal()">
             <span class="sr-only">Close</span>
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="closeEditProfileModalBtn">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" id="closeEditProfileModalBtn">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        
+
         <div class="modal-body p-6">
           <form id="editProfileForm" method="post" enctype="multipart/form-data">
             <div class="mb-6 text-center">
               <div class="relative inline-block">
-                <img id="profilePreview" 
-                     src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>" 
-                     alt="Profile Picture" 
-                     class="w-24 h-24 rounded-full object-cover mx-auto">
-                <label for="profilePic" class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
+                <img id="profilePreview"
+                  src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>"
+                  alt="Profile Picture" class="w-24 h-24 rounded-full object-cover mx-auto">
+                <label for="profilePic"
+                  class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
                   <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                   </svg>
                 </label>
-                <input type="file" id="profilePic" name="profilePic" accept="image/*" class="hidden" onchange="previewImage(this)">
+                <input type="file" id="profilePic" name="profilePic" accept="image/*" class="hidden"
+                  onchange="previewImage(this)">
               </div>
             </div>
 
             <div class="space-y-4">
               <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" 
-                       value="<?php echo htmlspecialchars($user['firstName']); ?>" 
-                       required>
+                <input type="text" id="firstName" name="firstName"
+                  value="<?php echo htmlspecialchars($user['firstName']); ?>" required>
               </div>
 
               <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" 
-                       value="<?php echo htmlspecialchars($user['lastName']); ?>" 
-                       required>
+                <input type="text" id="lastName" name="lastName"
+                  value="<?php echo htmlspecialchars($user['lastName']); ?>" required>
               </div>
 
               <div class="form-group">
                 <label for="email">Email (Cannot be changed)</label>
-                <input type="email" id="email" name="email" 
-                       value="<?php echo htmlspecialchars($user['email']); ?>" 
-                       readonly disabled>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"
+                  readonly disabled>
               </div>
             </div>
           </form>
@@ -132,18 +132,18 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     }
 
     // Add event listeners for closing the modal
-    document.getElementById('closeEditProfileModalBtn').addEventListener('click', function() {
+    document.getElementById('closeEditProfileModalBtn').addEventListener('click', function () {
       closeEditProfileModal();
     });
-  
-    document.getElementById('cancelEditProfileBtn').addEventListener('click', function() {
+
+    document.getElementById('cancelEditProfileBtn').addEventListener('click', function () {
       closeEditProfileModal();
     });
 
     console.log(document.getElementById('closeEditProfileModalBtn'));
-  
+
     // Close modal when clicking outside
-    document.getElementById('editProfileModal').addEventListener('click', function(e) {
+    document.getElementById('editProfileModal').addEventListener('click', function (e) {
       if (e.target === this) {
         closeEditProfileModal();
       }
@@ -152,7 +152,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     function previewImage(input) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           document.getElementById('profilePreview').src = e.target.result;
         };
         reader.readAsDataURL(input.files[0]);
@@ -160,30 +160,31 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     }
 
     // Handle form submission
-    document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+    document.getElementById('editProfileForm').addEventListener('submit', function (e) {
       e.preventDefault();
-      
+
       const formData = new FormData(this);
-      
+
       fetch('editProfile.php', {
         method: 'POST',
         body: formData
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          alert('Profile updated successfully!');
-          closeEditProfileModal();
-          window.location.reload();
-        } else {
-          alert(data.message || 'Error updating profile');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the profile');
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Profile updated successfully!');
+            closeEditProfileModal();
+            window.location.reload();
+          } else {
+            alert(data.message || 'Error updating profile');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while updating the profile');
+        });
     });
   </script>
 </body>
+
 </html>

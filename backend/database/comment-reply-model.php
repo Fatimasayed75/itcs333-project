@@ -17,6 +17,8 @@ class CommentReplyModel
     public $commentID;
     public $userID;
     public $replyContent;
+    public $isRead;
+
     public $createdAt;
 
     private $commentModel;
@@ -24,7 +26,7 @@ class CommentReplyModel
     private $roomModel;
 
     // Constructor
-    function __construct($conn, $replyID = null, $commentID = null, $userID = null, $replyContent = null, $createdAt = null)
+    function __construct($conn, $replyID = null, $commentID = null, $userID = null, $replyContent = null, $createdAt = null, $isRead=0)
     {
         $this->conn = $conn;
         $this->replyID = $replyID;
@@ -32,6 +34,7 @@ class CommentReplyModel
         $this->userID = $userID;
         $this->replyContent = $replyContent;
         $this->createdAt = $createdAt;
+        $this->isRead = $isRead;
 
          $this->commentModel = new CommentModel($conn);
          $this->userModel = new UserModel($conn);
@@ -57,8 +60,8 @@ class CommentReplyModel
         }
 
         $crud = new Crud($this->conn);
-        $columns = ['commentID', 'userID', 'replyContent'];
-        $values = [$this->commentID, $this->userID, $this->replyContent];
+        $columns = ['commentID', 'userID', 'replyContent', 'isRead'];
+        $values = [$this->commentID, $this->userID, $this->replyContent, 0];
         $result = $crud->create('comment_reply', $columns, $values);
 
         // Check if the reply was saved
@@ -74,7 +77,7 @@ class CommentReplyModel
         }
 
         $crud = new Crud($this->conn);
-        $update = ['replyContent' => $this->replyContent];
+        $update = ['replyContent' => $this->replyContent, 'isRead' => $this->isRead];
         $condition = 'replyID = ?';
         $result = $crud->update('comment_reply', $update, $condition, $this->replyID);
 

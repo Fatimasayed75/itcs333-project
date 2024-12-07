@@ -30,6 +30,8 @@ class UserModel
         $this->profilePic = $profilePic;
     }
 
+
+    // Save a new user
     // Save a new user
     public function save()
     {
@@ -37,10 +39,13 @@ class UserModel
         $columns = ['email', 'password', 'firstName', 'lastName', 'role', 'profilePic'];
         $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
         $this->password = $hashedPassword;
+
+        // Ensure the profile picture is binary (BLOB)
         $values = [$this->email, $this->password, $this->firstName, $this->lastName, $this->role, $this->profilePic];
         $crud->create('users', $columns, $values);
         return $this->conn->lastInsertId();
     }
+
 
     // Update a user
     public function isEmailRegistered($email)
@@ -57,11 +62,12 @@ class UserModel
             'firstName' => $firstName,
             'lastName' => $lastName,
             'email' => $email,
-            'profilePic' => $profilePic
+            'profilePic' => $profilePic // BLOB data here
         ];
         $condition = 'userID = ?';
         return $crud->update('users', $updates, $condition, $userID);
     }
+
 
 
     // Delete a user
@@ -81,6 +87,7 @@ class UserModel
     }
 
     // Get a user by user ID
+    // Get a user by user ID
     public function getUserByID($userID)
     {
         $crud = new Crud($this->conn);
@@ -88,6 +95,7 @@ class UserModel
         $result = $crud->read('users', [], $condition, $userID);
         return !empty($result) ? $result[0] : Constants::USER_NOT_FOUND;
     }
+
 
     // Get a user by email
     public function getUserByEmail($email)
@@ -105,8 +113,9 @@ class UserModel
         $condition = 'email = ?';
         return $crud->delete('users', $condition, $email);
     }
-    
-    public function getTotalUsers() {
+
+    public function getTotalUsers()
+    {
         $query = "SELECT COUNT(*) AS totalUsers FROM users";
         $stmt = $this->conn->query($query);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

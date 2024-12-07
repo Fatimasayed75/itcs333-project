@@ -74,6 +74,7 @@ sidebarLinks.forEach((link) => {
 
     if (page === "home.php") {
       initializeHomeEventListeners();
+      
     } else if (page === "dashboard.php") {
       if (!isDashboardInitialized) {
         initializeDashboard(); // Initialize dashboard only once

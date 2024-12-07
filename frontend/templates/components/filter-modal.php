@@ -45,9 +45,11 @@
     onclick="hideFilterBox()">
     Close
   </button>
-  <button type="button" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="applyFilters()">
+  <button type="button" class="text-white py-2 px-6 rounded-lg bg-[#D885A3] hover:bg-[#B66C8E]"
+    onclick="applyFilters()">
     Apply Filters
   </button>
+
   <!-- <button type="button" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="clearFilters()">
     Clear Filters
   </button> -->

@@ -23,6 +23,8 @@ function initializeHomeEventListeners() {
   initializeRoomSearch(roomCards, roomSquares);
   initFilter();
   document.getElementById("filterIcon").classList.remove("hidden");
+  // Initialize countdown on page load
+  startCountdown();
 }
 
 function initializeRoomViewToggle() {

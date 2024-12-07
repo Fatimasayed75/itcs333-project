@@ -31,18 +31,18 @@ class RoomModel
         $crud = new Crud($this->conn);
         $prefix = 'R';
         $floor = str_pad($this->floor, 2, '0', STR_PAD_LEFT);
-        
+
         // Get the highest room number for this floor
         $condition = "roomID LIKE ?";
         $pattern = $prefix . $floor . '%';
         $result = $crud->read('room', ['roomID'], $condition, $pattern);
-        
+
         $maxNum = 0;
         foreach ($result as $row) {
-            $num = (int)substr($row['roomID'], 3); // Extract number after floor
+            $num = (int) substr($row['roomID'], 3); // Extract number after floor
             $maxNum = max($maxNum, $num);
         }
-        
+
         $nextNum = str_pad($maxNum + 1, 3, '0', STR_PAD_LEFT);
         return $prefix . $floor . $nextNum;
     }
@@ -54,7 +54,7 @@ class RoomModel
             if ($this->roomID === null) {
                 $this->roomID = $this->generateRoomID();
             }
-            
+
             $crud = new Crud($this->conn);
             $columns = ['roomID', 'type', 'capacity', 'isAvailable', 'floor'];
             $values = [$this->roomID, $this->type, $this->capacity, $this->isAvailable ? 1 : 0, $this->floor];
@@ -182,32 +182,34 @@ class RoomModel
         $thirtyMinutesInDecimal = 30 / 60;  // 30 minutes = 0.5
 
         foreach ($roomBookings as $booking) {
-            // Extract the date part of the booking startTime and endTime
-            $bookingDate = substr($booking['startTime'], 0, 10);  // Get 'YYYY-MM-DD' from 'YYYY-MM-DD HH:MM:SS'
+            if ($booking['status'] != 'rejected' && $booking['status'] != 'pending') {
+                // Extract the date part of the booking startTime and endTime
+                $bookingDate = substr($booking['startTime'], 0, 10);  // Get 'YYYY-MM-DD' from 'YYYY-MM-DD HH:MM:SS'
 
-            // If the booking date matches the provided date, process the booking times
-            if ($bookingDate == $date) {
-                // Extract the start time and convert to decimal
-                $startTime = substr($booking['startTime'], 11, 5);  // Get 'HH:MM' part
-                $startHour = (int) substr($startTime, 0, 2);
-                $startMinute = (int) substr($startTime, 3, 2);
-                $startDecimal = $startHour + $startMinute / 60; // Convert start time to decimal format
+                // If the booking date matches the provided date, process the booking times
+                if ($bookingDate == $date) {
+                    // Extract the start time and convert to decimal
+                    $startTime = substr($booking['startTime'], 11, 5);  // Get 'HH:MM' part
+                    $startHour = (int) substr($startTime, 0, 2);
+                    $startMinute = (int) substr($startTime, 3, 2);
+                    $startDecimal = $startHour + $startMinute / 60; // Convert start time to decimal format
 
-                // Extract the end time and convert to decimal
-                $endTime = substr($booking['endTime'], 11, 5);  // Get 'HH:MM' part
-                $endHour = (int) substr($endTime, 0, 2);
-                $endMinute = (int) substr($endTime, 3, 2);
-                $endDecimal = $endHour + $endMinute / 60;  // Convert end time to decimal format
+                    // Extract the end time and convert to decimal
+                    $endTime = substr($booking['endTime'], 11, 5);  // Get 'HH:MM' part
+                    $endHour = (int) substr($endTime, 0, 2);
+                    $endMinute = (int) substr($endTime, 3, 2);
+                    $endDecimal = $endHour + $endMinute / 60;  // Convert end time to decimal format
 
-                // Add all time slots between start and end times as booked
-                for ($i = $startDecimal; $i < $endDecimal; $i += 0.5) {  // Increment by 0.5 for half-hour intervals
-                    $bookedTimes[] = number_format($i, 2);  // Format to 2 decimal places (e.g., 8.00, 8.30)
-                }
+                    // Add all time slots between start and end times as booked
+                    for ($i = $startDecimal; $i < $endDecimal; $i += 0.5) {  // Increment by 0.5 for half-hour intervals
+                        $bookedTimes[] = number_format($i, 2);  // Format to 2 decimal places (e.g., 8.00, 8.30)
+                    }
 
-                // Add times before and after the booking to account for the 10-minute and 30-minute windows
-                for ($i = $startDecimal - $thirtyMinutesInDecimal; $i < $endDecimal + $tenMinutesInDecimal; $i += 0.5) {  // Adjust intervals to 0.5 for 30-minute slots
-                    if ($i >= 0) {  // Ensure time is not negative
-                        $bookedTimes[] = number_format($i, 2);  // Format to 2 decimal places
+                    // Add times before and after the booking to account for the 10-minute and 30-minute windows
+                    for ($i = $startDecimal - $thirtyMinutesInDecimal; $i < $endDecimal + $tenMinutesInDecimal; $i += 0.5) {  // Adjust intervals to 0.5 for 30-minute slots
+                        if ($i >= 0) {  // Ensure time is not negative
+                            $bookedTimes[] = number_format($i, 2);  // Format to 2 decimal places
+                        }
                     }
                 }
             }

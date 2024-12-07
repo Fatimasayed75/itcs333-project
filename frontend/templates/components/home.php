@@ -60,14 +60,14 @@ usort($CErooms, function ($a, $b) {
 
   <!-- Reminders Section -->
   <?php
-  if ($id != Constants::GUEST_USER_ID) {
+  if ($id != Constants::GUEST_USER_ID && $id != Constants::ADMIN_USER_ID) {
     require_once 'reminders.php';
   }
   ?>
 
   <?php if ($id === Constants::ADMIN_USER_ID) { ?>
     <!-- Room Management Section -->
-    <div class="container mx-auto p-6 mt-6">
+    <div class="container mx-auto mt-6">
         <h3 class="text-2xl font-semibold text-gray-800 mb-6">Room Management</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Add Room Card -->
@@ -88,15 +88,6 @@ usort($CErooms, function ($a, $b) {
                       <h4 class="text-xl font-medium text-gray-600">Manage Rooms</h4>
                       <p class="text-sm text-gray-500 mt-2">Update, edit, or remove existing rooms</p>
                   </div>
-              </div>
-          </div>
-
-          <!-- Room Occupancy Card -->
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-              <div class="flex flex-col items-center">
-                  <i class="bx bx-bar-chart text-5xl mb-4" style="color: #D885A3;"></i>
-                  <h4 class="text-xl font-medium text-gray-600">Room Occupancy</h4>
-                  <p id="roomOccupancy" class="text-3xl font-bold mt-2" style="color: #D885A3;">...</p>
               </div>
           </div>
         </div>

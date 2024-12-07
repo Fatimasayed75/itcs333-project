@@ -314,8 +314,6 @@ class BookModel
     return !empty($result) ? $result : [];
   }
 
-
-
   // Get Previous Bookings
   public function getPreviousBookingsByUser($userID)
   {
