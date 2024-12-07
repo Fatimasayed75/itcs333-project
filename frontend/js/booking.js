@@ -62,7 +62,7 @@ function confirmBooking(roomID) {
         }
       } else {
         // Display the server error message in the UI
-        errorMessageContainer.textContent = `Error: ${data.message}`;
+        errorMessageContainer.textContent = `${data.message}`;
         errorMessageContainer.classList.remove('hidden');
       }
     })

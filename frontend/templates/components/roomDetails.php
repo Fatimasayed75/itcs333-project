@@ -63,7 +63,7 @@
             <option value="150">150 minutes</option>
           </select>
 
-        <div id="errorMessage" class="hidden text-red-500 text-sm mb-4"></div>
+        <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
 
           <button type="button" onclick="confirmBooking('{{roomID}}')" class="bg-[#D885A3] text-white py-2 px-4 rounded hover:bg-[#D885A3]">Confirm Booking</button>
         </div>
