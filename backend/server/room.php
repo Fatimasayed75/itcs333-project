@@ -36,19 +36,39 @@ try {
     switch ($action) {
         case 'add':
             // Validate required fields
-            if (!isset($data['capacity'], $data['floor'])) {
+            if (!isset($data['capacity'], $data['roomID'])) {
                 echo json_encode(['status' => 'error', 'message' => 'Missing required fields']);
                 exit;
             }
+
+            if (!preg_match('/^S40-(0[0-9]{1,2}[1-9]{1}|1[0-9]{2}[1-9]{1}|2[0-9]{2}[1-9]{1})$/', $data['roomID'])) {
+                echo json_encode(['status' => 'error', 'message' => 'Invalid room ID format']);
+                exit;
+            }
+
+            $floor = $data['roomID'][4]; // S40-0XX | S40-1XXX | S40-2XXX
+
+            if($data['capacity'] < 20 || $data['capacity'] > 200) {
+                echo json_encode(['status' => 'error', 'message' => 'Capacity must be between 20-200']);
+                exit;
+            }
+
+            $isExist = $room->getRoomById($data['roomID']);
+
+            if(!empty($isExist)) {
+                echo json_encode(['status' => 'error', 'message' => 'Room is already exists']);
+                exit;
+            }
             
+
             // Create new room instance with all data
             $room = new RoomModel(
                 $pdo,
-                null, // roomID will be auto-generated
+                $data['roomID'], // roomID will be auto-generated
                 $data['type'] ?? 'class',
                 (int)$data['capacity'],
                 true,
-                (int)$data['floor']
+                $floor ?? '0'
             );
             
             // Save room

@@ -69,7 +69,7 @@ function saveRoom(roomID) {
             alert('Room updated successfully!');
             location.reload();
         } else {
-            alert('Failed to update room: ' + (data.message || 'Unknown error'));
+            alert(data.message);
         }
     })
     .catch(error => {
