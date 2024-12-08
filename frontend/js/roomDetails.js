@@ -70,11 +70,19 @@ function createRoomAvailabilityChart(bookings) {
               position: "top",
               min: 8,
               max: 18,
+              grid: {
+                color: getGridColor(),
+              },
+              
             },
             y: {
               type: "category",
               labels: dates,
               max: 6,
+              grid: {
+                color: "#ccc", // Dynamic grid color
+              },
+              
             },
           },
           plugins: { tooltip: { enabled: false } }, // Disable built-in tooltip
@@ -120,24 +128,19 @@ function createRoomAvailabilityChart(bookings) {
       canvas.addEventListener("mousemove", (event) => {
         const canvasRect = canvas.getBoundingClientRect();
         const mouseX = event.clientX - canvasRect.left + 15; // Shift detection 10px to the right
-        const mouseY = event.clientY - canvasRect.top - 5;  // Shift detection 5px domward
-
+        const mouseY = event.clientY - canvasRect.top - 5; // Shift detection 5px domward
 
         const hoveredRect = rectangles.find((rect) => {
           const x1 = chart.scales.x.getPixelForValue(rect.x);
           const x2 = chart.scales.x.getPixelForValue(rect.x2);
           const y = chart.scales.y.getPixelForValue(rect.y) - 10;
           const height = 20;
-        
+
           // Check if mouse is within rectangle boundaries
           return (
-            mouseX >= x1 && 
-            mouseX <= x2 && 
-            mouseY >= y && 
-            mouseY <= y + height
+            mouseX >= x1 && mouseX <= x2 && mouseY >= y && mouseY <= y + height
           );
         });
-        
 
         if (hoveredRect) {
           // Calculate the duration in hours and minutes
@@ -146,14 +149,14 @@ function createRoomAvailabilityChart(bookings) {
           const hours = Math.floor(durationMinutes / 60);
           const minutes = durationMinutes % 60;
 
-           // Format duration
+          // Format duration
           let durationText = "";
           if (hours > 0) {
             durationText = `${hours}h ${minutes}m`;
           } else {
             durationText = `${minutes}m`;
           }
-        
+
           // tooltip
           tooltipDiv.innerHTML = `
             <div style="font-size: 12px; line-height: 1.4; text-align: left;">
@@ -171,8 +174,7 @@ function createRoomAvailabilityChart(bookings) {
           tooltipDiv.style.maxWidth = "150px";
         } else {
           tooltipDiv.style.display = "none";
-        }        
-        
+        }
       });
 
       canvas.addEventListener("mouseout", () => {
@@ -202,6 +204,13 @@ function createRoomAvailabilityChart(bookings) {
   }
 }
 
+function getGridColor() {
+  return document.body.classList.contains("dark-mode") ? "white" : "#ccc";
+}
+
+function getTickColor() {
+  return document.body.classList.contains("dark-mode") ? "white" : "#000";
+}
 
 function updateWeekOffset() {
   const weekOffsetDisplay = document.getElementById("weekOffset");

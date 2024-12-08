@@ -28,6 +28,8 @@ if ($availableTimes === null) {
 } else {
   echo json_encode($availableTimes);
 }
+
 exit;
 
 ?>
+

@@ -13,7 +13,7 @@ var_dump($id);
     <div class="open-logo-text">
       <div class="image-text">
         <span class="image">
-          <img src="../../images/demo.png" alt="" />
+          <img src="../../images/demo.png" alt="UOB Logo" />
         </span>
 
         <div class="text logo-text">

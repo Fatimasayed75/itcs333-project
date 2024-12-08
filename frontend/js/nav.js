@@ -13,22 +13,24 @@ toggle.addEventListener("click", () => {
 
 // Dark mode functionality
 function updateDarkModeUI(isDark) {
-  document.body.classList.toggle('dark-mode', isDark);
-  document.querySelectorAll('[role="switch"]').forEach(toggle => {
-    toggle.setAttribute('aria-checked', isDark.toString());
+  document.body.classList.toggle("dark-mode", isDark);
+  document.querySelectorAll('[role="switch"]').forEach((toggle) => {
+    toggle.setAttribute("aria-checked", isDark.toString());
   });
 }
 
 function initializeDarkMode() {
   // Check if user has a saved preference
-  const savedTheme = localStorage.getItem('theme');
+  const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
-    updateDarkModeUI(savedTheme === 'dark');
+    updateDarkModeUI(savedTheme === "dark");
   } else {
     // Check system preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     updateDarkModeUI(prefersDark);
-    localStorage.setItem('theme', prefersDark ? 'dark' : 'light');
+    localStorage.setItem("theme", prefersDark ? "dark" : "light");
   }
 }
 
@@ -37,31 +39,37 @@ initializeDarkMode();
 
 // Handle dark mode toggle clicks
 function handleDarkModeToggle() {
-  const isDark = !document.body.classList.contains('dark-mode');
+  const isDark = !document.body.classList.contains("dark-mode");
   updateDarkModeUI(isDark);
-  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  updateChart();
 }
 
 // Add click listeners to all dark mode toggles
-document.querySelectorAll('.toggle-switch, .toggle-dark-mode').forEach(toggle => {
-  toggle.addEventListener('click', handleDarkModeToggle);
-  
-  // Add keyboard support
-  toggle.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleDarkModeToggle();
-    }
+document
+  .querySelectorAll(".toggle-switch, .toggle-dark-mode")
+  .forEach((toggle) => {
+    toggle.addEventListener("click", handleDarkModeToggle);
+
+    // Add keyboard support
+    toggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleDarkModeToggle();
+      }
+    });
   });
-});
 
 // Listen for system theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-  if (!localStorage.getItem('theme')) {  // Only react if user hasn't set a preference
-    updateDarkModeUI(e.matches);
-    localStorage.setItem('theme', e.matches ? 'dark' : 'light');
-  }
-});
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", (e) => {
+    if (!localStorage.getItem("theme")) {
+      // Only react if user hasn't set a preference
+      updateDarkModeUI(e.matches);
+      localStorage.setItem("theme", e.matches ? "dark" : "light");
+    }
+  });
 
 // Set active for sidebar and top-nav links
 sidebarLinks.forEach((link) => {
@@ -74,7 +82,6 @@ sidebarLinks.forEach((link) => {
 
     if (page === "home.php") {
       initializeHomeEventListeners();
-      
     } else if (page === "dashboard.php") {
       if (!isDashboardInitialized) {
         initializeDashboard(); // Initialize dashboard only once
@@ -121,39 +128,43 @@ async function loadContent(page) {
     // Initialize page-specific JavaScript
     if (page === "profile.php") {
       // Reinitialize profile event listeners
-      document.getElementById('editProfileForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        
-        fetch('../components/editProfile.php', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => {
-          if (response.ok) {
-            alert('Profile updated successfully!');
-            closeEditProfileModal();
-            window.location.reload();
-            return response.json();
-          }
-          throw new Error('Response not okay');
-        })
-        .then(data => {
-          alert('Profile updated successfully!');
-          closeEditProfileModal();
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          // alert('An error occurred while updating the profile');
+      document
+        .getElementById("editProfileForm")
+        ?.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const formData = new FormData(this);
+
+          fetch("../components/editProfile.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (response.ok) {
+                alert("Profile updated successfully!");
+                closeEditProfileModal();
+                window.location.reload();
+                return response.json();
+              }
+              throw new Error("Response not okay");
+            })
+            .then((data) => {
+              alert("Profile updated successfully!");
+              closeEditProfileModal();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // alert('An error occurred while updating the profile');
+            });
         });
-      });
 
       // Initialize modal close on outside click
-      document.getElementById('editProfileModal')?.addEventListener('click', function(e) {
-        if (e.target === this) {
-          closeEditProfileModal();
-        }
-      });
+      document
+        .getElementById("editProfileModal")
+        ?.addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeEditProfileModal();
+          }
+        });
     }
   } catch (error) {
     console.error("Error loading content: ", error);
@@ -164,16 +175,17 @@ async function loadContent(page) {
 
 async function loadEditProfile() {
   try {
-      const response = await fetch('../components/editProfile.php');
-      if (!response.ok) {
-          throw new Error('Page not found');
-      }
-      const data = await response.text();
-      document.getElementById('main-content').innerHTML = data;
-      localStorage.setItem('current-page', 'editProfile.php');
+    const response = await fetch("../components/editProfile.php");
+    if (!response.ok) {
+      throw new Error("Page not found");
+    }
+    const data = await response.text();
+    document.getElementById("main-content").innerHTML = data;
+    localStorage.setItem("current-page", "editProfile.php");
   } catch (error) {
-      console.error('Error loading content: ', error);
-      document.getElementById('main-content').innerHTML = 'Content not available.';
+    console.error("Error loading content: ", error);
+    document.getElementById("main-content").innerHTML =
+      "Content not available.";
   }
 }
 

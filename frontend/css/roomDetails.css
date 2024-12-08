@@ -19,14 +19,18 @@ select {
   height: auto;
 }
 
+.dark-mode .content .bg-white .flex .flex h2 button i.fa-arrow-left {
+  color: white;
+}
+
 /* For Small Screens */
 @media (max-width: 768px) {
   #date, #startTime, #duration {
-    font-size: 0.8rem; /* Adjust font size */
+    font-size: 0.8rem; 
     padding: 0.4rem;
   }
 
   #bookingForm {
-    padding: 1rem; /* Add more spacing */
+    padding: 1rem; 
   }
 }
