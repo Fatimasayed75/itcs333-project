@@ -258,6 +258,7 @@ usort($CErooms, function ($a, $b) {
         </div>
 
 
+<<<<<<< Updated upstream
         <!-- Bookings List Modal -->
         <div id="bookListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl hidden">
           <!-- Close button (X icon) -->
@@ -311,10 +312,57 @@ usort($CErooms, function ($a, $b) {
                       <?php echo htmlspecialchars($booking['bookingID']); ?>
                     </td>
                     <!-- <td class="py-3 px-6 text-left edit-mode hidden">
+=======
+            <!-- Bookings List Modal -->
+            <div id="bookListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-6xl hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center">Bookings List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full bg-white shadow-md rounded">
+                        <thead>
+                            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">Booking ID</th>
+                                <th class="py-3 px-6 text-left">User ID</th>
+                                <th class="py-3 px-6 text-left">Room ID</th>
+                                <th class="py-3 px-6 text-left">Booking Time</th>
+                                <th class="py-3 px-6 text-left">Start Time</th>
+                                <th class="py-3 px-6 text-left">End Time</th>
+                                <th class="py-3 px-6 text-left">Status</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($bookings as $booking): ?>
+                            <tr class="border-b border-gray-200 hover:bg-gray-100" id="book_<?php echo htmlspecialchars($booking['bookingID']); ?>">
+                                <!-- Normal View -->
+                                <td class="py-3 px-6 text-left whitespace-nowrap view-mode"><?php echo htmlspecialchars($booking['bookingID']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['userID']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['roomID']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['bookingTime']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['startTime']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['endTime']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['status']); ?></td>
+                                <td class="py-3 px-6 text-center view-mode">
+                                    <div class="flex item-center justify-center space-x-4">
+                                        <button onclick="toggleEditBooking('<?php echo htmlspecialchars($booking['bookingID']); ?>')" class="text-blue-500 hover:text-blue-700">
+                                            <i class="bx bx-edit-alt"></i>
+                                        </button>
+                                        <button onclick="deleteBooking('<?php echo htmlspecialchars($booking['bookingID']); ?>')" class="text-red-500 hover:text-red-700">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                                <input type="hidden" name="userID" value="<?php echo htmlspecialchars($booking['userID']); ?>" >
+                                
+                                <!-- Edit Mode -->
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden"><?php echo htmlspecialchars($booking['bookingID']); ?></td>
+                                <!-- <td class="py-3 px-6 text-left edit-mode hidden">
+>>>>>>> Stashed changes
                                     <input type="text" name="name" value="<?php echo htmlspecialchars($booking['bookingID']); ?>" 
                                            class="w-full px-2 py-1 border rounded">
                                 </td> -->
 
+<<<<<<< Updated upstream
                     <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
                       <input type="hidden" name="userID" value="<?php echo htmlspecialchars($booking['userID']); ?>">
                     </td>
@@ -326,6 +374,17 @@ usort($CErooms, function ($a, $b) {
                     <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
                       <?php echo htmlspecialchars($booking['bookingTime']); ?>
                     </td>
+=======
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
+                                    <?php echo htmlspecialchars($booking['userID']); ?>
+                                </td>
+
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="text" name="roomID" value="<?php echo htmlspecialchars($booking['roomID']); ?>" 
+                                          class="w-full px-15 py-1 border rounded">
+                                </td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden"><?php echo htmlspecialchars($booking['bookingTime']); ?></td>
+>>>>>>> Stashed changes
 
                     <td class="py-3 px-6 text-left edit-mode hidden">
                       <input type="datetime-local" name="startTime"

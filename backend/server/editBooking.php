@@ -71,7 +71,6 @@ try {
                 exit;
             }
 
-            // validate time(start+end)
 
             // Create booking instance with updated data
             $updatedBooking = new BookModel(
@@ -84,11 +83,13 @@ try {
                 $data['bookingID']
             );
 
+            $result = $updatedBooking->update();
+
             // Update booking
-            if ($updatedBooking->update()) {
+            if ($result === true) {
                 echo json_encode(['status' => 'success', 'message' => 'Booking updated successfully']);
             } else {
-                echo json_encode(['status' => 'error', 'message' => 'Failed to update booking']);
+                echo json_encode(['status' => 'error', 'message' => $result]);
             }
             break;
 

@@ -125,7 +125,7 @@ function saveBooking(bookingID) {
     formData.append('action', 'edit');
 
     // Get all input values
-    const inputs = row.querySelectorAll('.edit-mode input, .edit-mode select');
+    const inputs = row.querySelectorAll('.edit-mode input, .edit-mode select, input[name="userID"]');
     inputs.forEach(input => {
         formData.append(input.name, input.value);
     });
