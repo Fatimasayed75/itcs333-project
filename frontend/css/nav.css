@@ -51,7 +51,10 @@ body.dark-mode {
 
 /*  Sidebar  */
 .sidebar {
-  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0 10px;
   background: var(--sidebar-color);
   transition: var(--tran-05);
   width: 250px;
@@ -115,11 +118,15 @@ body.dark-mode .sidebar .icon {
 /* ------------------ */
 
 .sidebar header {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .sidebar header .image-text {
   display: flex;
+  flex-direction: column; 
   align-items: center;
 }
 .sidebar header .logo-text {
@@ -127,7 +134,7 @@ body.dark-mode .sidebar .icon {
   flex-direction: column;
 }
 header .image-text .name {
-  margin-top: 2px;
+  margin-top: 5px;
   font-size: 18px;
   font-weight: 600;
 }
@@ -139,6 +146,7 @@ header .image-text .system {
 }
 
 .sidebar header .image {
+  margin-top: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,24 +158,44 @@ header .image-text .system {
 }
 
 .sidebar header .toggle {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    height: 25px;
-    width: 25px;
-    background-color: transparent;
-    color: var(--text-color);
-    font-size: 22px;
-    cursor: pointer;
-    transition: var(--tran-05);
+  font-size: 3rem;
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  height: 25px;
+  width: 25px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 22px;
+  cursor: pointer;
+  transition: var(--tran-05);
+  margin-top: 10px;
 }
 
 .sidebar.close .toggle {
   transform: translateY(0) rotate(0deg);
 }
 
+.sidebar .theme-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px; 
+}
+
+.sidebar footer {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
 .sidebar .menu {
-  margin-top: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
 }
 
 .sidebar li a {
