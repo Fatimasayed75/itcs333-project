@@ -140,10 +140,18 @@ function createRoomAvailabilityChart(bookings) {
         
 
         if (hoveredRect) {
+          // Calculate the duration in hours and minutes
+          const durationMs = hoveredRect.endTime - hoveredRect.startTime;
+          const durationMinutes = Math.floor(durationMs / (1000 * 60));
+          const hours = Math.floor(durationMinutes / 60);
+          const minutes = durationMinutes % 60;
+        
+          // tooltip
           tooltipDiv.innerHTML = `
             <div style="font-size: 12px; line-height: 1.4; text-align: left;">
-              <strong style="color: #555;">Start:</strong> ${hoveredRect.startTime.toLocaleTimeString()}<br>
-              <strong style="color: #555;">End:</strong> ${hoveredRect.endTime.toLocaleTimeString()}
+              <strong style="color: #D885A3;">Start:</strong> ${hoveredRect.startTime.toLocaleTimeString()}<br>
+              <strong style="color: #D885A3;">End:</strong> ${hoveredRect.endTime.toLocaleTimeString()}<br>
+              <strong style="color: #D885A3;">Duration:</strong> ${hours}h ${minutes}m
             </div>
           `;
           tooltipDiv.style.left = `${event.clientX + 10}px`;
@@ -154,7 +162,7 @@ function createRoomAvailabilityChart(bookings) {
           tooltipDiv.style.maxWidth = "150px";
         } else {
           tooltipDiv.style.display = "none";
-        }
+        }        
         
       });
 
