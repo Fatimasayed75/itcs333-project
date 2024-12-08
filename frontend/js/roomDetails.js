@@ -145,13 +145,22 @@ function createRoomAvailabilityChart(bookings) {
           const durationMinutes = Math.floor(durationMs / (1000 * 60));
           const hours = Math.floor(durationMinutes / 60);
           const minutes = durationMinutes % 60;
+
+           // Format duration
+          let durationText = "";
+          if (hours > 0) {
+            durationText = `${hours}h ${minutes}m`;
+          } else {
+            durationText = `${minutes}m`;
+          }
         
           // tooltip
           tooltipDiv.innerHTML = `
             <div style="font-size: 12px; line-height: 1.4; text-align: left;">
               <strong style="color: #D885A3;">Start:</strong> ${hoveredRect.startTime.toLocaleTimeString()}<br>
               <strong style="color: #D885A3;">End:</strong> ${hoveredRect.endTime.toLocaleTimeString()}<br>
-              <strong style="color: #D885A3;">Duration:</strong> ${hours}h ${minutes}m
+
+              <strong style="color: #D885A3;">Duration:</strong> ${durationText}
             </div>
           `;
           tooltipDiv.style.left = `${event.clientX + 10}px`;
