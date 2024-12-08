@@ -134,7 +134,6 @@ class UserModel
     }
 
     // Get a user by user ID
-    // Get a user by user ID
     public function getUserByID($userID)
     {
         try {
@@ -191,5 +190,13 @@ class UserModel
         $stmt = $this->conn->query($query);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['totalUsers'];
+    }
+
+    public function isUserExist($userID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'userID = ?';
+        $result = $crud->read('users', [], $condition, $userID);
+        return !empty($result) ? true : false;
     }
 }

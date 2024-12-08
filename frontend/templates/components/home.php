@@ -16,6 +16,7 @@ $userModel = new UserModel($pdo);
 $bookModel = new BookModel($pdo, null, null, null, null, null, null);
 
 $bookings = $bookModel->getAllUpcomingBookings();
+$users = $userModel->getAllUsers();
 
 $id == Constants::GUEST_USER_ID ?
   $user = ['firstName' => 'Guest', 'lastName' => 'User'] :
@@ -302,8 +303,6 @@ usort($CErooms, function ($a, $b) {
                                         </button>
                                     </div>
                                 </td>
-
-                                <input type="hidden" name="userID" value="<?php echo htmlspecialchars($booking['userID']); ?>" >
                                 
                                 <!-- Edit Mode -->
                                 <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden"><?php echo htmlspecialchars($booking['bookingID']); ?></td>
@@ -313,7 +312,13 @@ usort($CErooms, function ($a, $b) {
                                 </td> -->
 
                                 <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
-                                    <?php echo htmlspecialchars($booking['userID']); ?>
+                                  <select name="userID" class="w-full px-2 py-1 border rounded">
+                                    <?php foreach ($users as $user): ?>
+                                      <option value="<?php echo htmlspecialchars($user['userID']); ?>">
+                                        <?php echo htmlspecialchars($user['userID']) . ' - ' . htmlspecialchars($user['firstName']) . ' ' . htmlspecialchars($user['lastName']); ?>
+                                      </option>
+                                    <?php endforeach; ?>
+                                  </select>
                                 </td>
 
                                 <td class="py-3 px-6 text-left edit-mode hidden">
