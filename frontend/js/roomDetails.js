@@ -2,23 +2,24 @@ let currentWeekOffset = 0;
 let roomAvailabilityChart = null;
 
 function createRoomAvailabilityChart(bookings) {
-  const ctx = document.getElementById("roomAvailability");
-  const weekNavPrev = document.getElementById("prevWeek"); // Previous week button
-  const weekNavNext = document.getElementById("nextWeek"); // Next week button
-  const refresh = document.getElementById("refreshBtn"); // Current week button
+  const canvas = document.getElementById("roomAvailability");
+  const weekNavPrev = document.getElementById("prevWeek");
+  const weekNavNext = document.getElementById("nextWeek");
+  const refresh = document.getElementById("refreshBtn");
 
-  if (ctx) {
-    // Function to generate dates for the given week offset (7 days)
+  let tooltipDiv = null; // tooltip element
+
+  if (canvas) {
     const getDatesForWeek = (weekOffset) => {
       const startDate = new Date();
-      startDate.setDate(startDate.getDate() + weekOffset * 7); // Adjust start date based on week offset
+      startDate.setDate(startDate.getDate() + weekOffset * 7);
       const dates = [];
 
       for (let i = 0; i < 7; i++) {
         // Generate 7 days for the current week
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
-        dates.push(date.toLocaleDateString()); // Store dates in 'MM/DD/YYYY' format
+        dates.push(date.toLocaleDateString());
       }
 
       return dates;
@@ -31,8 +32,7 @@ function createRoomAvailabilityChart(bookings) {
       // Convert bookings into drawable rectangles
       const rectangles = bookings
         .map((booking) => {
-          // don't show pending and rejected bookings
-          if (booking["status"] != "pending" && booking["status"] != "rejected") {
+          if (booking.status !== "pending" && booking.status !== "rejected") {
             const startTime = new Date(booking.startTime);
             const endTime = new Date(booking.endTime);
 
@@ -41,40 +41,26 @@ function createRoomAvailabilityChart(bookings) {
 
             if (dateIndex !== -1) {
               return {
-                x: startTime.getHours() + startTime.getMinutes() / 60, // Start time in hours
-                x2: endTime.getHours() + endTime.getMinutes() / 60, // End time in hours
-                y: dateIndex, // Corresponding date index for the y-axis
-                startTime: startTime, // Store the actual start time for the tooltip
-                endTime: endTime, // Store the actual end time for the tooltip
-                backgroundColor: "rgba(216,133,163,0.7)", // Orange color with transparency
-                borderColor: "rgba(216,133,163,1)", // Solid orange border
-                borderWidth: 1,
+                x: startTime.getHours() + startTime.getMinutes() / 60,
+                x2: endTime.getHours() + endTime.getMinutes() / 60,
+                y: dateIndex,
+                startTime,
+                endTime,
               };
             }
           }
           return null;
         })
-        .filter((rect) => rect !== null); // Remove null entries (invalid bookings)
+        .filter(Boolean);
 
       // Destroy the previous chart (if any) to avoid reuse errors
       if (roomAvailabilityChart) {
         roomAvailabilityChart.destroy();
       }
 
-      // Create or update the chart using Chart.js
-      roomAvailabilityChart = new Chart(ctx, {
-        type: "scatter", // Base type; we'll draw custom rectangles
-        data: {
-          datasets: [
-            {
-              label: "Booked Slot",
-              data: [], // Empty dataset to avoid rendering points
-              backgroundColor: "rgba(216,133,163,0.7)",
-              borderColor: "rgba(216,133,163,1)",
-              borderWidth: 1,
-            },
-          ],
-        },
+      const chart = new Chart(canvas, {
+        type: "scatter",
+        data: { datasets: [] },
         options: {
           responsive: true,
           maintainAspectRatio: true,
@@ -82,62 +68,16 @@ function createRoomAvailabilityChart(bookings) {
             x: {
               type: "linear",
               position: "top",
-              min: 8, // Start at 8 AM
-              max: 18, // End at 6 PM
-              title: {
-                display: true,
-                text: "Time (Hours)",
-              },
-              ticks: {
-                stepSize: 1,
-                callback: function (value) {
-                  const hour = Math.floor(value);
-                  const minutes = value % 1 === 0.5 ? "30" : "00";
-                  return `${hour}:${minutes}`; // Format time labels
-                },
-              },
+              min: 8,
+              max: 18,
             },
             y: {
               type: "category",
               labels: dates,
-              title: {
-                display: true,
-                text: "Date",
-              },
-              ticks: {
-                callback: (value, index) => dates[index], // Map index to date
-              },
-              grid: {
-                display: false,
-              },
-              max: 6, // Limit to 7 days (index 0 to 6)
+              max: 6,
             },
           },
-          plugins: {
-            tooltip: {
-              enabled: true,
-              mode: "index",
-              intersect: false,
-              callbacks: {
-                title: function (context) {
-                  const date = dates[context[0].raw.y];
-                  return `Date: ${date}`;
-                },
-                label: function (context) {
-                  const { raw } = context;
-                  const startTime =
-                    raw.startTime.getHours() +
-                    ":" +
-                    raw.startTime.getMinutes().toString().padStart(2, "0");
-                  const endTime =
-                    raw.endTime.getHours() +
-                    ":" +
-                    raw.endTime.getMinutes().toString().padStart(2, "0");
-                  return `Time: ${startTime} - ${endTime}`;
-                },
-              },
-            },
-          },
+          plugins: { tooltip: { enabled: false } }, // Disable built-in tooltip
         },
         plugins: [
           {
@@ -150,52 +90,101 @@ function createRoomAvailabilityChart(bookings) {
               rectangles.forEach((rect) => {
                 const x1 = xAxis.getPixelForValue(rect.x);
                 const x2 = xAxis.getPixelForValue(rect.x2);
-                const y = yAxis.getPixelForValue(rect.y) - 10; // Center the rectangle
-                const height = 20; // Rectangle height
+                const y = yAxis.getPixelForValue(rect.y) - 10;
+                const height = 20;
 
-                // Draw rectangle
-                ctx.fillStyle = rect.backgroundColor;
+                ctx.fillStyle = "rgba(216,133,163,0.7)";
                 ctx.fillRect(x1, y, x2 - x1, height);
-
-                // Draw border
-                if (rect.borderColor) {
-                  ctx.strokeStyle = rect.borderColor;
-                  ctx.lineWidth = rect.borderWidth;
-                  ctx.strokeRect(x1, y, x2 - x1, height);
-                }
+                ctx.strokeStyle = "rgba(216,133,163,1)";
+                ctx.strokeRect(x1, y, x2 - x1, height);
               });
             },
           },
         ],
       });
+
+      // Custom tooltip
+      if (!tooltipDiv) {
+        tooltipDiv = document.createElement("div");
+        tooltipDiv.style.position = "absolute";
+        tooltipDiv.style.backgroundColor = "white";
+        tooltipDiv.style.border = "1px solid rgba(0,0,0,0.2)";
+        tooltipDiv.style.padding = "8px";
+        tooltipDiv.style.boxShadow = "0px 4px 8px rgba(0,0,0,0.2)";
+        tooltipDiv.style.borderRadius = "4px";
+        tooltipDiv.style.pointerEvents = "none";
+        tooltipDiv.style.display = "none";
+        document.body.appendChild(tooltipDiv);
+      }
+
+      canvas.addEventListener("mousemove", (event) => {
+        const canvasRect = canvas.getBoundingClientRect();
+        const mouseX = event.clientX - canvasRect.left + 15; // Shift detection 10px to the right
+        const mouseY = event.clientY - canvasRect.top - 5;  // Shift detection 5px domward
+
+
+        const hoveredRect = rectangles.find((rect) => {
+          const x1 = chart.scales.x.getPixelForValue(rect.x);
+          const x2 = chart.scales.x.getPixelForValue(rect.x2);
+          const y = chart.scales.y.getPixelForValue(rect.y) - 10;
+          const height = 20;
+        
+          // Check if mouse is within rectangle boundaries
+          return (
+            mouseX >= x1 && 
+            mouseX <= x2 && 
+            mouseY >= y && 
+            mouseY <= y + height
+          );
+        });
+        
+
+        if (hoveredRect) {
+          tooltipDiv.innerHTML = `
+            <div style="font-size: 12px; line-height: 1.4; text-align: left;">
+              <strong style="color: #555;">Start:</strong> ${hoveredRect.startTime.toLocaleTimeString()}<br>
+              <strong style="color: #555;">End:</strong> ${hoveredRect.endTime.toLocaleTimeString()}
+            </div>
+          `;
+          tooltipDiv.style.left = `${event.clientX + 10}px`;
+          tooltipDiv.style.top = `${event.clientY + 10}px`;
+          tooltipDiv.style.display = "block";
+          tooltipDiv.style.fontSize = "12px";
+          tooltipDiv.style.padding = "6px";
+          tooltipDiv.style.maxWidth = "150px";
+        } else {
+          tooltipDiv.style.display = "none";
+        }
+        
+      });
+
+      canvas.addEventListener("mouseout", () => {
+        tooltipDiv.style.display = "none";
+      });
     };
 
-    // Initialize chart with the current week
     updateChart();
 
-    // Event listeners for navigation buttons
+    // Navigation buttons
     weekNavPrev.addEventListener("click", () => {
-      currentWeekOffset--; // Go back one week
-      updateWeekOffset();
-      updateChart(); // Update the chart with the new week
+      currentWeekOffset--;
+      updateChart();
     });
 
     weekNavNext.addEventListener("click", () => {
-      currentWeekOffset++; // Go forward one week
-      updateWeekOffset();
-      updateChart(); // Update the chart with the new week
+      currentWeekOffset++;
+      updateChart();
     });
 
-    // Event listener for the "Current Week" button
     refresh.addEventListener("click", () => {
-      currentWeekOffset = 0; // Reset to current week
+      currentWeekOffset = 0;
       updateChart();
-      updateWeekOffset();
     });
   } else {
     console.error("Canvas element not found!");
   }
 }
+
 
 function updateWeekOffset() {
   const weekOffsetDisplay = document.getElementById("weekOffset");
