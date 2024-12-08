@@ -51,7 +51,7 @@ if (isset($_SESSION['register-error'])) {
 					<p class="register-error error"><?php echo $registerErrMsg; ?></p>
 				<?php endif; ?>
 
-				<button type="submit" name="sign-up-btn">Sign Up</button>
+				<button type="submit" name="sign-up-btn" value="sign-up-btn">Sign Up</button>
 				<a href="#" id="haveAccount">Already have an account?</a>
 			</form>
 		</div>

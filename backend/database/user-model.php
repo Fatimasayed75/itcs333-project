@@ -39,7 +39,6 @@ class UserModel
         $columns = ['email', 'password', 'firstName', 'lastName', 'role', 'profilePic'];
         $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
         $this->password = $hashedPassword;
-
         // Ensure the profile picture is binary (BLOB)
         $values = [$this->email, $this->password, $this->firstName, $this->lastName, $this->role, $this->profilePic];
         $crud->create('users', $columns, $values);

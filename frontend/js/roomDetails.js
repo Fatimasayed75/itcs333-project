@@ -71,7 +71,7 @@ function createRoomAvailabilityChart(bookings) {
               min: 8,
               max: 18,
               grid: {
-                color: getGridColor(),
+                color: "#ccc",
               },
               
             },
@@ -80,7 +80,7 @@ function createRoomAvailabilityChart(bookings) {
               labels: dates,
               max: 6,
               grid: {
-                color: "#ccc", // Dynamic grid color
+                color: "#ccc",
               },
               
             },
@@ -204,13 +204,13 @@ function createRoomAvailabilityChart(bookings) {
   }
 }
 
-function getGridColor() {
-  return document.body.classList.contains("dark-mode") ? "white" : "#ccc";
-}
+// function getGridColor() {
+//   return document.body.classList.contains("dark-mode") ? "white" : "#ccc";
+// }
 
-function getTickColor() {
-  return document.body.classList.contains("dark-mode") ? "white" : "#000";
-}
+// function getTickColor() {
+//   return document.body.classList.contains("dark-mode") ? "white" : "#000";
+// }
 
 function updateWeekOffset() {
   const weekOffsetDisplay = document.getElementById("weekOffset");

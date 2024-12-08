@@ -47,7 +47,7 @@ if ($id === Constants::ADMIN_USER_ID) {
 
         <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Statistics</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <!-- Line Chart -->
+            <!-- Bar Chart -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
                 <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Rate by Month</h3>
                 <div id="chart-container" class="w-full h-72 flex justify-center items-center">

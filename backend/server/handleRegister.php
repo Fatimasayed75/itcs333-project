@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Instantiate UserModel and check if the email is already registered
-    $userModel = new UserModel($pdo);
+    $userModel = new UserModel($pdo, null, $email, $password, $fname, $lname, $role);
     if ($userModel->getUserByEmail($email)) {
       $_SESSION['register-error'] = "This email is already registered!";
       $_SESSION['old-input-reg'] = ['fname' => $fname, 'lname' => $lname, 'email' => $email];
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Save the new user
-    $userId = $userModel->update($email, $password, $fname, $lname, $role);
+    $userId = $userModel->save();
     $_SESSION['active-user'] = $userId;
     // Clear the old input data for registration and sign-in
     header("Location: ../../frontend/templates/layout/base.php");
