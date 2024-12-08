@@ -1,5 +1,6 @@
 <?php
 require_once '../database/book-model.php';
+require_once '../database/user-model.php';
 require_once '../db-connection.php';
 require_once '../utils/helpers.php';
 require_once '../utils/constants.php';
@@ -33,6 +34,7 @@ try {
     // Create booking model instance with connection
     $booking = new BookModel($pdo, null, null, null, null, null, null);
     $room = new RoomModel($pdo);
+    $user = new UserModel($pdo);
 
     
     switch ($action) {
@@ -54,7 +56,7 @@ try {
 
         case 'edit':
             // Validate required fields
-            if (!isset($data['bookingID'], $data['roomID'], $data['startTime'], $data['endTime'])) {
+            if (!isset($data['bookingID'], $data['roomID'], $data['startTime'], $data['endTime'], $data['userID'])) {
                 echo json_encode(['status' => 'error', 'message' => 'Missing required fields']);
                 exit;
             }
@@ -68,6 +70,11 @@ try {
             // Check if room exists
             if (!$room->isRoomExists($data['roomID'])) {
                 echo json_encode(['status' => 'error', 'message' => 'Room not found']);
+                exit;
+            }
+
+            if (!$user->isUserExist($data['userID'])) {
+                echo json_encode(['status' => 'error', 'message' => 'User not found']);
                 exit;
             }
 

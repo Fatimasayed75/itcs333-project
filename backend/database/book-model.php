@@ -148,6 +148,7 @@ class BookModel
     // Proceed to update the booking if all validations pass
     $crud = new Crud($this->conn);
     $updates = [
+      'userID' => $this->userID,
       'roomID' => $this->roomID,
       'startTime' => $this->startTime,
       'endTime' => $this->endTime,
