@@ -610,7 +610,7 @@ CREATE TABLE `users` (
   `firstName` text NOT NULL,
   `lastName` text NOT NULL,
   `role` enum('admin','student','instructor') NOT NULL DEFAULT 'student',
-  `profilePic` blob DEFAULT NULL
+  `profilePic` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -748,6 +748,12 @@ ALTER TABLE `comment_reply`
 ALTER TABLE `roomequipments`
   ADD CONSTRAINT `roomEquipments_equipmentID_fk` FOREIGN KEY (`equipmentID`) REFERENCES `equipment` (`equipmentID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `roomEquipments_roomID_fk` FOREIGN KEY (`roomID`) REFERENCES `room` (`roomID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_profilePic_fk` FOREIGN KEY (`profilePic`) REFERENCES `files`(`id`) ON DELETE SET NULL;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

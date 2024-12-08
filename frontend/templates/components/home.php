@@ -4,8 +4,11 @@ require_once '../../../backend/database/room-model.php';
 require_once '../../../backend/database/book-model.php';
 require_once '../../../backend/utils/helpers.php';
 require_once '../../../backend/utils/constants.php';
+require_once '../../../backend/utils/database-manager.php';
 
 use Utils\Constants;
+
+$dbManager = new DatabaseManager($pdo);
 
 $id = isAuthorized();
 

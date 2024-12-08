@@ -4,12 +4,14 @@ require_once '../../../backend/database/room-model.php';
 require_once '../../../backend/database/comment-model.php';
 require_once '../../../backend/database/comment-reply-model.php';
 require_once '../../../backend/utils/helpers.php';
+require_once '../../../backend/utils/database-manager.php';
 
 $id = isAuthorized();
 $userModel = new UserModel($pdo);
 $roomModel = new RoomModel($pdo);
 $commentModel = new CommentModel($pdo);
 $commentReplyModel = new CommentReplyModel($pdo);
+$dbManager = new DatabaseManager($pdo);
 
 $user = $userModel->getUserByID($id);
 $rooms = $roomModel->getRoomsByUserId($id);
@@ -34,9 +36,13 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     <?php if (!empty($user)): ?>
       <div class="profile-details">
         <div class="profile-pic">
-          <img
-            src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>"
-            alt="Profile Picture" class="w-24 h-24 rounded-full object-cover">
+          <?php if (isset($user['profilePicData'])): ?>
+            <img src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php
+               echo base64_encode($user['profilePicData']['file_content']); ?>" alt="Profile Picture"
+              class="w-24 h-24 rounded-full object-cover">
+          <?php else: ?>
+            <img src="../../images/default.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover">
+          <?php endif; ?>
         </div>
         <div class="profile-info mt-4">
           <p class="mb-2"><strong>First Name:</strong> <?php echo htmlspecialchars($user['firstName']); ?></p>
@@ -74,9 +80,14 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
           <form id="editProfileForm" method="post" enctype="multipart/form-data">
             <div class="mb-6 text-center">
               <div class="relative inline-block">
-                <img id="profilePreview"
-                  src="<?php echo !empty($user['profilePic']) && $user['profilePic'] !== '0x64656661756c742e6a7067' ? $user['profilePic'] : '../../images/default.jpeg'; ?>"
-                  alt="Profile Picture" class="w-24 h-24 rounded-full object-cover mx-auto">
+                <?php if (isset($user['profilePicData'])): ?>
+                  <img src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php
+                     echo base64_encode($user['profilePicData']['file_content']); ?>" alt="Profile Picture"
+                    class="w-24 h-24 rounded-full object-cover mx-auto">
+                <?php else: ?>
+                  <img src="../../images/default.jpg" alt="Profile Picture"
+                    class="w-24 h-24 rounded-full object-cover mx-auto">
+                <?php endif; ?>
                 <label for="profilePic"
                   class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
                   <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

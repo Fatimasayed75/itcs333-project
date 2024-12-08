@@ -35,14 +35,27 @@ class UserModel
     // Save a new user
     public function save()
     {
-        $crud = new Crud($this->conn);
-        $columns = ['email', 'password', 'firstName', 'lastName', 'role', 'profilePic'];
-        $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-        $this->password = $hashedPassword;
-        // Ensure the profile picture is binary (BLOB)
-        $values = [$this->email, $this->password, $this->firstName, $this->lastName, $this->role, $this->profilePic];
-        $crud->create('users', $columns, $values);
-        return $this->conn->lastInsertId();
+        try {
+            $stmt = $this->conn->prepare("
+                INSERT INTO users (email, password, firstName, lastName, role)
+                VALUES (?, ?, ?, ?, ?)
+            ");
+            
+            $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
+            
+            $stmt->execute([
+                $this->email,
+                $hashedPassword,
+                $this->firstName,
+                $this->lastName,
+                $this->role
+            ]);
+            
+            return $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            error_log("Error saving user: " . $e->getMessage());
+            throw new Exception("Failed to create user account");
+        }
     }
 
 
@@ -54,17 +67,26 @@ class UserModel
         return !empty($crud->read('users', ['email'], $condition, $email));
     }
 
-    public function update($userID, $firstName, $lastName, $email, $profilePic)
+    public function update($userID, $firstName, $lastName, $email, $fileId = null)
     {
-        $crud = new Crud($this->conn);
-        $updates = [
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'email' => $email,
-            'profilePic' => $profilePic // BLOB data here
-        ];
-        $condition = 'userID = ?';
-        return $crud->update('users', $updates, $condition, $userID);
+        try {
+            $sql = "UPDATE users SET firstName = ?, lastName = ?, email = ?";
+            $params = [$firstName, $lastName, $email];
+
+            if ($fileId !== null) {
+                $sql .= ", profilePic = ?";
+                $params[] = $fileId;
+            }
+
+            $sql .= " WHERE userID = ?";
+            $params[] = $userID;
+
+            $stmt = $this->conn->prepare($sql);
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            error_log("Error updating user: " . $e->getMessage());
+            throw new Exception("Failed to update user profile");
+        }
     }
 
 
@@ -80,19 +102,69 @@ class UserModel
     // Get all users
     public function getAllUsers()
     {
-        $crud = new Crud($this->conn);
-        $result = $crud->read('users');
-        return !empty($result) ? $result : Constants::NO_RECORDS;
+        try {
+            $stmt = $this->conn->prepare("
+                SELECT u.*, f.id as file_id, f.mime_type, fc.file_content
+                FROM users u
+                LEFT JOIN files f ON u.profilePic = f.id
+                LEFT JOIN file_contents fc ON f.id = fc.file_id
+            ");
+            $stmt->execute();
+            
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($results)) {
+                return Constants::NO_RECORDS;
+            }
+
+            // Format profile picture data for each user
+            foreach ($results as &$result) {
+                if ($result['file_id']) {
+                    $result['profilePicData'] = [
+                        'mime_type' => $result['mime_type'],
+                        'file_content' => $result['file_content']
+                    ];
+                }
+            }
+            
+            return $results;
+        } catch (PDOException $e) {
+            error_log("Error fetching users: " . $e->getMessage());
+            throw new Exception("Failed to fetch users data");
+        }
     }
 
     // Get a user by user ID
     // Get a user by user ID
     public function getUserByID($userID)
     {
-        $crud = new Crud($this->conn);
-        $condition = 'userID = ?';
-        $result = $crud->read('users', [], $condition, $userID);
-        return !empty($result) ? $result[0] : Constants::USER_NOT_FOUND;
+        try {
+            $stmt = $this->conn->prepare("
+                SELECT u.*, f.id as file_id, f.mime_type, fc.file_content
+                FROM users u
+                LEFT JOIN files f ON u.profilePic = f.id
+                LEFT JOIN file_contents fc ON f.id = fc.file_id
+                WHERE u.userID = ?
+            ");
+            $stmt->execute([$userID]);
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$result) {
+                return Constants::USER_NOT_FOUND;
+            }
+
+            // Format the profile picture data if it exists
+            if ($result['file_id']) {
+                $result['profilePicData'] = [
+                    'mime_type' => $result['mime_type'],
+                    'file_content' => $result['file_content']
+                ];
+            }
+            
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Error fetching user: " . $e->getMessage());
+            throw new Exception("Failed to fetch user data");
+        }
     }
 
 

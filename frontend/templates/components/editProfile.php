@@ -1,10 +1,12 @@
 <?php
 require_once '../../../backend/database/user-model.php';
 require_once '../../../backend/utils/helpers.php';
+require_once '../../../backend/utils/database-manager.php';
 
 $id = isAuthorized();
 $userModel = new UserModel($pdo);
 $user = $userModel->getUserByID($id);
+$dbManager = new DatabaseManager($pdo);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = ['success' => false, 'message' => ''];
@@ -12,39 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $firstName = htmlspecialchars(trim($_POST['firstName']));
         $lastName = htmlspecialchars(trim($_POST['lastName']));
         $email = htmlspecialchars(trim($_POST['email']));
-        $profilePic = $user['profilePic'];
+        $profilePic = null;
 
         // Handle profile picture upload
         if (isset($_FILES['profilePic']) && $_FILES['profilePic']['error'] === UPLOAD_ERR_OK) {
-            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            $maxFileSize = 5 * 1024 * 1024; // 5MB
+            // Delete any old profile pictures
+            $dbManager->deleteOldFiles($id, 'profile');
 
-            if (!in_array($_FILES['profilePic']['type'], $allowedTypes)) {
-                throw new Exception('Invalid file type. Please upload a JPEG, PNG, or GIF image.');
-            }
-
-            if ($_FILES['profilePic']['size'] > $maxFileSize) {
-                throw new Exception('File is too large. Maximum size is 5MB.');
-            }
-
-            $uploadDir = __DIR__ . '/../../images/profiles/';
-            if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
-            $fileExtension = pathinfo($_FILES['profilePic']['name'], PATHINFO_EXTENSION);
-            $fileName = 'profile_' . $id . '_' . time() . '.' . $fileExtension;
-            $uploadFile = $uploadDir . $fileName;
-
-            if (move_uploaded_file($_FILES['profilePic']['tmp_name'], $uploadFile)) {
-                $profilePic = '../../images/profiles/' . $fileName;
-            } else {
-                throw new Exception('Failed to upload profile picture.');
-            }
+            // Upload new profile picture
+            $fileId = $dbManager->uploadFile($_FILES['profilePic'], $id, 'profile');
+            
+            // Update user's profile with the new file ID
+            $userModel->update($id, $firstName, $lastName, $user['email'], $fileId);
+        } else {
+            // Update user details without changing profile picture
+            $userModel->update($id, $firstName, $lastName, $user['email'], null);
         }
 
-        // Update user details
-        $userModel->update($id, $firstName, $lastName, $user['email'], $profilePic);
         $response['success'] = true;
         $response['message'] = 'Profile updated successfully';
     } catch (Exception $e) {
@@ -86,9 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form id="editProfileForm" method="POST" enctype="multipart/form-data" class="p-4 space-y-4">
                 <div class="profile-pic-upload flex flex-col items-center mb-4">
                     <div class="relative w-32 h-32 mb-4">
-                        <img src="<?php echo htmlspecialchars($user['profilePic'] ?? '../../images/default-profile.png'); ?>"
-                            alt="Profile Picture"
-                            class="w-full h-full object-cover rounded-full border-3 border-gray-200 dark:border-dark-border-color shadow-md">
+                        <?php if (isset($user['profilePicData'])): ?>
+                            <img src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php 
+                                echo base64_encode($user['profilePicData']['file_content']); ?>"
+                                alt="Profile Picture"
+                                class="w-full h-full object-cover rounded-full border-3 border-gray-200 dark:border-dark-border-color shadow-md">
+                        <?php else: ?>
+                            <img src="../../images/default.jpg" alt="Profile Picture"
+                                class="w-full h-full object-cover rounded-full border-3 border-gray-200 dark:border-dark-border-color shadow-md">
+                        <?php endif; ?>
                         <label for="profilePicInput"
                             class="absolute bottom-0 right-0 bg-primary-color text-white rounded-full p-2 cursor-pointer hover:bg-primary-color-light transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
