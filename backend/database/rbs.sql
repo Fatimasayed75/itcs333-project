@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2024 at 02:08 PM
+-- Generation Time: Dec 08, 2024 at 01:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -102,9 +102,9 @@ CREATE TABLE `room` (
 INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`, `department`) VALUES
 ('S40-021', 'lab', 30, 1, 0, 'IS'),
 ('S40-023', 'lab', 30, 1, 0, 'IS'),
-('S40-028', 'lab', 30, 1, 0, 'IS'),
+('S40-028', 'class', 30, 1, 0, 'IS'),
 ('S40-029', 'class', 30, 1, 0, 'IS'),
-('S40-030', 'class', 30, 1, 0, 'IS'),
+('S40-030', 'lab', 30, 1, 0, 'IS'),
 ('S40-032', 'class', 30, 1, 0, 'IS'),
 ('S40-049', 'class', 30, 1, 0, 'CS'),
 ('S40-051', 'lab', 30, 1, 0, 'CS'),
