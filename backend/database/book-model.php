@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../utils/crud.php';
 require_once __DIR__ . '/../utils/constants.php';
+require_once 'room-model.php';
 
 use Utils\Constants;
 use Utils\Crud;
@@ -107,6 +108,92 @@ class BookModel
    
   }
 
+  public function update()
+{
+    try {
+        // Convert startTime and endTime to DateTime objects for validation
+        $startTime = new DateTime($this->startTime);
+        $endTime = new DateTime($this->endTime);
+
+        $roomModel = new RoomModel($this->conn);
+        $isExist = $roomModel->isRoomExists($this->roomID);
+        if(!$isExist) {
+          return Constants::ROOM_NOT_FOUND;
+        }
+
+        // Check if the day is Friday
+        if ($startTime->format('N') == 5) { // 5 corresponds to Friday in ISO-8601 (1 = Monday, 7 = Sunday)
+            return Constants::INVALID_BOOKING_DAY; // Define this constant to represent the error
+        }
+
+        // Check if startTime is before 08:00
+        if ($startTime->format('H:i') < '08:00') {
+            return Constants::INVALID_START_TIME;
+        }
+
+        // Check if endTime is after 18:00
+        if ($endTime->format('H:i') > '18:00') {
+            return Constants::INVALID_END_TIME;
+        }
+
+        // Check if the startTime is in the past
+        $currentDateTime = new DateTime();
+        if ($startTime < $currentDateTime) {
+            return Constants::START_TIME_IN_PAST;
+        }
+
+        // Ensure the booking is at least 1 hour in advance
+        $currentPlusOneHour = new DateTime();
+        $currentPlusOneHour->modify('+1 hour');
+        if ($startTime < $currentPlusOneHour) {
+            return Constants::INVALID_START_TIME;
+        }
+
+        // Calculate booking duration
+        $interval = $startTime->diff($endTime);
+
+        // Validate booking duration (at least 30 minutes and not more than 2.5 hours)
+        if ($interval->h == 0 && $interval->i < 30) {
+            return Constants::BOOKING_DURATION_TOO_SHORT;
+        }
+
+        if ($interval->h > 2 || ($interval->h == 2 && $interval->i > 30)) {
+            return Constants::BOOKING_DURATION_TOO_LONG;
+        }
+
+        // Check for booking conflicts
+        if ($this->checkConflict($this->roomID, $this->startTime, $this->endTime, $this->userID)) {
+            return Constants::BOOKING_CONFLICT;
+        }
+
+        // Proceed to update the booking if all validations pass
+        $crud = new Crud($this->conn);
+        $updates = [
+            'roomID' => $this->roomID,
+            'startTime' => $this->startTime,
+            'endTime' => $this->endTime,
+        ];
+
+        $condition = 'bookingID = ?';
+
+        // Perform the update operation using the Crud class
+        $result = $crud->update('bookings', $updates, $condition, $this->bookingID);
+
+        // Return the result of the update operation
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+
+    } catch (Exception $e) {
+        // Log any errors that occur during the update process
+        error_log("Error updating booking: " . $e->getMessage());
+        return false;
+    }
+}
+
+
   private function checkConflict($roomID, $startTime, $newEndTime, $userID)
   {
     $crud = new Crud($this->conn);
@@ -183,7 +270,7 @@ class BookModel
 
 
   // get bookings by a specific field
-  private function getBookingsBy($field, $value)
+  public function getBookingsBy($field, $value)
   {
     $crud = new Crud($this->conn);
     $condition = "{$field} = ?";
@@ -521,6 +608,19 @@ public function getNewFeedbacks() {
 
     return $openLabBookings;
   }
+
+  public function getAllUpcomingBookings()
+  {
+    $crud = new Crud($this->conn);
+    $currentTime = (new DateTime())->format('Y-m-d H:i:s');
+
+    // Query to get upcoming bookings ordered by startTime ASC
+    $condition = 'startTime > ? AND status = ? ORDER BY startTime ASC';
+    $result = $crud->read('bookings', [], $condition, $currentTime, 'active');
+
+    return !empty($result) ? $result : [];
+  }
+
 
 
   public function updateExpiredBookings()

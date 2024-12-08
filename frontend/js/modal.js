@@ -19,6 +19,16 @@ function openRoomListModal() {
     }
 }
 
+function openBookListModal() {
+    var modalContainer = document.getElementById('modalContainer');
+    var bookListModal = document.getElementById('bookListModal');
+    
+    if (modalContainer && bookListModal) {
+        modalContainer.classList.remove('hidden');
+        bookListModal.classList.remove('hidden');
+    }
+}
+
 function closeModal() {
     var modalContainer = document.getElementById('modalContainer');
     var addRoomModal = document.getElementById('addRoomModal');
@@ -39,6 +49,34 @@ function toggleEditMode(roomID) {
 
     viewCells.forEach(cell => cell.classList.toggle('hidden'));
     editCells.forEach(cell => cell.classList.toggle('hidden'));
+}
+
+function toggleBookingEditMode(roomID) {
+    const row = document.getElementById('book_' + roomID);
+    if (!row) return;
+
+    // Toggle view/edit modes
+    const viewCells = row.querySelectorAll('.view-mode');
+    const editCells = row.querySelectorAll('.edit-mode');
+
+    viewCells.forEach(cell => cell.classList.toggle('hidden'));
+    editCells.forEach(cell => cell.classList.toggle('hidden'));
+}
+
+function toggleEditBooking(bookingID) {
+    const row = document.getElementById('book_' + bookingID);
+    if (!row) return;
+
+    // Toggle view/edit modes
+    const viewCells = row.querySelectorAll('.view-mode');
+    const editCells = row.querySelectorAll('.edit-mode');
+
+    viewCells.forEach(cell => cell.classList.toggle('hidden'));
+    editCells.forEach(cell => cell.classList.toggle('hidden'));
+}
+
+function cancelBookingEdit(bookingID) {
+    toggleBookingEditMode(bookingID);
 }
 
 function cancelEdit(roomID) {
@@ -78,6 +116,39 @@ function saveRoom(roomID) {
     });
 }
 
+function saveBooking(bookingID) {
+    const row = document.getElementById('book_' + bookingID);
+    if (!row) return;
+
+    const formData = new FormData();
+    formData.append('bookingID', bookingID);
+    formData.append('action', 'edit');
+
+    // Get all input values
+    const inputs = row.querySelectorAll('.edit-mode input, .edit-mode select');
+    inputs.forEach(input => {
+        formData.append(input.name, input.value);
+    });
+
+    fetch('../../../backend/server/editBooking.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Booking updated successfully!');
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the Booking');
+    });
+}
+
 function deleteRoom(roomID) {
     if(confirm('Are you sure you want to delete room ' + roomID + '?')) {
         const formData = new FormData();
@@ -100,6 +171,32 @@ function deleteRoom(roomID) {
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred while deleting the room');
+        });
+    }
+}
+
+function deleteBooking(bookingID) {
+    if(confirm('Are you sure you want to delete this booking ' + bookingID + '?')) {
+        const formData = new FormData();
+        formData.append('bookingID', bookingID);
+        formData.append('action', 'delete');
+
+        fetch('../../../backend/server/editBooking.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Booking deleted successfully!');
+                location.reload();
+            } else {
+                alert('Failed to delete booking: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the booking');
         });
     }
 }

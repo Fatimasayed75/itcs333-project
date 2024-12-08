@@ -1,6 +1,7 @@
 <?php
 require_once '../../../backend/database/user-model.php';
 require_once '../../../backend/database/room-model.php';
+require_once '../../../backend/database/book-model.php';
 require_once '../../../backend/utils/helpers.php';
 require_once '../../../backend/utils/constants.php';
 
@@ -9,6 +10,10 @@ use Utils\Constants;
 $id = isAuthorized();
 
 $userModel = new UserModel($pdo);
+$bookModel = new BookModel($pdo, null, null, null, null, null, null);
+
+$bookings = $bookModel->getAllUpcomingBookings();
+print_r($bookings);
 
 $id == Constants::GUEST_USER_ID ?
   $user = ['firstName' => 'Guest', 'lastName' => 'User'] :
@@ -90,12 +95,24 @@ usort($CErooms, function ($a, $b) {
                   </div>
               </div>
           </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
+              <div onclick="openBookListModal()" class="w-full cursor-pointer">
+                  <div class="flex flex-col items-center">
+                      <i class="bx bx-calendar text-5xl mb-4" style="color: #D885A3;"></i>
+                      <h4 class="text-xl font-medium text-gray-600">Manage Bookings</h4>
+                      <p class="text-sm text-gray-500 mt-2">Update, edit, or remove upcoming Bookings</p>
+                  </div>
+              </div>
+          </div>
+
         </div>
     </div>
 
     <!-- Modal Container -->
     <div id="modalContainer" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center overflow-y-auto py-8 max-h-screen w-full">
         <div class="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+
             <!-- Add Room Modal -->
             <div id="addRoomModal" class="bg-white p-8 rounded-lg shadow-xl w-96 self-center mx-auto hidden">
                 <h2 class="text-2xl font-bold mb-6 text-center">Add New Room</h2>
@@ -253,6 +270,96 @@ usort($CErooms, function ($a, $b) {
                     </div>
                 </form>
             </div>
+
+
+            <!-- Bookings List Modal -->
+            <div id="bookListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-4xl hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center">Bookings List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full bg-white shadow-md rounded">
+                        <thead>
+                            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">Booking ID</th>
+                                <th class="py-3 px-6 text-left">User ID</th>
+                                <th class="py-3 px-6 text-left">Room ID</th>
+                                <th class="py-3 px-6 text-left">Booking Time</th>
+                                <th class="py-3 px-6 text-left">Start Time</th>
+                                <th class="py-3 px-6 text-left">End Time</th>
+                                <th class="py-3 px-6 text-left">Status</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($bookings as $booking): ?>
+                            <tr class="border-b border-gray-200 hover:bg-gray-100" id="book_<?php echo htmlspecialchars($booking['bookingID']); ?>">
+                                <!-- Normal View -->
+                                <td class="py-3 px-6 text-left whitespace-nowrap view-mode"><?php echo htmlspecialchars($booking['bookingID']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['userID']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['roomID']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['bookingTime']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['startTime']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['endTime']); ?></td>
+                                <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['status']); ?></td>
+                                <td class="py-3 px-6 text-center view-mode">
+                                    <div class="flex item-center justify-center space-x-4">
+                                        <button onclick="toggleEditBooking('<?php echo htmlspecialchars($booking['bookingID']); ?>')" class="text-blue-500 hover:text-blue-700">
+                                            <i class="bx bx-edit-alt"></i>
+                                        </button>
+                                        <button onclick="deleteBooking('<?php echo htmlspecialchars($booking['bookingID']); ?>')" class="text-red-500 hover:text-red-700">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+
+                                <!-- Edit Mode -->
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden"><?php echo htmlspecialchars($booking['bookingID']); ?></td>
+                                <!-- <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="text" name="name" value="<?php echo htmlspecialchars($booking['bookingID']); ?>" 
+                                           class="w-full px-2 py-1 border rounded">
+                                </td> -->
+
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
+                                <input type="hidden" name="userID" value="<?php echo htmlspecialchars($booking['userID']); ?>" >
+                                  </td>
+
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="text" name="roomID" value="<?php echo htmlspecialchars($booking['roomID']); ?>" 
+                                          class="w-full px-2 py-1 border rounded">
+                                </td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden"><?php echo htmlspecialchars($booking['bookingTime']); ?></td>
+
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="datetime-local" name="startTime" value="<?php echo htmlspecialchars($booking['startTime']); ?>" 
+                                           class="w-full px-2 py-1 border rounded">
+                                </td>
+                                <td class="py-3 px-6 text-left edit-mode hidden">
+                                    <input type="datetime-local" name="endTime" value="<?php echo htmlspecialchars($booking['endTime']); ?>" 
+                                           class="w-full px-2 py-1 border rounded">
+                                </td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">active</td>
+
+                                <td class="py-3 px-6 text-center edit-mode hidden">
+                                    <div class="flex item-center justify-center space-x-4">
+                                        <button onclick="saveBooking('<?php echo htmlspecialchars($booking['bookingID']); ?>')" class="text-green-500 hover:text-green-700">
+                                            <i class="bx bx-check"></i>
+                                        </button>
+                                        <button onclick="cancelBookingEdit('<?php echo htmlspecialchars($booking['bookingID']); ?>')" class="text-gray-500 hover:text-gray-700">
+                                            <i class="bx bx-x"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button onclick="closeModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">Close</button>
+                </div>
+            </div>
+
+             
+
         </div>
     </div>
   <?php } ?>
