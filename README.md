@@ -59,7 +59,7 @@ This project is a **Responsive Web-Based Room Booking System** for the IT Colleg
     - Comprehensive entity-relationship diagrams to map database structure.
 
 ## Technologies Used
-- **Frontend**: HTML/CSS, JavaScript
+- **Frontend**: HTML/CSS, JavaScript, Tailwind
 - **Backend**: PHP with PDO
 - **Database**: MySQL
 - **Server**: Apache
