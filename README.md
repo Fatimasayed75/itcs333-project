@@ -1,17 +1,16 @@
 # ITCS333
 
 Suggested Emails:
-Admin:
-email: admin@uob.edu.bh
-password: uobAdmin1!
+- Admin:
+  - email: admin@uob.edu.bh
+  - password: uobAdmin1!
+- Student:
+  - email: 202211111@stu.uob.edu.bh
+  - password: uobStudent1!
+- Instructor:
+  - email: instructor@uob.edu.bh
+  - password: uobInstructor1!
 
-Student:
-email: 202211111@stu.uob.edu.bh
-password: uobStudent1!
-
-Instructor:
-email: instructor@uob.edu.bh
-password: uobInstructor1!
 
 Primary Functionalities;
 - All Users:
