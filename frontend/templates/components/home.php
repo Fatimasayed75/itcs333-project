@@ -14,6 +14,7 @@ $id = isAuthorized();
 
 $userModel = new UserModel($pdo);
 $bookModel = new BookModel($pdo, null, null, null, null, null, null);
+$bookModel->updateExpiredBookings();
 
 $bookings = $bookModel->getAllUpcomingBookings();
 $users = $userModel->getAllUsers();
@@ -263,7 +264,9 @@ usort($CErooms, function ($a, $b) {
 
 
             <!-- Bookings List Modal -->
-            <div id="bookListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-6xl hidden">
+            <!-- <div id="bookListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-6xl hidden"> -->
+            <div id="bookListModal" class="bg-white p-8 rounded-lg shadow-xl w-full max-w-6xl hidden relative">
+
               <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
                 <i class="bx bx-x"></i>
               </button>
