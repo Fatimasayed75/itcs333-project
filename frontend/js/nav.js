@@ -43,7 +43,7 @@ function handleDarkModeToggle() {
   updateDarkModeUI(isDark);
   localStorage.setItem("theme", isDark ? "dark" : "light");
   // initializeHomeEventListeners()
-  createRoomEquipmentsTable();
+  // createRoomEquipmentsTable();
   // updateChart();
 }
 
