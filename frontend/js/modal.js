@@ -30,13 +30,15 @@ function openBookListModal() {
 }
 
 function closeModal() {
-  var modalContainer = document.getElementById("modalContainer");
-  var addRoomModal = document.getElementById("addRoomModal");
-  var roomListModal = document.getElementById("roomListModal");
-
-  if (modalContainer) modalContainer.classList.add("hidden");
-  if (addRoomModal) addRoomModal.classList.add("hidden");
-  if (roomListModal) roomListModal.classList.add("hidden");
+    var modalContainer = document.getElementById('modalContainer');
+    var addRoomModal = document.getElementById('addRoomModal');
+    var roomListModal = document.getElementById('roomListModal');
+    var bookListModal = document.getElementById('bookListModal');
+    
+    if (modalContainer) modalContainer.classList.add('hidden');
+    if (addRoomModal) addRoomModal.classList.add('hidden');
+    if (roomListModal) roomListModal.classList.add('hidden');
+    if (bookListModal) bookListModal.classList.add('hidden');
 }
 
 function toggleEditMode(roomID) {

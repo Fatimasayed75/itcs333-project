@@ -110,63 +110,110 @@ class BookModel
 
   public function update()
   {
-    // Convert startTime and endTime to DateTime objects for validation
-    $startTime = new DateTime($this->startTime);
-    $endTime = new DateTime($this->endTime);
 
     $roomModel = new RoomModel($this->conn);
-    $isExist = $roomModel->isRoomExists($this->roomID);
-    if (!$isExist) {
+    $crud = new Crud($this->conn);
+
+    // Fetch the current booking details
+    $currentBooking = $crud->read(
+      'bookings',
+      ['userID', 'roomID', 'startTime', 'endTime'],
+      'bookingID = ?',
+      $this->bookingID
+    );
+
+    if (empty($currentBooking)) {
+      return Constants::BOOKING_NOT_FOUND;
+    }
+
+    $currentBooking = $currentBooking[0];
+    $newData = [
+      'userID' => $this->userID ?? $currentBooking['userID'],
+      'roomID' => $this->roomID ?? $currentBooking['roomID'],
+      'startTime' => $this->startTime ?? $currentBooking['startTime'],
+      'endTime' => $this->endTime ?? $currentBooking['endTime'],
+    ];
+
+    // Validate room existence
+    if (!$roomModel->isRoomExists($newData['roomID'])) {
       return Constants::ROOM_NOT_FOUND;
     }
 
-    // Check if startTime is before 08:00
+    $startTime = new DateTime($newData['startTime']);
+    $endTime = new DateTime($newData['endTime']);
+    $currentDateTime = new DateTime();
+
+    // Validate times
+    if ($startTime >= $endTime) {
+      return "Invalid Time Range";
+    }
+
     if ($startTime->format('H:i') < '08:00') {
       return Constants::INVALID_START_TIME;
     }
 
-    // Check if endTime is after 18:00
     if ($endTime->format('H:i') > '18:00') {
       return Constants::INVALID_END_TIME;
     }
 
-    // Check if the startTime is in the past
-    $currentDateTime = new DateTime();
     if ($startTime < $currentDateTime) {
       return Constants::START_TIME_IN_PAST;
     }
 
-    if ($endTime < $currentDateTime) {
-      return Constants::END_TIME_IN_PAST;
-    }
+
 
     // Check for booking conflicts
-    if ($this->checkConflict($this->roomID, $this->startTime, $this->endTime, $this->userID)) {
+    if ($this->checkConflictForAdmin(
+      $newData['roomID'],
+      $newData['startTime'],
+      $newData['endTime'],
+      $newData['userID']
+    )) {
       return Constants::BOOKING_CONFLICT;
     }
 
-    // Proceed to update the booking if all validations pass
-    $crud = new Crud($this->conn);
-    $updates = [
-      'userID' => $this->userID,
-      'roomID' => $this->roomID,
-      'startTime' => $this->startTime,
-      'endTime' => $this->endTime,
-    ];
+    // Update booking with only the modified data
+    $updates = array_filter($newData, fn($value, $key) => $value !== $currentBooking[$key], ARRAY_FILTER_USE_BOTH);
+    print_r ($updates);
 
-    $condition = 'bookingID = ?';
-
-    // Perform the update operation using the Crud class
-    $result = $crud->update('bookings', $updates, $condition, $this->bookingID);
-
-    // Return the result of the update operation
-    if ($result) {
-      return true;
-    } else {
-      return false;
+    if (empty($updates)) {
+      return "No Change"; // Nothing to update
     }
+
+    $result = $crud->update('bookings', $updates, 'bookingID = ?', $this->bookingID);
+
+    return $result ? true : false;
   }
 
+  private function checkConflictForAdmin($roomID, $startTime, $endTime, $userID)
+  {
+    $crud = new Crud($this->conn);
+
+    $condition = '(
+          (roomID = ? OR userID = ?) AND status = ? AND (
+              (startTime < ? AND endTime + INTERVAL 10 MINUTE > ?) OR
+              (startTime - INTERVAL 10 MINUTE < ? AND endTime > ?) OR
+              (startTime >= ? AND endTime <= ?)
+          )
+      ) AND bookingID != ?'; // Exclude current booking
+
+    $params = [
+      $roomID,
+      $userID,
+      'active',
+      $endTime,
+      $startTime,
+      $endTime,
+      $startTime,
+      $startTime,
+      $endTime,
+      $this->bookingID,
+    ];
+
+    $result = $crud->read('bookings', [], $condition, ...$params);
+
+    return !empty($result);
+  }
 
   private function checkConflict($roomID, $startTime, $newEndTime, $userID)
   {
