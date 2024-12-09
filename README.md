@@ -26,11 +26,23 @@ This project is a **Responsive Web-Based Room Booking System** for the IT Colleg
    - User feedback and admin response notifications.
 
 ### Extra Features
-1. **Change modes:**:
+1. **Dark/light modes:**:
    - Toggle between dark and light modes for improved user experience.
-2. **Initial Figma Designs:**:
+2. **Countdown Timer**:
+   - Displays time until the next booking starts or ends.
+3. **Grid View**:
+   - Displays rooms in each department & floor  
+4. **Searching**: 
+   - Users can search by booking room or status.
+5. **Filtering**:
+   - Filters for status (active, pending, etc.) and room.
+6. **Countdown Timer**:
+   - Displays time until the next booking starts or ends.
+7. **Availability Chart**:
+   - To display time each room is available
+8. **Initial Figma Designs:**:
    - Collaborative Figma designs to outline the UI/UX workflow.
-3. **ER Diagrams:**:
+9. **ER Diagrams:**:
     - Comprehensive entity-relationship diagrams to map database structure.
 
 ## Technologies Used
