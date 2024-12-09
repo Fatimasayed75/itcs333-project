@@ -12,6 +12,7 @@ function initializeHomeEventListeners() {
       await loadRoomDetails(roomId);
     });
   });
+  
   const roomSquares = document.querySelectorAll(".room-square");
   roomSquares.forEach((square) => {
     square.addEventListener("click", async function () {

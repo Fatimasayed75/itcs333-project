@@ -42,7 +42,9 @@ function handleDarkModeToggle() {
   const isDark = !document.body.classList.contains("dark-mode");
   updateDarkModeUI(isDark);
   localStorage.setItem("theme", isDark ? "dark" : "light");
-  updateChart();
+  // initializeHomeEventListeners()
+  createRoomEquipmentsTable();
+  // updateChart();
 }
 
 // Add click listeners to all dark mode toggles
@@ -168,6 +170,9 @@ async function loadContent(page) {
     }
   } catch (error) {
     console.error("Error loading content: ", error);
+    const response = await fetch("../components/404.php");
+    console.log(response);
+    const data = await response.text();
     document.getElementById("main-content").innerHTML =
       "Content not available.";
   }

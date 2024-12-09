@@ -215,10 +215,6 @@ header .image-text .system {
   transition: var(--tran-03);
 }
 
-.sidebar li a:hover, .nav-link.active {
-  background-color: var(--dark-hover-color);
-}
-
 body.dark-mode .sidebar li a:hover {
   background: var(--dark-primary-color-light);
 }
@@ -466,6 +462,10 @@ body.dark-mode .top-nav ul li a.nav-link.active {
   color: var(--dark-sidebar-color);
   border-radius: 6px;
   cursor: pointer;
+}
+
+body.dark-mode .top-nav ul li a:hover i {
+  color: var(--sidebar-color);
 }
 
 /* Right Side content */

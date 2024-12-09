@@ -4,11 +4,14 @@ function createRoomEquipmentsTable(equipments) {
   );
 
   if (equipmentTableContainer) {
+    // Check if the body has the 'dark-mode' class
+    const isDarkMode = document.body.classList.contains("dark-mode");
+
     // Create table element with Tailwind CSS classes
     const table = document.createElement("table");
     table.classList.add(
       "min-w-full",
-      "bg-white",
+      isDarkMode ? "bg-gray-900" : "bg-white", // Darker background for dark mode
       "border-collapse",
       "shadow-md",
       "rounded-lg",
@@ -19,7 +22,11 @@ function createRoomEquipmentsTable(equipments) {
     // Create table header
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-    headerRow.classList.add("bg-gray-100", "text-left", "text-gray-600");
+    headerRow.classList.add(
+      isDarkMode ? "bg-gray-800" : "bg-gray-100", // More contrasting header background
+      "text-left",
+      isDarkMode ? "text-gray-400" : "text-gray-600" // Lighter text for dark mode
+    );
 
     const headers = ["Equipment Name", "Quantity"];
     headers.forEach((headerText) => {
@@ -44,7 +51,9 @@ function createRoomEquipmentsTable(equipments) {
     if (equipments && equipments.length > 0) {
       equipments.forEach((equipment) => {
         const row = document.createElement("tr");
-        row.classList.add("hover:bg-gray-50");
+        row.classList.add(
+          isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
+        ); // Stronger hover color in dark mode
 
         // Equipment Name
         const equipmentNameCell = document.createElement("td");
@@ -53,7 +62,7 @@ function createRoomEquipmentsTable(equipments) {
           "py-4",
           "border-b",
           "text-sm",
-          "text-gray-800"
+          isDarkMode ? "text-gray-400" : "text-gray-800" // Clearer text for dark mode
         );
         equipmentNameCell.textContent = equipment["equipName"];
         row.appendChild(equipmentNameCell);
@@ -65,7 +74,7 @@ function createRoomEquipmentsTable(equipments) {
           "py-4",
           "border-b",
           "text-sm",
-          "text-gray-800"
+          isDarkMode ? "text-gray-400" : "text-gray-800" // Clearer text for dark mode
         );
         quantityCell.textContent = equipment["Quantity"];
         row.appendChild(quantityCell);
@@ -75,13 +84,14 @@ function createRoomEquipmentsTable(equipments) {
     } else {
       const noDataRow = document.createElement("tr");
       const noDataCell = document.createElement("td");
+      // console.log("hello");
       noDataCell.colSpan = 2; // Adjust to span across both columns
       noDataCell.classList.add(
         "px-6",
         "py-4",
         "text-center",
         "text-sm",
-        "text-gray-600",
+        isDarkMode ? "text-gray-400" : "text-gray-600", // Distinct 'no data' text
         "italic"
       );
       noDataCell.textContent = "No equipment available";

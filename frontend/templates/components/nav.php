@@ -175,19 +175,20 @@ var_dump($id);
   </nav>
 <?php endif; ?>
 
-<?php 
+<?php
 $current_page = basename($_SERVER['PHP_SELF']);
 if ($id == Constants::GUEST_USER_ID && $current_page !== 'base.php'): ?>
-<div id="main-content" class="content lg:ml-24 md:ml-12">
-  <div class="flex flex-col items-center gap-4">
-    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
-    <h2 class="text-xl font-semibold">Content Not Available</h2>
-    <p class="text-gray-500">Please log in to access the content.</p>
-    <a href="/login" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-      Log In
-    </a>
+  <div id="main-content" class="content lg:ml-24 md:ml-12">
+    <div class="flex flex-col items-center gap-4">
+      <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <h2 class="text-xl font-semibold">Content Not Available</h2>
+      <p class="text-gray-500">Please log in to access the content.</p>
+      <a href="/login" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+        Log In
+      </a>
+    </div>
   </div>
-</div>
 <?php endif; ?>

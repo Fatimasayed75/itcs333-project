@@ -73,8 +73,17 @@ try {
             
             // Save room
             if ($room->save()) {
+                // Save equipment assignments if provided
+                if (isset($data['equipment'])) {
+                    // print_r($data['equipment']);
+                    $equipmentIDs = $data['equipment']; // Array of selected equipment IDs
+                    foreach ($equipmentIDs as $equipmentID) {
+                        $room->insertEquipment($data['roomID'], $equipmentID, 10);
+                    }
+                }
+
                 echo json_encode([
-                    'status' => 'success', 
+                    'status' => 'success',
                     'message' => 'Room added successfully',
                     'roomID' => $room->roomID
                 ]);

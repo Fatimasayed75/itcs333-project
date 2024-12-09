@@ -65,6 +65,18 @@ class RoomModel
         }
     }
 
+    // public function insertEquipment() {
+    //     try {
+    //         $crud = new Crud($this->conn);
+    //         $columns = ['roomID', 'equipmentID', 'Quantity'];
+    //         $values = [$this->roomID, $this->equipmentID, $this->Quantity];
+    //         return $crud->create('room_equipments', $columns, $values);
+    //     } catch (Exception $e) {
+    //         error_log("Error saving room: " . $e->getMessage());
+    //         return false;
+    //     }
+    // }
+
     // Update a room
     public function update()
     {
@@ -273,5 +285,38 @@ class RoomModel
         // Return the result, assuming there's only one row for the equipmentID
         return !empty($result) ? $result[0] : [];
     }
+
+    // get all equipments
+    public function getAllEquipments()
+    {
+        $crud = new Crud($this->conn);
+        return $crud->read('equipment');
+    }
+
+    // Method to assign equipment to a room
+    public function assignEquipment($roomID, $equipmentID, $quantity = 10) {
+        // echo $roomID . $equipmentID;
+        $query = "INSERT INTO room_equipments (roomID, equipmentID, Quantity) VALUES (?, ?, ?)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([$roomID, $equipmentID, $quantity]);
+    }
+
+    // insert equipment using crud
+    public function insertEquipment($roomID, $equipmentID, $quantity = 10) {
+        $crud = new Crud($this->conn);
+        $columns = ['roomID', 'equipmentID', 'Quantity'];
+        $values = [$roomID, $equipmentID, $quantity];
+        return $crud->create('room_equipments', $columns, $values);
+    }
+
+
+    // Method to remove all equipment assignments for a room
+    public function clearEquipment($roomID) {
+        $query = "DELETE FROM room_equipment WHERE roomID = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute([$roomID]);
+    }
+
+
 
 }

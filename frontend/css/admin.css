@@ -50,10 +50,6 @@ form button {
     cursor: pointer;
 }
 
-form button:hover {
-    background-color: #0056b3;
-}
-
 .room-list table {
     width: 100%;
     border-collapse: collapse;
