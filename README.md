@@ -3,6 +3,19 @@
 
 **ITCS 333 - Course Project**
 
+--- 
+
+## Team Members
+
+| Name               | ID        | Email                       | GitHub Username  | Section |
+|--------------------|-----------|-----------------------------|------------------|---------|
+| Fatima Abbas       | 202109091 | 202109091@stu.uob.edu.bh    | xlvk             | 08      |
+| Israa Alwedaei     | 202204345 | 202204345@stu.uob.edu.bh    | i149a + isfaisal | 08      |
+| Fatima Sayed Saeed | 202207067 | 202207067@stu.uob.edu.bh    | fatimasayed75    | 08      |
+| Zahraa Fadhel      | 202209444 | 202209444@stu.uob.edu.bh    | ZahraaFadhel     | 08      |
+
+---
+
 ## Project Description
 
 This project is a **Responsive Web-Based Room Booking System** for the IT College, designed to streamline the process of room reservations while offering enhanced features for users and administrators. The system is built with responsiveness in mind, ensuring optimal usability across desktop, tablet, and mobile devices. 
@@ -50,17 +63,6 @@ This project is a **Responsive Web-Based Room Booking System** for the IT Colleg
 - **Backend**: PHP with PDO
 - **Database**: MySQL
 - **Server**: Apache
-
----
-
-## Team Members
-
-| Name               | ID        | Email                       | GitHub Username  | Section |
-|--------------------|-----------|-----------------------------|------------------|---------|
-| Fatima Abbas       | 202109091 | 202109091@stu.uob.edu.bh    | xlvk             | 08      |
-| Israa Alwedaei     | 202204345 | 202204345@stu.uob.edu.bh    | i149a            | 08      |
-| Fatima Sayed Saeed | 202207067 | 202207067@stu.uob.edu.bh    | fatimasayed75    | 08      |
-| Zahraa Fadhel      | 202209444 | 202209444@stu.uob.edu.bh    | ZahraaFadhel     | 08      |
 
 ---
 
