@@ -20,36 +20,36 @@ if ($id === Constants::ADMIN_USER_ID) {
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <!-- Booking Count -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 text-center">Total Bookings</h3>
+                <h3 class="text-xl font-medium text-center">Total Bookings</h3>
                 <p id="bookingCount" class="text-3xl font-bold" style="color: #D885A3;">...</p>
             </div>
 
             <!-- Most Booked Room -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 text-center">Most Booked Room</h3>
+                <h3 class="text-xl font-medium text-center">Most Booked Room</h3>
                 <p id="mostBookedRoom" class="text-3xl font-bold" style="color: #D885A3;">...</p>
             </div>
 
             <!-- Total Users -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 text-center">Total Users</h3>
+                <h3 class="text-xl font-medium text-center">Total Users</h3>
                 <p id="totalUsers" class="text-3xl font-bold" style="color: #D885A3;">...</p>
             </div>
 
             <!-- New Feedbacks -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 text-center">Recent Feedbacks</h3>
+                <h3 class="text-xl font-medium text-center">Recent Feedbacks</h3>
                 <p id="newFeedbacks" class="text-3xl font-bold" style="color: #D885A3;">...</p>
             </div>
         </div>
     </div>
 
 
-        <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Statistics</h3>
+        <h3 class="text-xl font-medium mb-4">Booking Statistics</h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <!-- Bar Chart -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Rate by Month</h3>
+                <h3 class="text-xl font-medium mb-4">Booking Rate by Month</h3>
                 <div id="chart-container" class="w-full h-72 flex justify-center items-center">
                     <canvas id="bookingChart" class="w-full h-full"></canvas>
                 </div>
@@ -58,7 +58,7 @@ if ($id === Constants::ADMIN_USER_ID) {
             
             <!-- Pie Chart -->
             <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col justify-center items-center">
-                <h3 class="text-xl font-medium text-gray-600 mb-4">Booking Rate by Department</h3>
+                <h3 class="text-xl font-medium mb-4">Booking Rate by Department</h3>
                 <div id="chart-container" class="w-full h-72 flex justify-center items-center">
                     <canvas id="departmentChart" class="w-full h-full"></canvas>
                 </div>

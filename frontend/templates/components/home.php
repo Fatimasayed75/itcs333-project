@@ -79,7 +79,7 @@ usort($CErooms, function ($a, $b) {
   <?php if ($id === Constants::ADMIN_USER_ID) { ?>
     <!-- Room Management Section -->
     <div class="container mx-auto mt-6">
-      <h3 class="text-2xl font-semibold text-gray-800 mb-6">Room Management</h3>
+      <h3 class="text-2xl font-semibold mb-6">Room Management</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Add Room Card -->
         <div
@@ -142,7 +142,7 @@ usort($CErooms, function ($a, $b) {
     </div>
     <div>
       <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
-      <input type="number" id="capacity" name="capacity" required
+      <input type="number" id="capacity" name="capacity" required min="20" max="200"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
     </div>
 
