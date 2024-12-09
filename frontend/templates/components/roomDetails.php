@@ -14,8 +14,8 @@
       <p class="text-lg text-gray-800 my-2"><strong>Floor:</strong> {{floor}}</p>
       <p class="text-lg text-gray-800 my-2"><strong>Department:</strong> {{department}}</p>
       <p class="text-lg text-gray-800 my-2"><strong>Status:</strong> {{isAvailable}}</p>
-      <div id="equipmentTableContainer"></div>
       <img src="{{image}}" alt="{{roomID}}" class="mt-4 h-58">
+      <div id="equipmentTableContainer"></div>
     </div>
 
     <!-- Booking Form Section -->

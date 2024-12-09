@@ -49,6 +49,9 @@ function toggleEditMode(roomID) {
   const viewCells = row.querySelectorAll(".view-mode");
   const editCells = row.querySelectorAll(".edit-mode");
 
+  console.log(row);
+  console.log(editCells);
+
   viewCells.forEach((cell) => cell.classList.toggle("hidden"));
   editCells.forEach((cell) => cell.classList.toggle("hidden"));
 }

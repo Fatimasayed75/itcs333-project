@@ -4,17 +4,34 @@ function createRoomEquipmentsTable(equipments) {
   );
 
   if (equipmentTableContainer) {
-    // Create table element
+    // Create table element with Tailwind CSS classes
     const table = document.createElement("table");
-    table.classList.add("table", "table-striped", "table-bordered");
+    table.classList.add(
+      "min-w-full",
+      "bg-white",
+      "border-collapse",
+      "shadow-md",
+      "rounded-lg",
+      "overflow-hidden",
+      "my-4"
+    );
 
     // Create table header
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
+    headerRow.classList.add("bg-gray-100", "text-left", "text-gray-600");
 
     const headers = ["Equipment Name", "Quantity"];
     headers.forEach((headerText) => {
       const th = document.createElement("th");
+      th.classList.add(
+        "px-6",
+        "py-3",
+        "border-b",
+        "font-medium",
+        "uppercase",
+        "text-sm"
+      );
       th.textContent = headerText;
       headerRow.appendChild(th);
     });
@@ -27,14 +44,29 @@ function createRoomEquipmentsTable(equipments) {
     if (equipments && equipments.length > 0) {
       equipments.forEach((equipment) => {
         const row = document.createElement("tr");
+        row.classList.add("hover:bg-gray-50");
 
         // Equipment Name
         const equipmentNameCell = document.createElement("td");
+        equipmentNameCell.classList.add(
+          "px-6",
+          "py-4",
+          "border-b",
+          "text-sm",
+          "text-gray-800"
+        );
         equipmentNameCell.textContent = equipment["equipName"];
         row.appendChild(equipmentNameCell);
 
         // Quantity
         const quantityCell = document.createElement("td");
+        quantityCell.classList.add(
+          "px-6",
+          "py-4",
+          "border-b",
+          "text-sm",
+          "text-gray-800"
+        );
         quantityCell.textContent = equipment["Quantity"];
         row.appendChild(quantityCell);
 
@@ -43,7 +75,15 @@ function createRoomEquipmentsTable(equipments) {
     } else {
       const noDataRow = document.createElement("tr");
       const noDataCell = document.createElement("td");
-      noDataCell.colSpan = 3;
+      noDataCell.colSpan = 2; // Adjust to span across both columns
+      noDataCell.classList.add(
+        "px-6",
+        "py-4",
+        "text-center",
+        "text-sm",
+        "text-gray-600",
+        "italic"
+      );
       noDataCell.textContent = "No equipment available";
       noDataRow.appendChild(noDataCell);
       tbody.appendChild(noDataRow);

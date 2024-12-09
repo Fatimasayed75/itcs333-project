@@ -56,6 +56,7 @@ function createRoomAvailabilityChart(bookings) {
       // Destroy the previous chart (if any) to avoid reuse errors
       if (roomAvailabilityChart) {
         roomAvailabilityChart.destroy();
+        roomAvailabilityChart = null;
       }
 
       const chart = new Chart(canvas, {
@@ -180,6 +181,7 @@ function createRoomAvailabilityChart(bookings) {
       canvas.addEventListener("mouseout", () => {
         tooltipDiv.style.display = "none";
       });
+      roomAvailabilityChart = chart;
     };
 
     updateChart();
@@ -188,16 +190,19 @@ function createRoomAvailabilityChart(bookings) {
     weekNavPrev.addEventListener("click", () => {
       currentWeekOffset--;
       updateChart();
+      updateWeekOffset();
     });
 
     weekNavNext.addEventListener("click", () => {
       currentWeekOffset++;
       updateChart();
+      updateWeekOffset();
     });
 
     refresh.addEventListener("click", () => {
       currentWeekOffset = 0;
       updateChart();
+      updateWeekOffset();
     });
   } else {
     console.error("Canvas element not found!");
