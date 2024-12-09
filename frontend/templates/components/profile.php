@@ -41,7 +41,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
                echo base64_encode($user['profilePicData']['file_content']); ?>" alt="Profile Picture"
               class="w-24 h-24 rounded-full object-cover">
           <?php else: ?>
-            <img src="../../images/default.jpg" alt="Profile Picture" class="w-24 h-24 rounded-full object-cover">
+            <img src="../../images/default.jpg" alt="TTTTTTTTTTTTTTTTTTTTTT" class="w-24 h-24 rounded-full object-cover">
           <?php endif; ?>
         </div>
         <div class="profile-info mt-4">
@@ -63,7 +63,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
   <!-- Edit Profile Modal -->
   <div id="editProfileModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50">
     <div class="min-h-screen px-4 text-center flex items-center justify-center">
-      <div class="modal-content rounded-lg shadow-xl max-w-md w-full">
+      <div class="modal-content rounded-lg shadow-xl max-w-[250px] w-full m-2">
         <div class="modal-header">
           <h3 class="text-lg leading-6 font-medium text-white">Edit Profile</h3>
           <button type="button" id="closeEditProfileModalBtn" class="text-gray-400 hover:text-gray-500"
@@ -76,21 +76,22 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
           </button>
         </div>
 
-        <div class="modal-body p-6">
+        <div class="modal-body p-3">
           <form id="editProfileForm" method="post" enctype="multipart/form-data">
-            <div class="mb-6 text-center">
+            <div class="mb-3 text-center">
               <div class="relative inline-block">
                 <?php if (isset($user['profilePicData'])): ?>
-                  <img src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php
-                     echo base64_encode($user['profilePicData']['file_content']); ?>" alt="Profile Picture"
-                    class="w-24 h-24 rounded-full object-cover mx-auto">
+                  <img
+                    src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php echo base64_encode($user['profilePicData']['file_content']); ?>"
+                    alt="Profile Picture" class="w-20 h-20 rounded-full object-cover mx-auto">
+                  <!-- Reduced size from w-20 h-20 to w-16 h-16 -->
                 <?php else: ?>
                   <img src="../../images/default.jpg" alt="Profile Picture"
-                    class="w-24 h-24 rounded-full object-cover mx-auto">
+                    class="w-20 h-20 rounded-full object-cover mx-auto">
                 <?php endif; ?>
                 <label for="profilePic"
-                  class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition duration-200">
-                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 cursor-pointer hover:bg-blue-600 transition duration-200">
+                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                   </svg>
                 </label>
@@ -99,7 +100,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
               </div>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-3">
               <div class="form-group">
                 <label for="firstName">First Name</label>
                 <input type="text" id="firstName" name="firstName"
@@ -122,12 +123,9 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
         </div>
 
         <div class="modal-footer">
-          <button type="button" id="cancelEditProfileBtn" class="btn-cancel" onclick="closeEditProfileModal()">
-            Cancel
-          </button>
-          <button type="submit" form="editProfileForm" class="btn-save">
-            Save Changes
-          </button>
+          <button type="button" id="cancelEditProfileBtn" class="btn-cancel"
+            onclick="closeEditProfileModal()">Cancel</button>
+          <button type="submit" form="editProfileForm" class="btn-save">Save Changes</button>
         </div>
       </div>
     </div>

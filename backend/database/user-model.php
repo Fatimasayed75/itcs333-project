@@ -40,9 +40,9 @@ class UserModel
                 INSERT INTO users (email, password, firstName, lastName, role)
                 VALUES (?, ?, ?, ?, ?)
             ");
-            
+
             $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
-            
+
             $stmt->execute([
                 $this->email,
                 $hashedPassword,
@@ -50,7 +50,7 @@ class UserModel
                 $this->lastName,
                 $this->role
             ]);
-            
+
             return $this->conn->lastInsertId();
         } catch (PDOException $e) {
             error_log("Error saving user: " . $e->getMessage());
@@ -110,7 +110,7 @@ class UserModel
                 LEFT JOIN file_contents fc ON f.id = fc.file_id
             ");
             $stmt->execute();
-            
+
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             if (empty($results)) {
                 return Constants::NO_RECORDS;
@@ -125,7 +125,7 @@ class UserModel
                     ];
                 }
             }
-            
+
             return $results;
         } catch (PDOException $e) {
             error_log("Error fetching users: " . $e->getMessage());
@@ -145,7 +145,7 @@ class UserModel
                 WHERE u.userID = ?
             ");
             $stmt->execute([$userID]);
-            
+
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if (!$result) {
                 return Constants::USER_NOT_FOUND;
@@ -158,7 +158,7 @@ class UserModel
                     'file_content' => $result['file_content']
                 ];
             }
-            
+
             return $result;
         } catch (PDOException $e) {
             error_log("Error fetching user: " . $e->getMessage());

@@ -54,4 +54,7 @@ class Constants
 
     public const GUEST_USER_ID = 0;
 
+    // DEFAULT PICTURE ID
+    public const DEFAULT_PICTURE_ID = 1;
+
 }

@@ -233,6 +233,7 @@ body.dark-mode .profile-info .value {
 
 .editbtn {
     background-color: #D885A3;
+    color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -262,7 +263,7 @@ body.dark-mode .editbtn {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 500px;
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     transition: transform 0.3s ease;
 }
 
