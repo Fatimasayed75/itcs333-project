@@ -82,12 +82,13 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
               <div class="relative inline-block">
                 <?php if (isset($user['profilePicData'])): ?>
                   <img
+                    id="profilePicPreview"
                     src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php echo base64_encode($user['profilePicData']['file_content']); ?>"
                     alt="Profile Picture" class="w-20 h-20 rounded-full object-cover mx-auto">
                   <!-- Reduced size from w-20 h-20 to w-16 h-16 -->
                 <?php else: ?>
                   <img src="../../images/default.jpg" alt="Profile Picture"
-                    class="w-20 h-20 rounded-full object-cover mx-auto">
+                    class="w-20 h-20 rounded-full object-cover mx-auto" id="profilePicPreview">
                 <?php endif; ?>
                 <label for="profilePic"
                   class="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1 cursor-pointer hover:bg-blue-600 transition duration-200">
