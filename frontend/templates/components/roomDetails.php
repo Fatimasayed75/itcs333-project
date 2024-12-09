@@ -9,11 +9,11 @@
         </button>
         {{roomID}}
       </h2>
-      <p class="text-lg text-gray-800 my-2"><strong>Type:</strong> {{type}}</p>
-      <p class="text-lg text-gray-800 my-2"><strong>Capacity:</strong> {{capacity}}</p>
-      <p class="text-lg text-gray-800 my-2"><strong>Floor:</strong> {{floor}}</p>
-      <p class="text-lg text-gray-800 my-2"><strong>Department:</strong> {{department}}</p>
-      <p class="text-lg text-gray-800 my-2"><strong>Status:</strong> {{isAvailable}}</p>
+      <p class="text-lg text-gray-800 my-2 rd-p"><strong>Type:</strong> {{type}}</p>
+      <p class="text-lg text-gray-800 my-2 rd-p"><strong>Capacity:</strong> {{capacity}}</p>
+      <p class="text-lg text-gray-800 my-2 rd-p"><strong>Floor:</strong> {{floor}}</p>
+      <p class="text-lg text-gray-800 my-2 rd-p"><strong>Department:</strong> {{department}}</p>
+      <p class="text-lg text-gray-800 my-2 rd-p"><strong>Status:</strong> {{isAvailable}}</p>
       <img src="{{image}}" alt="{{roomID}}" class="mt-4 h-58">
       <div id="equipmentTableContainer"></div>
     </div>
@@ -22,7 +22,7 @@
     <div class="w-full lg:w-1/2 mb-6 bookingSection">
       <!-- Room Availability -->
       <div class="flex justify-center mb-4">
-        <h3 class="text-xl font-semibold text-gray-800">Room Availability</h3>
+        <h3 class="text-xl font-semibold text-gray-800" id="roomAvailability-h3">Room Availability</h3>
         <button id="refreshBtn" class="ml-4">
           <i class="fa fa-refresh"></i>
         </button>
@@ -40,7 +40,7 @@
       <canvas id="roomAvailability" width="400" height="400" class="p-6"></canvas>
 
       <div id="bookingForm">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Book This Room</h3>
+        <h3 class="text-xl font-semibold mb-4 text-center">Book This Room</h3>
         <div id="bookingForm" class="flex flex-col items-center" action="roomDetails.php" method="POST">
 
           <!-- Select Available Date -->

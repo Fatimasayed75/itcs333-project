@@ -190,7 +190,7 @@ class BookModel
     $crud = new Crud($this->conn);
 
     $condition = '(
-          (roomID = ? OR userID = ?) AND status = ? AND (
+          (roomID = ?) AND status = ? AND (
               (startTime < ? AND endTime + INTERVAL 10 MINUTE > ?) OR
               (startTime - INTERVAL 10 MINUTE < ? AND endTime > ?) OR
               (startTime >= ? AND endTime <= ?)
@@ -199,7 +199,6 @@ class BookModel
 
     $params = [
       $roomID,
-      $userID,
       'active',
       $endTime,
       $startTime,
@@ -221,7 +220,7 @@ class BookModel
 
     // 10 MINUTES GAP BETWEEN BOOKINGS
     $condition = '(
-        (roomID = ? OR userID = ?) AND status = ? AND (
+        (roomID = ?) AND status = ? AND (
             (endTime + INTERVAL 10 MINUTE > ? AND startTime < ?) OR
             (endTime > ? AND startTime - INTERVAL 10 MINUTE < ?) OR
             (startTime >= ? AND endTime <= ?)
@@ -232,10 +231,9 @@ class BookModel
     // Case 2: New booking ends after an existing booking starts
     // Case 3: New booking is fully within an existing booking
 
-    // Check conflicts for roomID and userID
+    // Check conflicts for roomID
     $params = [
       $roomID,
-      $userID,
       'active',
       $startTime,
       $newEndTime,

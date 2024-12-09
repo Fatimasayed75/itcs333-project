@@ -56,7 +56,7 @@ $bookModel->updateExpiredBookings();
                          class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20">
                         <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm text-center">
                             <h4 class="text-xl font-semibold text-gray-800 mb-4">Confirm Cancellation</h4>
-                            <p class="text-sm text-gray-600 mb-6">Are you sure you want to cancel this booking?</p>
+                            <p class="text-sm mb-6">Are you sure you want to cancel this booking?</p>
                             <div class="flex justify-center gap-6">
                                 <button 
                                     type="button" 
@@ -79,7 +79,7 @@ $bookModel->updateExpiredBookings();
             <?php endforeach; ?>
         </div>
     <?php else: ?>
-        <p class="text-gray-500">No upcoming bookings.</p>
+        <p>No upcoming bookings.</p>
     <?php endif; ?>
   </div>
 
@@ -104,7 +104,7 @@ $bookModel->updateExpiredBookings();
             <?php endforeach; ?>
         </div>
     <?php else: ?>
-        <p class="text-gray-500">No current bookings.</p>
+        <p>No current bookings.</p>
     <?php endif; ?>
   </div>
 
@@ -121,12 +121,12 @@ $bookModel->updateExpiredBookings();
                 <div id="previous-booking-card-<?php echo $booking['bookingID']; ?>" 
                      class="bg-gray-100 rounded-lg shadow p-6 relative w-full previous-booking-card" 
                      data-booking-id="<?php echo $booking['bookingID']; ?>">
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">Room: <?php echo $booking['roomID']; ?></h3>
-                    <p class="text-sm text-gray-700 mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
-                    <p class="text-sm text-gray-700 mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
-                    <p class="text-sm text-gray-700 mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
-                    <p class="text-sm text-gray-700 mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
-                    <p class="text-sm text-gray-700 mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
+                    <h3 class="text-lg font-medium mb-2">Room: <?php echo $booking['roomID']; ?></h3>
+                    <p class="text-sm mb-1">Date: <?php echo $bookingDetails['date']; ?></p>
+                    <p class="text-sm mb-1">Day: <?php echo $bookingDetails['day']; ?></p>
+                    <p class="text-sm mb-1">Start: <?php echo $bookingDetails['startTime']; ?></p>
+                    <p class="text-sm mb-1">End: <?php echo $bookingDetails['endTime']; ?></p>
+                    <p class="text-sm mb-2">Duration: <?php echo $bookingDetails['duration']; ?></p>
 
                     <!-- Buttons or Feedback Indicator -->
                     <div class="flex justify-center gap-4 mt-4 items-center">
@@ -159,7 +159,7 @@ $bookModel->updateExpiredBookings();
             <?php endforeach; ?>
         </div>
     <?php else: ?>
-        <p class="text-gray-700">No previous bookings found.</p>
+        <p>No previous bookings found.</p>
     <?php endif; ?>
 </div>
 

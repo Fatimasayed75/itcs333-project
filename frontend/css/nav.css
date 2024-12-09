@@ -455,9 +455,7 @@ body.dark-mode .top-nav ul li a:hover, .nav-link.active {
 }
 
 body.dark-mode .sidebar .menu-bar .menu li a:hover,
-body.dark-mode .top-nav ul li a:hover,
-body.dark-mode .sidebar .menu-bar .menu li a.active,
-body.dark-mode .top-nav ul li a.nav-link.active {
+body.dark-mode .top-nav ul li a:hover {
   background-color: var(--dark-primary-color-light);
   color: var(--dark-sidebar-color);
   border-radius: 6px;
@@ -490,14 +488,25 @@ body.dark-mode .menu-bar .mode .sun-moon i.moon {
 
 body.dark-mode h1,
 body.dark-mode h2,
-body.dark-mode h3,
 body.dark-mode h4,
 body.dark-mode h5,
 body.dark-mode h6,
-body.dark-mode p,
 body.dark-mode span,
 body.dark-mode label {
   color: var(--dark-text-color);
+}
+
+body.dark-mode span.countdown-timer {
+  color: #18191a
+}
+
+body.dark-mode p.rd-p,
+body.dark-mode h3#roomAvailability-h3 {
+  color: var(--dark-text-color);
+}
+
+.countdown-timer {
+  color: #18191a
 }
 
 /* Improve link colors in dark mode */

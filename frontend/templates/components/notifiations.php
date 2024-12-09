@@ -192,11 +192,11 @@ usort($commentsWithReplies, function ($a, $b) {
                     <i class="fa fa-bell text-2xl text-green-700" style="color: #D885A3;"></i>
                 <?php endif; ?>
                     <div>
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm">
                             <strong>Room:</strong> <?= $openLabBooking['roomID']; ?> | 
                             <strong>Date:</strong> <?= date("M d, Y", strtotime($openLabBooking['startTime'])); ?>
                         </p>
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm">
                             <strong>Time:</strong> <?= date("h:i A", strtotime($openLabBooking['startTime'])); ?> - 
                             <?= date("h:i A", strtotime($openLabBooking['endTime'])); ?>
                         </p>

@@ -566,7 +566,11 @@ usort($CErooms, function ($a, $b) {
 
       <!-- Departments Key -->
       <div class="hidden lg:block w-64 bg-white shadow-lg p-4">
-        <h3 class="text-lg font-semibold text-gray-700 mb-4">Department Key</h3>
+        <h3 class="text-lg font-semibold mb-4">Department Key</h3>
+        <div class="flex items-center mb-4">
+          <div class="w-4 h-4 bg-red-300 rounded-full mr-2"></div>
+          <span class="text-sm">IS - Information Systems</span>
+        </div>
         <div class="flex items-center mb-4">
           <div class="w-4 h-4 bg-yellow-300 rounded-full mr-2"></div>
           <span class="text-sm">CS - Computer Science</span>
@@ -574,10 +578,6 @@ usort($CErooms, function ($a, $b) {
         <div class="flex items-center mb-4">
           <div class="w-4 h-4 bg-blue-300 rounded-full mr-2"></div>
           <span class="text-sm">CE - Computer Engineering</span>
-        </div>
-        <div class="flex items-center mb-4">
-          <div class="w-4 h-4 bg-red-300 rounded-full mr-2"></div>
-          <span class="text-sm">IS - Information Systems</span>
         </div>
       </div>
     </div>

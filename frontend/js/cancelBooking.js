@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (remainingBookings.length === 0) {
                         // Show the "No upcoming bookings" message
                         const noBookingsMessage = document.createElement('p');
-                        noBookingsMessage.classList.add('text-gray-500');
                         noBookingsMessage.textContent = 'No upcoming bookings.';
                         upcomingBookingsSection.appendChild(noBookingsMessage);
                     }

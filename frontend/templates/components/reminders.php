@@ -83,7 +83,7 @@ $lastTwoOpenLabBookings = array_slice($openLabBookings, -2); // This gives the l
             <span class="countdown-timer" data-end-time="<?= $endTime ?>" data-mode="<?= $isCurrent ? 'end' : 'start' ?>">
             </span>
           </p>
-          <a href="#" class="text-sm text-blue-600 underline">View Details</a>
+          <a href="#" id="view-details-history" class="text-sm text-blue-600 underline">View Details</a>
         </div>
       <?php endif; ?>
 
@@ -107,7 +107,7 @@ $lastTwoOpenLabBookings = array_slice($openLabBookings, -2); // This gives the l
             <p class="text-sm text-gray-600">Date: <?= date('d M Y', $bookingDateTime) ?></p>
             <p class="text-sm text-gray-600">Time: <?= date('h:i A', $bookingDateTime) ?></p>
             <p class="text-sm font-semibold text-gray-700"><?= $statusText ?></p>
-            <a href="#" class="text-sm text-blue-600 underline">View Details</a>
+            <a href="#" class="text-sm text-blue-600 underline view-details-noti">View Details</a>
           </div>
           <?php
         endif;

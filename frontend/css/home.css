@@ -232,14 +232,11 @@ body.dark-mode .room-card[data-status="maintenance"] {
 }
 
 /* Keep specific reminder cards text black in dark mode */
-body.dark-mode .bg-blue-50,
 body.dark-mode .bg-green-50,
 body.dark-mode .bg-red-50 {
   background-color: inherit !important;
 }
 
-body.dark-mode .bg-blue-50 .text-gray-800,
-body.dark-mode .bg-green-50 .text-gray-800,
 body.dark-mode .bg-red-50 .text-gray-800 {
   color: #1f2937 !important; /* dark gray for headers */
 }
