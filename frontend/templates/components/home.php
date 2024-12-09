@@ -213,7 +213,6 @@ usort($CErooms, function ($a, $b) {
                                     <select name="type" class="w-full px-2 py-1 border rounded">
                                         <option value="class" <?php echo $room['type'] === 'class' ? 'selected' : ''; ?>>Classroom</option>
                                         <option value="lab" <?php echo $room['type'] === 'lab' ? 'selected' : ''; ?>>Laboratory</option>
-                                        <option value="meeting" <?php echo $room['type'] === 'meeting' ? 'selected' : ''; ?>>Meeting Room</option>
                                     </select>
                                 </td>
                                 <td class="py-3 px-6 text-left edit-mode hidden">
@@ -264,7 +263,6 @@ usort($CErooms, function ($a, $b) {
                         <select id="edit_type" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="class">Classroom</option>
                             <option value="lab">Laboratory</option>
-                            <option value="meeting">Meeting Room</option>
                         </select>
                     </div>
                     <div>

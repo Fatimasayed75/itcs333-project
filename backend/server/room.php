@@ -64,7 +64,7 @@ try {
             // Create new room instance with all data
             $room = new RoomModel(
                 $pdo,
-                $data['roomID'], // roomID will be auto-generated
+                $data['roomID'],
                 $data['type'] ?? 'class',
                 (int)$data['capacity'],
                 true,
