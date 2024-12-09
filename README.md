@@ -1,40 +1,61 @@
-# ITCS333
 
-Suggested Emails:
-- Admin:
-  - email: admin@uob.edu.bh
-  - password: uobAdmin1!
-- Student:
-  - email: 202211111@stu.uob.edu.bh
-  - password: uobStudent1!
-- Instructor:
-  - email: instructor@uob.edu.bh
-  - password: uobInstructor1!
+# Responsive Web-Based IT College Room Booking System
 
+**ITCS 333 - Course Project**
 
-Primary Functionalities;
-- All Users:
-  - Light and Drak mode
-- Guest:
-  - Browsing without booking
-- User (student ot instructor1):
-  - Sign in/ Sign up and Log out
-  - Edit profile (Change first name, last name, and profile pic "can't change email")
-  - Browse classes (card view, grid view)
-  - Search and Filter (for classes)
-  - Book a room (class or lab)
-  - Cancel booking
-  - Request a room (Open lab only "S40-1002, S40-2001")
-  - Comment (feedback on the room after the bookung is completed)
-- Admin:
-  - Sign in/ Sign up and Log out
-  - Edit profile (Change first name, last name, and profile pic "can't change email")
-  - Browse classes (card view, grid view)
-  - Search and Filter (for classes)
-  - Book a room (class or lab)
-  - Room management (add a room, manage a room, manage a booking)
-  - Browse statistics 
-  - Cancel booking
-  - Accept Requests (for open lab)
-  - Reply on a comment
+## Project Description
 
+This project is a **Responsive Web-Based Room Booking System** for the IT College, designed to streamline the process of room reservations while offering enhanced features for users and administrators. The system is built with responsiveness in mind, ensuring optimal usability across desktop, tablet, and mobile devices. 
+
+### Primary Features
+1. **User Registration and Login**:
+   - Secure user registration system with UoB email validation.
+   - Login functionality with advanced validation.
+2. **User Profile Management**:
+   - Profile editing and picture upload.
+3. **Room Browsing and Details**:
+   - Room capacity, equipment, and available timeslot details.
+4. **Room Booking System**:
+   - Conflict checking algorithm for efficient booking.
+   - Booking cancellation feature.
+5. **Admin Panel**:
+   - Room and schedule management tools.
+6. **Reporting and Analytics**:
+   - Usage statistics and user dashboards.
+7. **Comment System**:
+   - User feedback and admin response notifications.
+
+### Extra Features
+1. **Change modes:**:
+   - Toggle between dark and light modes for improved user experience.
+2. **Initial Figma Designs:**:
+   - Collaborative Figma designs to outline the UI/UX workflow.
+3. **ER Diagrams:**:
+    - Comprehensive entity-relationship diagrams to map database structure.
+
+## Technologies Used
+- **Frontend**: HTML/CSS, JavaScript
+- **Backend**: PHP with PDO
+- **Database**: MySQL
+- **Server**: Apache
+
+---
+
+## Team Members
+
+| Name               | ID        | Email                       | GitHub Username  | Section |
+|--------------------|-----------|-----------------------------|------------------|---------|
+| Fatima Abbas       | 202109091 | 202109091@stu.uob.edu.bh    | xlvk             | 08      |
+| Israa Alwedaei     | 202204345 | 202204345@stu.uob.edu.bh    | i149a            | 08      |
+| Fatima Sayed Saeed | 202207067 | 202207067@stu.uob.edu.bh    | fatimasayed75    | 08      |
+| Zahraa Fadhel      | 202209444 | 202209444@stu.uob.edu.bh    | ZahraaFadhel     | 08      |
+
+---
+
+## Suggested Emails
+
+| Role       | Email                        | Password        |
+|------------|------------------------------|-----------------|
+| Admin      | admin@uob.edu.bh             | uobAdmin1!      |
+| Student    | 202211111@stu.uob.edu.bh     | uobStudent1!    |
+| Instructor | instructor@uob.edu.bh        | uobInstructor1! |
