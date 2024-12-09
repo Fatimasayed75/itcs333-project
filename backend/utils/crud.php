@@ -10,18 +10,21 @@ use PDOException;
  * instead of using the PDO class directly you can use this class to perform CRUD operations.
  */
 
-class Crud {
+class Crud
+{
     private $db;
 
-    public function __construct(PDO $pdo) {
+    public function __construct(PDO $pdo)
+    {
         $this->db = $pdo;
     }
 
     // Create inserts a new record into the specified table.
-    public function create(string $tableName, array $columns, array $values): bool {
+    public function create(string $tableName, array $columns, array $values): bool
+    {
         $placeholders = rtrim(str_repeat('?,', count($values)), ',');
         $columnList = implode(',', $columns);
-        
+
         $query = "INSERT INTO $tableName ($columnList) VALUES ($placeholders)";
         $stmt = $this->db->prepare($query);
         // print_r($stmt);
@@ -31,12 +34,13 @@ class Crud {
             echo "Error executing query: " . $errorInfo[2]; // Error message
             return false; // Return false to indicate failure
         }
-    
-        return true; 
+
+        return true;
     }
 
     // Read retrieves records from the specified table based on the given condition.
-    public function read(string $tableName, array $columns = [], string $condition = '', ...$args): array {
+    public function read(string $tableName, array $columns = [], string $condition = '', ...$args): array
+    {
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
         $query = "SELECT $columnList FROM $tableName";
 
@@ -50,7 +54,8 @@ class Crud {
     }
 
     // Update modifies existing records in the specified table based on the given condition.
-    public function update(string $tableName, array $updates, string $condition, ...$args): bool {
+    public function update(string $tableName, array $updates, string $condition, ...$args): bool
+    {
         $setClauses = [];
         $updateValues = [];
 
@@ -62,15 +67,19 @@ class Crud {
 
         $setClause = implode(',', $setClauses);
         $query = "UPDATE $tableName SET $setClause WHERE $condition";
-        
+
         $stmt = $this->db->prepare($query);
         return $stmt->execute(array_merge($updateValues, $args));
     }
 
     // Delete removes records from the specified table based on the given condition.
-    public function delete(string $tableName, string $condition, ...$args): bool {
+    public function delete(string $tableName, string $condition, ...$args): bool
+    {
         $query = "DELETE FROM $tableName WHERE $condition";
         $stmt = $this->db->prepare($query);
         return $stmt->execute($args);
     }
+
+    
+
 }

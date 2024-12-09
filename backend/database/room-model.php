@@ -243,4 +243,35 @@ class RoomModel
         $condition = 'roomID = ?';
         return !empty($crud->read('room', ['roomID'], $condition, $roomID));
     }
+
+    // get all equibments for a room
+    public function getRoomEquibments($roomId)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'roomID = ?';
+        $equibmentsWithIds = $crud->read('room_equipments', ['equipmentID', 'Quantity'], $condition, $roomId);
+
+        foreach ($equibmentsWithIds as &$equibment) {  // Use reference (&) to modify the array directly
+            // Get the equipment name and quantity using the equipmentID
+            $equibmentData = $this->getEquibmentNameAndQuantity($equibment['equipmentID']);
+
+            // Check if we got valid data and assign them to the current equipment entry
+            if (!empty($equibmentData)) {
+                $equibment['equipName'] = $equibmentData['equipmentName'];
+            }
+        }
+        return $equibmentsWithIds;
+    }
+
+    // Get equipment name and quantity from the equipments table
+    public function getEquibmentNameAndQuantity($equipId)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'equipmentID = ?';
+        $result = $crud->read('equipment', [], $condition, $equipId);
+
+        // Return the result, assuming there's only one row for the equipmentID
+        return !empty($result) ? $result[0] : [];
+    }
+
 }

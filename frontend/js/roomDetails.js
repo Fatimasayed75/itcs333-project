@@ -204,14 +204,6 @@ function createRoomAvailabilityChart(bookings) {
   }
 }
 
-// function getGridColor() {
-//   return document.body.classList.contains("dark-mode") ? "white" : "#ccc";
-// }
-
-// function getTickColor() {
-//   return document.body.classList.contains("dark-mode") ? "white" : "#000";
-// }
-
 function updateWeekOffset() {
   const weekOffsetDisplay = document.getElementById("weekOffset");
 
@@ -246,6 +238,7 @@ async function loadRoomDetails(roomId) {
 
     let roomData = data[0];
     let bookings = roomData["roomBookings"];
+    let equipments = roomData["roomEquipment"];
 
     if (roomData.floor == 0) {
       roomData.floor = "Ground Floor";
@@ -254,6 +247,7 @@ async function loadRoomDetails(roomId) {
     } else if (roomData.floor == 2) {
       roomData.floor = "Second Floor";
     }
+
     // Replace placeholders in the HTML template
     const filledTemplate = template
       .replace(/{{roomID}}/g, roomData.roomID)
@@ -278,6 +272,7 @@ async function loadRoomDetails(roomId) {
 
     // Call the function to create the chart right after DOM manipulation
     createRoomAvailabilityChart(bookings); // Pass bookings data to chart creation function
+    createRoomEquipmentsTable(equipments);
 
     const homeBtn = document.getElementById("backToHomeBtn");
     if (homeBtn) {
@@ -296,7 +291,6 @@ async function loadRoomDetails(roomId) {
     console.error("Error loading room details:", error);
     document.getElementById("main-content").innerHTML =
       "Failed to load room details.";
-    // alert("Failed to load room details.");
   }
 }
 

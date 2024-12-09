@@ -56,6 +56,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/profile.js"></script>
   <script src="../../js/modal.js"></script>
   <script src="../../js/downTime.js"></script>
+  <script src="../../js/equipmentTable.js"></script>
 </body>
 
 </html>

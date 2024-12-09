@@ -18,8 +18,10 @@ $roomModel = new RoomModel($pdo);
 $room = $roomModel->getRoomById($roomID);
 
 $roomBookings = $roomModel->getBookingsByRoomId($roomID);
+$roomEquipment = $roomModel->getRoomEquibments($roomID);
 
 $room[0]['roomBookings'] = $roomBookings;
+$room[0]['roomEquipment'] = $roomEquipment;
 
 echo json_encode($room);
 exit;
