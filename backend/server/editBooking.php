@@ -91,6 +91,7 @@ try {
             );
 
             $result = $updatedBooking->update();
+            // echo $result;
 
             // Update booking
             if ($result === true) {

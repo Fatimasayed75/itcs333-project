@@ -152,7 +152,7 @@ function saveBooking(bookingID) {
     })
     .catch((error) => {
       console.error("Error:", error);
-      alert("An error occurred while updating the Booking");
+    //   alert("An error occurred while updating the Booking");
     });
 }
 

@@ -174,7 +174,7 @@ class BookModel
 
     // Update booking with only the modified data
     $updates = array_filter($newData, fn($value, $key) => $value !== $currentBooking[$key], ARRAY_FILTER_USE_BOTH);
-    print_r ($updates);
+    // print_r ($updates);
 
     if (empty($updates)) {
       return "No Change"; // Nothing to update
