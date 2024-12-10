@@ -31,7 +31,7 @@ $userDetails = $userModel->getUserByID($id);
 $isAdmin = $userDetails['role'] === 'admin';
 
 // Fetch booking details
-$bookingDetails = $isAdmin 
+$bookingDetails = $isAdmin
     ? $bookModel->getAllBookings() // Admins see all bookings
     : $bookModel->getPreviousBookingsByUser($id); // Normal users see their bookings only
 
@@ -95,13 +95,13 @@ usort($commentsWithReplies, function ($a, $b) {
 
 ?>
 
-<div class="notifications p-6 space-y-6 bg-gray-100 rounded-lg pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10 min-h-screen">
+<div class="p-6 m-6 bg-white shadow-lg rounded-lg text-left pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10 notifications">
 
     <!-- Pending Bookings Section -->
-    <?php if($isAdmin && !empty($pendingBookings)) { ?>
+    <?php if ($isAdmin && !empty($pendingBookings)) { ?>
         <h1 class="text-3xl font-semibold text-gray-800 mb-4">Pending Bookings</h1>
-        <div class="pending-bookings max-w-4xl mx-auto p-6 space-y-6 bg-gray-100 rounded-lg pb-6 mt-10 w-full">
-        <!-- <div class="pending-booking bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative mb-6" > -->
+        <div class="pending-bookings max-w-4xl mx-auto p-6 space-y-6 rounded-lg pb-6 mt-10 w-full">
+            <!-- <div class="pending-booking bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative mb-6" > -->
 
             <?php foreach ($pendingBookings as $booking):
                 $bookingID = $booking['bookingID'];
@@ -111,122 +111,123 @@ usort($commentsWithReplies, function ($a, $b) {
                 $endTime = $booking['endTime'];
 
                 $userDetails = $userModel->getUserByID($userID);
-                
-            ?>
 
-    <div class="pending-booking bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative" id="pending-booking-<?= $bookingID; ?>">
-        <div class="booking-header flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                <i class="fa fa-calendar text-2xl text-orange-600" style="color: #D885A3;"></i>
-                <div>
-                    <p class="text-sm text-gray-500">
-                        <strong>User:</strong> <?= $userDetails['firstName'] . ' ' . $userDetails['lastName']; ?> | <strong>Room:</strong> <?= $roomID ?>
-                    </p>
-                    <p class="text-sm text-gray-500">
-                        <strong>Date:</strong> <?= date("M d, Y", strtotime($startTime)); ?> | 
-                        <strong>Time:</strong> <?= date("h:i A", strtotime($startTime)); ?> - <?= date("h:i A", strtotime($endTime)); ?>
-                    </p>
+                ?>
+
+                <div class="pending-booking bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative"
+                    id="pending-booking-<?= $bookingID; ?>">
+                    <div class="booking-header flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <i class="fa fa-calendar text-2xl text-orange-600" style="color: #D885A3;"></i>
+                            <div>
+                                <p class="text-sm text-gray-500">
+                                    <strong>User:</strong>
+                                    <?= $userDetails['firstName'] . ' ' . $userDetails['lastName']; ?> |
+                                    <strong>Room:</strong> <?= $roomID ?>
+                                </p>
+                                <p class="text-sm text-gray-500">
+                                    <strong>Date:</strong> <?= date("M d, Y", strtotime($startTime)); ?> |
+                                    <strong>Time:</strong> <?= date("h:i A", strtotime($startTime)); ?> -
+                                    <?= date("h:i A", strtotime($endTime)); ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-actions flex justify-center mt-4 space-x-4">
+                        <button class="approve-booking px-4 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700"
+                            style="background-color: #D885A3;" data-booking-id="<?= $bookingID; ?>" data-status="approved">
+                            Approve
+                        </button>
+                        <button class="reject-booking px-4 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-600"
+                            style="background-color: #B0B0B0;" data-booking-id="<?= $bookingID; ?>" data-status="rejected">
+                            Reject
+                        </button>
+                    </div>
+
+                    <!-- Hidden fields for AJAX request -->
+                    <input type="hidden" id="roomID-<?= $bookingID; ?>" value="<?= $roomID; ?>" />
+                    <input type="hidden" id="bookingTime-<?= $bookingID; ?>" value="<?= $bookingTime; ?>" />
+                    <input type="hidden" id="startTime-<?= $bookingID; ?>" value="<?= $startTime; ?>" />
+                    <input type="hidden" id="endTime-<?= $bookingID; ?>" value="<?= $endTime; ?>" />
+                    <input type="hidden" id="userID-<?= $bookingID; ?>" value="<?= $userID; ?>" />
                 </div>
-            </div>
-        </div>
-
-        <div class="booking-actions flex justify-center mt-4 space-x-4">
-            <button class="approve-booking px-4 py-1 text-sm bg-green-600 text-white rounded-md hover:bg-green-700" 
-                style="background-color: #D885A3;" 
-                data-booking-id="<?= $bookingID; ?>" 
-                data-status="approved">
-                Approve
-            </button>
-            <button class="reject-booking px-4 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-600" 
-                style="background-color: #B0B0B0;" 
-                data-booking-id="<?= $bookingID; ?>" 
-                data-status="rejected">
-                Reject
-            </button>
-        </div>
-
-        <!-- Hidden fields for AJAX request -->
-        <input type="hidden" id="roomID-<?= $bookingID; ?>" value="<?= $roomID; ?>" />
-        <input type="hidden" id="bookingTime-<?= $bookingID; ?>" value="<?= $bookingTime; ?>" />
-        <input type="hidden" id="startTime-<?= $bookingID; ?>" value="<?= $startTime; ?>" />
-        <input type="hidden" id="endTime-<?= $bookingID; ?>" value="<?= $endTime; ?>" />
-        <input type="hidden" id="userID-<?= $bookingID; ?>" value="<?= $userID; ?>" />
-    </div>
 
             <?php endforeach; ?>
-    </div>
+        </div>
 
     <?php } ?>
 
     <!-- Modal for Success/Failure -->
-<div id="status-modal" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 hidden">
-    <div class="bg-white rounded-lg p-6 w-1/3 max-w-sm">
-        <div class="flex justify-between items-center">
-            <h3 id="modal-title" class="text-xl font-semibold">Booking Status</h3>
-            <button id="close-modal" class="text-gray-500 hover:text-gray-800">&times;</button>
-        </div>
-        <p id="modal-message" class="mt-4 text-gray-700"></p>
-        <div class="mt-4 flex justify-end">
-            <button id="close-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Close</button>
+    <div id="status-modal" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-1/3 max-w-sm">
+            <div class="flex justify-between items-center">
+                <h3 id="modal-title" class="text-xl font-semibold">Booking Status</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-800">&times;</button>
+            </div>
+            <p id="modal-message" class="mt-4 text-gray-700"></p>
+            <div class="mt-4 flex justify-end">
+                <button id="close-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md">Close</button>
+            </div>
         </div>
     </div>
-</div>
 
 
     <h1 class="text-3xl font-semibold text-gray-800 mb-4">Notifications</h1>
 
     <?php if (!empty($openLabBookings)): ?>
-    <?php foreach ($openLabBookings as $openLabBooking): ?>
-        <div class="notification bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative" 
-            id="notification-<?= $openLabBooking['bookingID']; ?>">
+        <?php foreach ($openLabBookings as $openLabBooking): ?>
+            <div class="notification bg-white rounded-lg shadow-md p-4 m-4 #B0B0B0hover:shadow-lg transition-shadow relative"
+                id="notification-<?= $openLabBooking['bookingID']; ?>">
 
-            <!-- Notification Header -->
-            <div class="notification-header flex items-center justify-between">
-            <!-- <div class="important-notification-label absolute top-3 right-10 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold" style="background-color: #D885A3;">
-                    Important
-                </div> -->
-                <div class="flex items-center space-x-4">
-                <?php if ($openLabBooking['status'] === 'active'): ?>
-                    <i class="fa fa-bell text-2xl text-red-700" style="color: #D885A3;"></i>
-                <?php elseif ($openLabBooking['status'] === 'rejected'): ?>
-                    <i class="fa fa-bell text-2xl text-green-700" style="color: #D885A3;"></i>
-                <?php endif; ?>
-                    <div>
-                        <p class="text-sm">
-                            <strong>Room:</strong> <?= $openLabBooking['roomID']; ?> | 
-                            <strong>Date:</strong> <?= date("M d, Y", strtotime($openLabBooking['startTime'])); ?>
-                        </p>
-                        <p class="text-sm">
-                            <strong>Time:</strong> <?= date("h:i A", strtotime($openLabBooking['startTime'])); ?> - 
-                            <?= date("h:i A", strtotime($openLabBooking['endTime'])); ?>
-                        </p>
+                <!-- Notification Header -->
+                <div class="notification-header flex items-center justify-between">
+                    <!-- <div class="important-notification-label absolute top-3 right-10 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold" style="background-color: #D885A3;">
+                Important
+            </div> -->
+                    <div class="flex items-center space-x-4">
+                        <?php if ($openLabBooking['status'] === 'active'): ?>
+                            <i class="fa fa-bell text-2xl text-red-700" style="color: #D885A3;"></i>
+                        <?php elseif ($openLabBooking['status'] === 'rejected'): ?>
+                            <i class="fa fa-bell text-2xl text-green-700" style="color: #D885A3;"></i>
+                        <?php endif; ?>
+                        <div>
+                            <p class="text-sm">
+                                <strong>Room:</strong> <?= $openLabBooking['roomID']; ?> |
+                                <strong>Date:</strong> <?= date("M d, Y", strtotime($openLabBooking['startTime'])); ?>
+                            </p>
+                            <p class="text-sm">
+                                <strong>Time:</strong> <?= date("h:i A", strtotime($openLabBooking['startTime'])); ?> -
+                                <?= date("h:i A", strtotime($openLabBooking['endTime'])); ?>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Notification Body -->
-            <div class="notification-details mt-4">
-                <p class="text-base text-gray-700" style="color: #D885A3;">
-                    <?php if ($openLabBooking['status'] === 'active'): ?>
-                        Your booking has been approved!
-                    <?php elseif ($openLabBooking['status'] === 'rejected'): ?>
-                        Unfortunately, your booking has been rejected.
-                    <?php endif; ?>
-                </p>
-            </div>
+                <!-- Notification Body -->
+                <div class="notification-details mt-4">
+                    <p class="text-base text-gray-700" style="color: #D885A3;">
+                        <?php if ($openLabBooking['status'] === 'active'): ?>
+                            Your booking has been approved!
+                        <?php elseif ($openLabBooking['status'] === 'rejected'): ?>
+                            Unfortunately, your booking has been rejected.
+                        <?php endif; ?>
+                    </p>
+                </div>
 
-            <!-- Close Button -->
-            <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" onclick="this.parentElement.style.display='none';">
-                <i class="fa fa-times"></i>
-            </button>
-        </div>
-    <?php endforeach; ?>
+                <!-- Close Button -->
+                <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                    onclick="this.parentElement.style.display='none';">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+        <?php endforeach; ?>
     <?php endif; ?>
 
 
 
 
-    <?php foreach ($commentsWithReplies as $commentData): 
+    <?php foreach ($commentsWithReplies as $commentData):
         $comment = $commentData['comment'];
         $commentID = $comment['commentID'];
         $roomID = $comment['roomID'];
@@ -243,7 +244,8 @@ usort($commentsWithReplies, function ($a, $b) {
 
         // Check if the comment has a reply from the admin
         if ($isAdmin || $commentModel->hasAdminReply($commentID)): ?>
-            <div class="comment bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative" id="comment-<?= $commentID; ?>">
+            <div class="comment bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow relative"
+                id="comment-<?= $commentID; ?>">
                 <!-- Notification Header -->
                 <div class="notification-header flex items-center justify-between">
                     <div class="flex items-center space-x-4">
@@ -257,74 +259,80 @@ usort($commentsWithReplies, function ($a, $b) {
                             </p>
                         </div>
                     </div>
-                    <i class="expand-icon fa fa-chevron-down text-gray-400 cursor-pointer" onclick="toggleDetails(<?= $commentID; ?>, this)"></i>
+                    <i class="expand-icon fa fa-chevron-down text-gray-400 cursor-pointer"
+                        onclick="toggleDetails(<?= $commentID; ?>, this)"></i>
                 </div>
 
                 <!-- Notification Details -->
                 <div class="notification-details mt-4 hidden" id="details-<?= $commentID; ?>">
                     <div class="reply bg-gray-50 border-l-4 border-gray-300 p-4 shadow-sm">
                         <p class="text-sm text-gray-800">
-                            <?php if($isAdmin) { ?>
-                            <strong><?php echo htmlspecialchars($commentModel->getUserFullName( $comment['userID'])); ?> Feedback:</strong> <?= $commentContent; ?>
-                            <?php } elseif(!$isAdmin) { ?>
-                            <strong>Your Feedback:</strong> <?= $commentContent; ?>
+                            <?php if ($isAdmin) { ?>
+                                <strong><?php echo htmlspecialchars($commentModel->getUserFullName($comment['userID'])); ?>
+                                    Feedback:</strong> <?= $commentContent; ?>
+                            <?php } elseif (!$isAdmin) { ?>
+                                <strong>Your Feedback:</strong> <?= $commentContent; ?>
                             <?php } ?>
                         </p>
                     </div>
 
                     <?php if (!empty($replies)): ?>
                         <div class="replies mt-4 space-y-4" id="replies-<?= $commentID; ?>">
-                        <?php foreach ($replies as $index => $reply):
-                            $isAdminReply = ($reply['userID'] == Constants::ADMIN_USER_ID);
-                            if ($isAdminReply && $index === count($replies) - 1) {
-                                $lastReplyIsAdmin = true;
-                            }
+                            <?php foreach ($replies as $index => $reply):
+                                $isAdminReply = ($reply['userID'] == Constants::ADMIN_USER_ID);
+                                if ($isAdminReply && $index === count($replies) - 1) {
+                                    $lastReplyIsAdmin = true;
+                                }
 
-                            $userFullName = $isAdminReply ? 'Admin' : $commentModel->getUserFullName( $reply['userID']);
-                            $replyClass = $isAdminReply ? 'bg-[#FDF6F6] border-l-4 border-[#D885A3]' : 'bg-gray-50 border-l-4 border-gray-300';
-                            ?>
-                            <div class="reply p-3 <?= $replyClass; ?> shadow-sm">
-                                <p class="text-sm text-gray-800">
-                                <?php if ($isAdmin && $userFullName === 'Admin') { ?>
-                                    <strong>You:</strong>
-                                <?php } elseif (!$isAdmin && $userFullName !== 'Admin') { ?>
-                                    <strong>You:</strong>
-                                <?php } else { ?>
-                                    <strong><?= htmlspecialchars($userFullName); ?>:</strong>
-                                <?php } ?>
-                                        
-                                    <?= htmlspecialchars($reply['replyContent']); ?>
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    Posted on: <?= date("M d, Y h:i A", strtotime($reply['createdAt'])); ?>
-                                </p>
-                            </div>
-                        <?php endforeach; ?>
+                                $userFullName = $isAdminReply ? 'Admin' : $commentModel->getUserFullName($reply['userID']);
+                                $replyClass = $isAdminReply ? 'bg-[#FDF6F6] border-l-4 border-[#D885A3]' : 'bg-gray-50 border-l-4 border-gray-300';
+                                ?>
+                                <div class="reply p-3 <?= $replyClass; ?> shadow-sm">
+                                    <p class="text-sm text-gray-800">
+                                        <?php if ($isAdmin && $userFullName === 'Admin') { ?>
+                                            <strong>You:</strong>
+                                        <?php } elseif (!$isAdmin && $userFullName !== 'Admin') { ?>
+                                            <strong>You:</strong>
+                                        <?php } else { ?>
+                                            <strong><?= htmlspecialchars($userFullName); ?>:</strong>
+                                        <?php } ?>
+
+                                        <?= htmlspecialchars($reply['replyContent']); ?>
+                                    </p>
+                                    <p class="text-xs text-gray-500">
+                                        Posted on: <?= date("M d, Y h:i A", strtotime($reply['createdAt'])); ?>
+                                    </p>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
 
                     <?php
-                        $fullName = $isAdmin ? 'Admin' : $commentModel->getUserFullName($id);
+                    $fullName = $isAdmin ? 'Admin' : $commentModel->getUserFullName($id);
                     ?>
 
                     <?php if ($lastReplyIsAdmin && $isAdmin === false): ?>
                         <div class="reply-section mt-6 space-y-4" id="reply-section-<?= $commentID; ?>">
-                            <textarea id="replyContent-<?= $commentID; ?>" required class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Write your reply here..."></textarea>
+                            <textarea id="replyContent-<?= $commentID; ?>" required
+                                class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="Write your reply here..."></textarea>
                             <div class="flex justify-center">
-                            <button class="reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" 
-                                data-comment-id="<?= $commentID; ?>" >
-                                Reply
-                            </button>
+                                <button class="reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                    data-comment-id="<?= $commentID; ?>">
+                                    Reply
+                                </button>
                             </div>
                         </div>
                     <?php elseif ($isAdmin): ?>
                         <div class="admin-reply-section mt-6 space-y-4" id="admin-reply-section-<?= $commentID; ?>">
-                            <textarea id="adminReplyContent-<?= $commentID; ?>" required class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Write your reply here..."></textarea>
+                            <textarea id="adminReplyContent-<?= $commentID; ?>" required
+                                class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="Write your reply here..."></textarea>
                             <div class="flex justify-center">
-                                <button class="admin-reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" 
-                                data-comment-id="<?= $commentID; ?>">
-                                Reply
-                            </button>
+                                <button class="admin-reply-button px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                    data-comment-id="<?= $commentID; ?>">
+                                    Reply
+                                </button>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -332,7 +340,7 @@ usort($commentsWithReplies, function ($a, $b) {
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
-    <?php if((empty($openLabBookings) && empty($commentsWithReplies)) || (empty($commentsWithReplies) && $isAdmin)) { ?>
+    <?php if ((empty($openLabBookings) && empty($commentsWithReplies)) || (empty($commentsWithReplies) && $isAdmin)) { ?>
         <p>No Notifications available.</p>
     <?php } ?>
 </div>
