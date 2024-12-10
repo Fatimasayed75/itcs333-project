@@ -14,7 +14,9 @@ class RoomModel
     public $isAvailable;
     public $floor;
 
-    public function __construct($conn, $roomID = null, $type = "class", $capacity = null, $isAvailable = false, $floor = null)
+    public $department;
+
+    public function __construct($conn, $roomID = null, $type = "class", $capacity = null, $isAvailable = false, $floor = null, $department = null)
     {
         $this->conn = $conn;
         $this->roomID = $roomID;
@@ -22,41 +24,16 @@ class RoomModel
         $this->capacity = $capacity;
         $this->isAvailable = $isAvailable;
         $this->floor = $floor;
-    }
-
-    // Generate a unique room ID
-    private function generateRoomID()
-    {
-        $crud = new Crud($this->conn);
-        $prefix = 'R';
-        $floor = str_pad($this->floor, 2, '0', STR_PAD_LEFT);
-
-        // Get the highest room number for this floor
-        $condition = "roomID LIKE ?";
-        $pattern = $prefix . $floor . '%';
-        $result = $crud->read('room', ['roomID'], $condition, $pattern);
-
-        $maxNum = 0;
-        foreach ($result as $row) {
-            $num = (int) substr($row['roomID'], 3); // Extract number after floor
-            $maxNum = max($maxNum, $num);
-        }
-
-        $nextNum = str_pad($maxNum + 1, 3, '0', STR_PAD_LEFT);
-        return $prefix . $floor . $nextNum;
-    }
+        $this->department = $department;
+    }    
 
     // Save a new room
     public function save()
     {
         try {
-            if ($this->roomID === null) {
-                $this->roomID = $this->generateRoomID();
-            }
-
             $crud = new Crud($this->conn);
-            $columns = ['roomID', 'type', 'capacity', 'isAvailable', 'floor'];
-            $values = [$this->roomID, $this->type, $this->capacity, $this->isAvailable ? 1 : 0, $this->floor];
+            $columns = ['roomID', 'type', 'capacity', 'isAvailable', 'floor', 'department'];
+            $values = [$this->roomID, $this->type, $this->capacity, $this->isAvailable ? 1 : 0, $this->floor, $this->department];
             return $crud->create('room', $columns, $values);
         } catch (Exception $e) {
             error_log("Error saving room: " . $e->getMessage());
@@ -73,7 +50,8 @@ class RoomModel
                 'type' => $this->type,
                 'capacity' => $this->capacity,
                 'isAvailable' => $this->isAvailable ? 1 : 0,
-                'floor' => $this->floor
+                'floor' => $this->floor,
+                'department' => $this->department
             ];
             $condition = 'roomID = ?';
             return $crud->update('room', $updates, $condition, $this->roomID);
@@ -240,6 +218,14 @@ class RoomModel
         return $crud->read('equipment');
     }
 
+    // insert a new equipment
+    public function insertNewEquipment($equipmentName)
+    {
+        $crud = new Crud($this->conn);
+        $columns = ['equipmentName'];
+        $values = [$equipmentName];
+        return $crud->create('equipment', $columns, $values);
+    }
 
     // insert equipment using crud
     public function insertEquipment($roomID, $equipmentID, $quantity = 10) {

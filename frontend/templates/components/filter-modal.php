@@ -1,5 +1,5 @@
 <h4 class="text-xl font-semibold text-gray-800 mb-4">Filter Options</h4>
-<p class="text-sm text-gray-600 mb-6">Select your filter criteria:</p>
+<p class="text-sm mb-6">Select your filter criteria:</p>
 
 <!-- Filter options -->
 <div class="space-y-4">
@@ -50,7 +50,4 @@
     Apply Filters
   </button>
 
-  <!-- <button type="button" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600" onclick="clearFilters()">
-    Clear Filters
-  </button> -->
 </div>

@@ -43,15 +43,17 @@ $pendingBookings = $isAdmin ? $bookModel->getPendingBookings() : "";
 $openLabBookings = $isAdmin ? "" : $bookModel->getOpenLabBookings($id);
 
 // Get the last 2 open lab bookings
-$lastTwoOpenLabBookings = array_slice($openLabBookings, -2); // This gives the last 2 bookings from the array
+if (!$isAdmin) {
+  $lastTwoOpenLabBookings = array_slice($openLabBookings, -2); // This gives the last 2 bookings from the array
+}
 ?>
 
 <div class="w-full bg-white shadow-lg py-6 px-4 sm:px-8 lg:px-16">
-  <h2 class="text-xl font-semibold text-gray-700 mb-4">Important</h2>
+  <h2 class="text-xl font-semibold mb-4">Important</h2>
 
   <?php if (!$nearestBooking && empty($lastTwoOpenLabBookings)): ?>
     <!-- Show message when no bookings exist -->
-    <p class="text-lg text-gray-700">No upcoming or open lab bookings responds available at the moment.</p>
+    <p class="text-lg">No upcoming or open lab bookings responds available at the moment.</p>
   <?php else: ?>
     <div class="flex flex-wrap gap-4 justify-start overflow-x-auto">
 
@@ -88,30 +90,34 @@ $lastTwoOpenLabBookings = array_slice($openLabBookings, -2); // This gives the l
       <?php endif; ?>
 
       <?php
-      // Loop through the last 2 open lab bookings
-      foreach ($lastTwoOpenLabBookings as $booking):
-        // Calculate the time difference
-        $bookingDateTime = strtotime($booking['startTime']);
-        $currentDateTime = time();
-        $timeDifference = $bookingDateTime - $currentDateTime;
+      if (!$isAdmin) {
+        // Loop through the last 2 open lab bookings
+        foreach ($lastTwoOpenLabBookings as $booking):
+          // Calculate the time difference
+          $bookingDateTime = strtotime($booking['startTime']);
+          $currentDateTime = time();
+          $timeDifference = $bookingDateTime - $currentDateTime;
 
-        // Check if the booking is within the coming 2 days (172800 seconds)
-        if ($timeDifference > 0 && $timeDifference <= 172800):
-          // Determine card color based on status
-          $cardColor = $booking['status'] === 'active' ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500';
-          $statusText = $booking['status'] === 'active' ? 'Request Accepted' : 'Request Rejected';
-          ?>
-          <!-- Reminder Card -->
-          <div class="flex-1 min-w-[250px] max-w-sm <?= $cardColor ?> border-l-4 rounded-lg shadow p-4">
-            <h3 class="text-lg font-medium text-gray-800"><?= htmlspecialchars($booking['roomID']) ?></h3>
-            <p class="text-sm text-gray-600">Date: <?= date('d M Y', $bookingDateTime) ?></p>
-            <p class="text-sm text-gray-600">Time: <?= date('h:i A', $bookingDateTime) ?></p>
-            <p class="text-sm font-semibold text-gray-700"><?= $statusText ?></p>
-            <a href="#" class="text-sm text-blue-600 underline view-details-noti">View Details</a>
-          </div>
-          <?php
-        endif;
-      endforeach;
+          echo $timeDifference;
+
+          // Check if the booking is within the coming 2 days (172800 seconds)
+          if ($timeDifference > 0 && $timeDifference <= 172800):
+            // Determine card color based on status
+            $cardColor = $booking['status'] === 'active' ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500';
+            $statusText = $booking['status'] === 'active' ? 'Request Accepted' : 'Request Rejected';
+            ?>
+            <!-- Reminder Card -->
+            <div class="flex-1 min-w-[250px] max-w-sm <?= $cardColor ?> border-l-4 rounded-lg shadow p-4">
+              <h3 class="text-lg font-medium text-gray-800"><?= htmlspecialchars($booking['roomID']) ?></h3>
+              <p class="text-sm text-gray-600">Date: <?= date('d M Y', $bookingDateTime) ?></p>
+              <p class="text-sm text-gray-600">Time: <?= date('h:i A', $bookingDateTime) ?></p>
+              <p class="text-sm font-semibold text-gray-700"><?= $statusText ?></p>
+              <a href="#" class="text-sm text-blue-600 underline view-details-noti">View Details</a>
+            </div>
+            <?php
+          endif;
+        endforeach;
+      }
       ?>
     </div>
   <?php endif; ?>

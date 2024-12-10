@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeHomeEventListeners() {
+  // Initialize listeners for quantities
+  initalizeListenersForQuantities();
+  
   // Initialize listeners to view details for notifications (this selects multiple buttons with the same ID)
   document.querySelectorAll(".view-details-noti").forEach((button) => {
     button.addEventListener("click", async function (e) {

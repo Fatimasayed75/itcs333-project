@@ -3,6 +3,7 @@ function initFilter() {
     // Show the modal
     document.getElementById("filterBox").classList.remove("hidden");
 
+    console.log("Filter icon clicked");
     // Dynamically load filter content into the modal
     fetch("../../templates/components/filter-modal.php")
       .then((response) => response.text())
@@ -26,6 +27,11 @@ function applyFilters() {
   const capacity = document.getElementById("capacity").value;
   const cardRooms = document.querySelectorAll(".room-card");
 
+  console.log("Applying filters: ", document.getElementById("capacity"));
+  console.log("capacity: ", capacity);
+  console.log("type: ", type);
+  console.log("available: ", available);
+
   let found = false;
   cardRooms.forEach((card) => {
     const roomAvailable =
@@ -37,9 +43,9 @@ function applyFilters() {
     const capacityInt = parseInt(capacity, 10);
 
     if (
-      (available === "any" || roomAvailable === available) &&
-      (type === "any" || roomType === type) &&
-      (capacity === "any" || roomCapacityInt >= capacityInt)
+      (available == "any" || roomAvailable == available) &&
+      (type == "any" || roomType == type) &&
+      (capacity == "any" || roomCapacityInt >= capacityInt)
     ) {
       card.style.display = "block";
       found = true;

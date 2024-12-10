@@ -92,7 +92,6 @@ foreach ($comments as $comment) {
 usort($commentsWithReplies, function ($a, $b) {
     return strtotime($b['latestReplyDate']) - strtotime($a['latestReplyDate']);
 });
-
 ?>
 
 <div class="p-6 m-6 bg-white shadow-lg rounded-lg text-left pb-6 mt-20 sm:mt-15 lg:mt-5 md:mt-10 notifications">
@@ -120,12 +119,12 @@ usort($commentsWithReplies, function ($a, $b) {
                         <div class="flex items-center space-x-4">
                             <i class="fa fa-calendar text-2xl text-orange-600" style="color: #D885A3;"></i>
                             <div>
-                                <p class="text-sm text-gray-500">
+                                <p class="text-sm">
                                     <strong>User:</strong>
                                     <?= $userDetails['firstName'] . ' ' . $userDetails['lastName']; ?> |
                                     <strong>Room:</strong> <?= $roomID ?>
                                 </p>
-                                <p class="text-sm text-gray-500">
+                                <p class="text-sm">
                                     <strong>Date:</strong> <?= date("M d, Y", strtotime($startTime)); ?> |
                                     <strong>Time:</strong> <?= date("h:i A", strtotime($startTime)); ?> -
                                     <?= date("h:i A", strtotime($endTime)); ?>
@@ -251,10 +250,10 @@ usort($commentsWithReplies, function ($a, $b) {
                     <div class="flex items-center space-x-4">
                         <i class="fa fa-bell text-2xl" style="color: #D885A3;"></i>
                         <div>
-                            <p class="text-sm text-gray-500">
+                            <p class="text-sm">
                                 <strong>Room:</strong> <?= $roomID; ?> | <strong>Date:</strong> <?= $bookingDate; ?>
                             </p>
-                            <p class="text-sm text-gray-500">
+                            <p class="text-sm">
                                 <strong>Time:</strong> <?= $startTime; ?> - <?= $endTime; ?>
                             </p>
                         </div>
@@ -266,7 +265,7 @@ usort($commentsWithReplies, function ($a, $b) {
                 <!-- Notification Details -->
                 <div class="notification-details mt-4 hidden" id="details-<?= $commentID; ?>">
                     <div class="reply bg-gray-50 border-l-4 border-gray-300 p-4 shadow-sm">
-                        <p class="text-sm text-gray-800">
+                        <p class="text-sm">
                             <?php if ($isAdmin) { ?>
                                 <strong><?php echo htmlspecialchars($commentModel->getUserFullName($comment['userID'])); ?>
                                     Feedback:</strong> <?= $commentContent; ?>
@@ -288,7 +287,7 @@ usort($commentsWithReplies, function ($a, $b) {
                                 $replyClass = $isAdminReply ? 'bg-[#FDF6F6] border-l-4 border-[#D885A3]' : 'bg-gray-50 border-l-4 border-gray-300';
                                 ?>
                                 <div class="reply p-3 <?= $replyClass; ?> shadow-sm">
-                                    <p class="text-sm text-gray-800">
+                                    <p class="text-sm <?php echo ($isAdmin && $userFullName === 'Admin') ? 'text-gray-800' : ''; ?>">
                                         <?php if ($isAdmin && $userFullName === 'Admin') { ?>
                                             <strong>You:</strong>
                                         <?php } elseif (!$isAdmin && $userFullName !== 'Admin') { ?>
@@ -299,6 +298,7 @@ usort($commentsWithReplies, function ($a, $b) {
 
                                         <?= htmlspecialchars($reply['replyContent']); ?>
                                     </p>
+
                                     <p class="text-xs text-gray-500">
                                         Posted on: <?= date("M d, Y h:i A", strtotime($reply['createdAt'])); ?>
                                     </p>

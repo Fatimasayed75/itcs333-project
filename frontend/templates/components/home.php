@@ -71,7 +71,7 @@ usort($CErooms, function ($a, $b) {
 
   <!-- Reminders Section -->
   <?php
-  if ($id != Constants::GUEST_USER_ID && $id != Constants::ADMIN_USER_ID) {
+  if ($id != Constants::GUEST_USER_ID) {
     require_once 'reminders.php';
   }
   ?>
@@ -127,21 +127,37 @@ usort($CErooms, function ($a, $b) {
           <h2 class="text-2xl font-bold mb-6 text-center">Add New Room</h2>
           <form id="addRoomForm" class="space-y-4">
             <div>
-              <label for="roomID" class="block text-sm font-medium text-gray-700">Room ID</label>
-              <input type="text" id="roomID" name="roomID" required
+              <label for="NewRoomID" class="block text-sm font-medium text-gray-700">Room ID</label>
+              <input type="text" id="NewRoomID" name="NewRoomID" required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
             </div>
+
+            <!-- Room Floor and Department in two columns -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="NewRoomFloor" class="block text-sm font-medium text-gray-700">Room Floor</label>
+                <input type="text" id="NewRoomFloor" name="NewRoomFloor" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label for="NewRoomDept" class="block text-sm font-medium text-gray-700">Department</label>
+                <input type="text" id="NewRoomDept" name="NewRoomDept" required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+              </div>
+            </div>
+
             <div>
-              <label for="type" class="block text-sm font-medium text-gray-700">Room Type</label>
-              <select id="type" name="type"
+              <label for="NewRoomType" class="block text-sm font-medium text-gray-700">Room Type</label>
+              <select id="NewRoomType" name="NewRoomType"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <option value="class">Class</option>
                 <option value="lab">Lab</option>
               </select>
             </div>
+
             <div>
-              <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
-              <input type="number" id="capacity" name="capacity" required min="20" max="200"
+              <label for="NewRoomCapacity" class="block text-sm font-medium text-gray-700">Capacity</label>
+              <input type="number" id="NewRoomCapacity" name="NewRoomCapacity" required min="20" max="200" value="20"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
             </div>
 
@@ -151,10 +167,17 @@ usort($CErooms, function ($a, $b) {
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
                 <?php foreach ($equipments as $equipment): ?>
                   <div class="flex items-center space-x-2">
+                    <!-- Checkbox for selecting equipment -->
                     <input type="checkbox" id="equipment<?php echo $equipment['equipmentID']; ?>" name="equipment[]"
                       value="<?php echo $equipment['equipmentID']; ?>" class="h-5 w-5">
-                    <label for="equipment<?php echo $equipment['equipmentID']; ?>"
-                      class="text-sm"><?php echo htmlspecialchars($equipment['equipmentName']); ?></label>
+                    <label for="equipment<?php echo $equipment['equipmentID']; ?>" class="text-sm">
+                      <?php echo htmlspecialchars($equipment['equipmentName']); ?>
+                    </label>
+
+                    <!-- Input for specifying quantity (default to 10 if unchecked) -->
+                    <input type="number" id="quantity<?php echo $equipment['equipmentID']; ?>"
+                      name="quantity[<?php echo $equipment['equipmentID']; ?>]" value="10" min="1" max="100"
+                      class="h-8 w-12 hidden">
                   </div>
                 <?php endforeach; ?>
               </div>
@@ -168,6 +191,7 @@ usort($CErooms, function ($a, $b) {
                 Room</button>
             </div>
           </form>
+
         </div>
 
 
@@ -284,8 +308,8 @@ usort($CErooms, function ($a, $b) {
               <label for="edit_type" class="block text-sm font-medium text-gray-700">Room Type</label>
               <select id="edit_type" name="type"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="class">Classroom</option>
-                <option value="lab">Laboratory</option>
+                <option value="class">Class</option>
+                <option value="lab">Lab</option>
               </select>
             </div>
             <div>
@@ -483,7 +507,7 @@ usort($CErooms, function ($a, $b) {
     <div id="roomsContainer"
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center items-center">
       <!-- No Results Message (Initially Hidden) -->
-      <p id="noResultsMessage" class="text-center p-4 text-red-500 font-semibold hidden col-span-full">
+      <p id="noResultsMessage" class="text-center p-4 text-red-500 font-semibold col-span-full hidden">
         No rooms found based on your filter/search criteria.
       </p>
 
@@ -507,7 +531,7 @@ usort($CErooms, function ($a, $b) {
           <h3 class="text-lg font-semibold text-gray-800">
             <?php echo $room['roomID']; ?>
             <?php if ($room['roomID'] == "S40-1002" || $room['roomID'] == "S40-2001"): ?>
-              <span class="gray-800 p-4 text-md">open lab</span>
+              <span class="gray-800 p-4 text-xs">(open lab)</span>
             <?php endif; ?>
           </h3>
           <div class="flex justify-around items-center text-sm text-gray-600 mt-2">

@@ -33,8 +33,6 @@ function initializeDashboard() {
     });
 }
 
-
-
 async function fetchDashboardData() {
     try {
         const response = await fetch('../../../backend/server/dash.php');
@@ -42,7 +40,6 @@ async function fetchDashboardData() {
             throw new Error("Failed to fetch dashboard data");
         }
         const data = await response.json();
-        // console.log('Fetched dashboard data:', data);
 
         if (data.error) {
             throw new Error(data.error);
@@ -94,7 +91,6 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
         // Replace zero values with an empty string to hide them
         const adjustedBookingCounts = bookingCounts.map(count => (count === 0 ? "" : count));
 
-        
         // if (bookingChartInstance) {
         //     bookingChartInstance.data.labels = monthNames;
         //     bookingChartInstance.data.datasets[0].data = adjustedBookingCounts;
@@ -123,6 +119,14 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
                                 callback: function(value) {
                                     return value % 1 === 0 ? value : '';
                                 }
+                            },
+                            grid: {
+                                color: "#ccc",  // Set grid color here
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: "#ccc",  // Set grid color here for x-axis if needed
                             }
                         }
                     }
@@ -131,7 +135,6 @@ function initializeBookingChart(bookingChartElement, bookingStats) {
         // }
     }
 }
-
 
 
 Chart.register(ChartDataLabels);

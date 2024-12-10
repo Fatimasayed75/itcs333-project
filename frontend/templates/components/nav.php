@@ -61,7 +61,7 @@ var_dump($id);
 
         <!-- BOOKINGS TAB -->
         <?php
-        if ($id != Constants::GUEST_USER_ID && $id != Constants::ADMIN_USER_ID) {
+        if ($id != Constants::GUEST_USER_ID) {
           echo "<li class='nav-link'>
           <a id='bookings-tab'>
             <i class='bx bx-calendar icon'></i>
