@@ -183,4 +183,22 @@ class UserModel
         $result = $crud->read('users', [], $condition, $userID);
         return !empty($result) ? true : false;
     }
+
+    // get user password
+    public function getUserPassword($userID)
+    {
+        $crud = new Crud($this->conn);
+        $condition = 'userID = ?';
+        $result = $crud->read('users', ['password'], $condition, $userID);
+        return !empty($result) ? $result[0]['password'] : null;
+    }
+
+    // Update user password
+    public function updatePassword($userID, $newPassword)
+    {
+        $crud = new Crud($this->conn);
+        $data = ['password' => $newPassword];
+        $condition = 'userID = ?';
+        return $crud->update('users', $data, $condition, $userID);
+    }
 }

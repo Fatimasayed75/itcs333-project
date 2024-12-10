@@ -167,6 +167,48 @@ async function loadContent(page) {
             closeEditProfileModal();
           }
         });
+
+        document.getElementById("changePasswordForm")?.addEventListener("submit", function (e) {
+          e.preventDefault();
+      
+          const currentPassword = document.getElementById("currentPassword").value;
+          const newPassword = document.getElementById("newPassword").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+          const errorMessage = document.getElementById("errorMessage");
+      
+          // Send AJAX request to update password
+          const formData = new FormData();
+          formData.append("currentPassword", currentPassword);
+          formData.append("newPassword", newPassword);
+          formData.append("confirmPassword", confirmPassword);
+      
+          fetch("../../../backend/server/changePassword.php", {
+              method: "POST",
+              body: formData,
+          })
+              .then((response) => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+              })
+              .then((data) => {
+                  if (data.success) {
+                      alert(data.message);
+                      closeChangePasswordModal();
+                  } else {
+                      errorMessage.textContent = data.message;
+                      errorMessage.classList.remove("hidden");
+                  }
+              })
+              .catch((error) => {
+                  console.error("Error updating password:", error);
+                  errorMessage.textContent = "An error occurred. Please try again.";
+                  errorMessage.classList.remove("hidden");
+              });
+      });
+      
+
     }
   } catch (error) {
     console.error("Error loading content: ", error);

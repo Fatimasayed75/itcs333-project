@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  initializeProfile(); // Initialize the dashboard only once when the page is loaded
+});
+
+
+function initializeProfile() {
   // Function to open the edit profile modal
   window.openEditProfileModal = function () {
     const modal = document.getElementById("editProfileModal");
@@ -21,105 +26,34 @@ document.addEventListener("DOMContentLoaded", function () {
   window.previewImage = function (input) {
     const preview = document.getElementById("profilePicPreview");
 
-    // Log the files selected
-    console.log("Files selected:", input.files);
-
     if (input.files && input.files[0]) {
-      // Log the first file to check it's being selected
-      console.log("Previewing image2:", input.files[0]);
-
-      if (preview) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          preview.src = e.target.result; 
-        };
-        reader.readAsDataURL(input.files[0]); 
-      } else {
-        console.error("Preview element not found.");
-      }
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result; 
+      };
+      reader.readAsDataURL(input.files[0]); 
     } else {
       console.error("No file selected or input is empty.");
     }
   };
 
-  // Function to update profile display
-  function updateProfileDisplay(formData) {
-    try {
-      console.log("Updating profile display with:", {
-        firstName: formData.get("firstName"),
-        lastName: formData.get("lastName"),
-        hasProfilePic: formData.get("profilePic") ? true : false,
-      });
-
-      // Update name fields
-      const firstNameField = document.querySelector(
-        ".profile-info p:nth-child(1)"
-      );
-      const lastNameField = document.querySelector(
-        ".profile-info p:nth-child(2)"
-      );
-
-      if (firstNameField && formData.get("firstName")) {
-        firstNameField.innerHTML = `<strong>First Name:</strong> ${formData.get(
-          "firstName"
-        )}`;
-      } else {
-        console.warn("First name field not found or empty");
-      }
-
-      if (lastNameField && formData.get("lastName")) {
-        lastNameField.innerHTML = `<strong>Last Name:</strong> ${formData.get(
-          "lastName"
-        )}`;
-      } else {
-        console.warn("Last name field not found or empty");
-      }
-
-      // Update profile pictures if a new one was uploaded
-      const newProfilePic = formData.get("profilePic");
-      if (newProfilePic && newProfilePic.size > 0) {
-        console.log("Updating profile picture");
-        const profilePics = document.querySelectorAll(
-          'img[alt="Profile Picture"]'
-        );
-        const imageUrl = URL.createObjectURL(newProfilePic);
-        profilePics.forEach((pic) => {
-          pic.src = imageUrl;
-        });
-      }
-    } catch (error) {
-      console.error("Error in updateProfileDisplay:", error);
-      throw error;
-    }
-  }
-
-  // Handle form submission
+  // Handle Edit Profile form submission
   const editProfileForm = document.getElementById("editProfileForm");
   if (editProfileForm) {
     editProfileForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      const formData = new FormData(this);
-
       fetch("../components/editProfile.php", {
         method: "POST",
         body: formData,
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
+        .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            // Update UI or show success message
             alert(data.message);
             closeEditProfileModal();
-            // Optionally, refresh the page or update profile info
             location.reload();
           } else {
-            // Show error message
             alert("Error: " + data.message);
           }
         })
@@ -128,20 +62,15 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("An error occurred while updating the profile.");
         });
     });
-  } else {
-    console.warn("Edit profile form not found");
   }
-
   // Close modal when clicking outside
-  const modal = document.getElementById("editProfileModal");
-  if (modal) {
-    modal.addEventListener("click", function (e) {
+  const editProfileModal = document.getElementById("editProfileModal");
+  if (editProfileModal) {
+    editProfileModal.addEventListener("click", function (e) {
       if (e.target === this) {
         closeEditProfileModal();
       }
     });
-  } else {
-    console.warn("Modal element not found");
   }
 
   // Prevent modal close when clicking inside
@@ -150,8 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
     modalContent.addEventListener("click", function (e) {
       e.stopPropagation();
     });
-  } else {
-    console.warn("Modal content element not found");
   }
 
   // Close modal with Escape key
@@ -160,4 +87,104 @@ document.addEventListener("DOMContentLoaded", function () {
       closeEditProfileModal();
     }
   });
-});
+
+  // Open Change Password Modal
+  window.openChangePasswordModal = function () {
+    const modal = document.getElementById("changePasswordModal");
+    if (modal) {
+      modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+  };
+
+  // Close Change Password Modal
+  window.closeChangePasswordModal = function () {
+    const modal = document.getElementById("changePasswordModal");
+    if (modal) {
+      modal.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+  };
+
+  // Handle Change Password form submission and validation
+  const changePasswordForm = document.getElementById("changePasswordForm");
+  const passwordError = document.getElementById("passwordError");
+  const successMessage = document.getElementById("successMessage");
+  const errorMessage = document.getElementById("errorMessage");
+
+  if (changePasswordForm) {
+    changePasswordForm.addEventListener("submit", function (e) {
+      e.preventDefault();  // This is crucial to prevent the default form submission
+      console.log("Form submission prevented");
+
+      const currentPassword = document.getElementById("currentPassword").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (newPassword !== confirmPassword) {
+        passwordError.classList.remove("hidden");
+        console.log("Passwords do not match.");
+      } else {
+        passwordError.classList.add("hidden");
+
+        // Send AJAX request to update password
+        const formData = new FormData();
+        formData.append("currentPassword", currentPassword);
+        formData.append("newPassword", newPassword);
+
+        fetch("../../../backend/server/changePassword.php", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              successMessage.textContent = data.message;
+              successMessage.classList.remove("hidden");
+              errorMessage.classList.add("hidden");
+              setTimeout(() => {
+                closeChangePasswordModal(); // Close the modal after success
+              }, 1500);
+            } else {
+              errorMessage.textContent = data.message;
+              errorMessage.classList.remove("hidden");
+              successMessage.classList.add("hidden");
+            }
+          })
+          .catch((error) => {
+            console.error("Error updating password:", error);
+            errorMessage.textContent = "An error occurred. Please try again later.";
+            errorMessage.classList.remove("hidden");
+            successMessage.classList.add("hidden");
+          });
+      }
+    });
+  } else {
+    console.log("Form not found!"); // Check if form was found
+  }
+
+  // Close Change Password modal when clicking outside
+  const changePasswordModal = document.getElementById("changePasswordModal");
+  if (changePasswordModal) {
+    changePasswordModal.addEventListener("click", function (e) {
+      if (e.target === this) {
+        closeChangePasswordModal();
+      }
+    });
+  }
+
+  // Prevent modal close when clicking inside
+  const changePasswordModalContent = document.querySelector(".inline-block");
+  if (changePasswordModalContent) {
+    changePasswordModalContent.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+  }
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeChangePasswordModal();
+    }
+  });
+}

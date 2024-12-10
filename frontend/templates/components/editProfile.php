@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $firstName = htmlspecialchars(trim($_POST['firstName']));
         $lastName = htmlspecialchars(trim($_POST['lastName']));
-        $email = htmlspecialchars(trim($_POST['email']));
+        // $email = htmlspecialchars(trim($_POST['email']));
         $profilePic = null;
 
         // Handle profile picture upload

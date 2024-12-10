@@ -49,13 +49,11 @@ This project is a **Responsive Web-Based Room Booking System** for the IT Colleg
    - Users can search by booking room or status.
 5. **Filtering**:
    - Filters for status (active, pending, etc.) and room.
-6. **Countdown Timer**:
-   - Displays time until the next booking starts or ends.
-7. **Availability Chart**:
+6. **Availability Chart**:
    - To display time each room is available
-8. **Initial Figma Designs:**:
+7. **Initial Figma Designs:**:
    - Collaborative Figma designs to outline the UI/UX workflow.
-9. **ER Diagrams:**:
+8. **ER Diagrams:**:
     - Comprehensive entity-relationship diagrams to map database structure.
 
 ## Technologies Used

@@ -50,10 +50,16 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
           <p class="mb-2"><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
           <p class="mb-2"><strong>Role:</strong> <?php echo htmlspecialchars($user['role']); ?></p>
         </div>
-        <button onclick="openEditProfileModal()"
-          class="font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 editbtn">
-          Edit Profile
-        </button>
+        <div class="profile-actions mt-4 flex gap-4">
+          <button onclick="openEditProfileModal()"
+            class="font-bold py-2 px-4 rounded-md bg-blue-500 hover:bg-blue-600 text-white transition duration-300 ease-in-out">
+            Edit Profile
+          </button>
+          <button onclick="openChangePasswordModal()"
+            class="font-bold py-2 px-4 rounded-md bg-blue-500 hover:bg-blue-600 text-white transition duration-300 ease-in-out">
+            Change Password
+          </button>
+        </div>
       </div>
     <?php else: ?>
       <p>User profile not available.</p>
@@ -131,6 +137,44 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
       </div>
     </div>
   </div>
+
+<!-- Change Password Modal -->
+<div id="changePasswordModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-lg w-96 p-6 shadow-lg">
+    <h2 class="text-xl font-semibold text-center mb-6">Change Password</h2>
+
+    <form id="changePasswordForm" method="post">
+      <!-- Current Password -->
+      <div class="mb-4">
+        <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+        <input type="password" id="currentPassword" name="currentPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+
+      <!-- New Password -->
+      <div class="mb-4">
+        <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+
+      <!-- Confirm New Password -->
+      <div class="mb-6">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+
+      <!-- Error Message -->
+      <div id="errorMessage" class="hidden text-red-500 text-sm mb-4"></div>
+      <!-- <div id="successMessage" class="hidden text-red-500 text-sm mb-4"></div> -->
+
+
+      <div class="flex justify-between">
+        <button type="button" onclick="closeChangePasswordModal()" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>
+        <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"  form="changePasswordForm">Update Password</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
   <script>
     function openEditProfileModal() {
