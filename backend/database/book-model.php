@@ -379,20 +379,6 @@ class BookModel
     return $crud->update('bookings', $update, $condition, $this->bookingID);
   }
 
-  // Expire the booking
-  public function expire()
-  {
-    $crud = new Crud($this->conn);
-    $condition = 'bookingID = ? AND endTime < ? AND status = ?';
-    $update = ['status' => 'expired'];
-
-    $currentDateTime = (new DateTime())->format('Y-m-d H:i:s');
-
-    // Update the status to 'expired' where conditions match
-    // date('Y-m-d H:i:s') is the current date and time
-    return $crud->update('bookings', $update, $condition, $this->bookingID, $currentDateTime, "active");
-  }
-
   // Get Upcoming Bookings
   public function getUpcomingBookingsByUser($userID)
   {
@@ -481,6 +467,7 @@ class BookModel
 
     return !empty($result) ? $result : [];
   }
+
   public function getAllBookings()
   {
     $crud = new Crud($this->conn);
@@ -639,8 +626,6 @@ public function getNewFeedbacks() {
 
     return !empty($result) ? $result : [];
   }
-
-
 
   public function updateExpiredBookings()
 {

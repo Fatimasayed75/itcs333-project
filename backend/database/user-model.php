@@ -32,7 +32,6 @@ class UserModel
 
 
     // Save a new user
-    // Save a new user
     public function save()
     {
         try {
@@ -58,14 +57,6 @@ class UserModel
         }
     }
 
-
-    // Update a user
-    public function isEmailRegistered($email)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'email = ?';
-        return !empty($crud->read('users', ['email'], $condition, $email));
-    }
 
     public function update($userID, $firstName, $lastName, $email, $fileId = null)
     {
@@ -176,13 +167,6 @@ class UserModel
         return !empty($result) ? $result[0] : null;
     }
 
-    // Delete a user by email
-    public function deleteUserByEmail($email)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'email = ?';
-        return $crud->delete('users', $condition, $email);
-    }
 
     public function getTotalUsers()
     {

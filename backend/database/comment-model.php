@@ -128,28 +128,6 @@ class CommentModel
         return !empty($result) ? $result[0] : Constants::COMMENT_NOT_FOUND;
     }
 
-    // Get comments by roomID
-    public function getCommentsByRoomID($roomID)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'roomID = ?';
-        $result = $crud->read('comments', [], $condition, $roomID);
-
-        // Check if result is not empty
-        return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
-
-    // Delete all comments
-    public function deleteAllComments()
-    {
-        $crud = new Crud($this->conn);
-        $condition = '1';
-        $result = $crud->delete('comments', $condition);
-
-        // check if all comments are deleted
-        return $result ? Constants::SUCCESS : Constants::FAILED;
-    }
-
     // Get comments by userID
     public function getCommentsByUserID($userID)
     {
@@ -158,61 +136,6 @@ class CommentModel
         $result = $crud->read('comments', [], $condition, $userID);
 
         // Check if result is not empty
-        return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
-
-    // Get comments by creation date
-    public function getCommentsByCreatedAt($date)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'DATE(createdAt) = ?';
-        $result = $crud->read('comments', [], $condition, $date);
-
-        // Check if result is not empty
-        return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
-
-    // Get the number of comments
-    public function getCommentCount()
-    {
-        $crud = new Crud($this->conn);
-        $result = $crud->read('comments', ['COUNT(*) as count']);
-        return $result[0]['count'] ?? 0;
-    }
-
-    // Get the number of comments by user ID
-    public function getCommentCountByUserID($userID)
-    {
-        // Check if the user exists
-        if ($this->userModel->getUserByID($this->userID) === Constants::USER_NOT_FOUND) {
-            return Constants::USER_NOT_FOUND;
-        }
-
-        $crud = new Crud($this->conn);
-        $condition = 'userID = ?';
-        $result = $crud->read('comments', ['COUNT(*) as count'], $condition, $userID);
-        return $result[0]['count'] ?? 0;
-    }
-
-    // Get all read comments
-    public function getAllReadComments()
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'isRead = 1';
-        $orderBy = 'ORDER BY createdAt DESC';
-        $result = $crud->read('comments', [], $condition, null, $orderBy);
-
-        return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
-
-    // Get all unread comments
-    public function getAllUnreadComments()
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'isRead = 0';
-        $orderBy = 'ORDER BY createdAt DESC';
-        $result = $crud->read('comments', [], $condition, null, $orderBy);
-
         return !empty($result) ? $result : Constants::NO_RECORDS;
     }
 
@@ -241,6 +164,7 @@ class CommentModel
         $stmt->execute(['bookingID' => $bookingID]);
         return $stmt->fetchColumn() > 0;
     }
+
     function getUserFullName($userID) {
         // Query to get the user's first name and last name from the users table
         $query = "SELECT firstName, lastName FROM users WHERE userID = :userID";
@@ -257,6 +181,4 @@ class CommentModel
     
         return 'Unknown User';
     }
-    
-    
 }

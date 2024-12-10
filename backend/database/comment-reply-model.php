@@ -100,15 +100,6 @@ class CommentReplyModel
         return $result ? Constants::SUCCESS : Constants::FAILED;
     }
 
-    // Get all replies
-    public function getAllReplies()
-    {
-        $crud = new Crud($this->conn);
-        $result = $crud->read('comment_reply');
-
-        // Check if there are no records
-        return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
 
     // Get a reply by reply ID
     public function getReplyByID($replyID)
@@ -151,86 +142,5 @@ class CommentReplyModel
 
         // Check if the result is not empty
         return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
-
-    // Get replies by creation date
-    public function getRepliesByCreatedAt($date)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'DATE(createdAt) = ?';
-        $result = $crud->read('comment_reply', [], $condition, $date);
-
-        // Check if the result is not empty
-        return !empty($result) ? $result : Constants::NO_RECORDS;
-    }
-
-    // Get the number of replies
-    public function getReplyCount()
-    {
-        $crud = new Crud($this->conn);
-        $result = $crud->read('comment_reply', ['COUNT(*) as count']);
-        return $result[0]['count'] ?? 0;
-    }
-
-    // Get the number of replies by comment ID
-    public function getReplyCountByCommentID($commentID)
-    {
-        // Check if the comment exists
-        if ($this->commentModel->getCommentByID($commentID) === Constants::COMMENT_NOT_FOUND) {
-            return Constants::COMMENT_NOT_FOUND;
-        }
-
-        $crud = new Crud($this->conn);
-        $condition = 'commentID = ?';
-        $result = $crud->read('comment_reply', ['COUNT(*) as count'], $condition, $commentID);
-        return $result[0]['count'] ?? 0;
-    }
-
-    // Delete all replies for a specific comment
-    public function deleteAllRepliesByCommentID($commentID)
-    {
-        // Check if the comment exists
-        if ($this->commentModel->getCommentByID($commentID) === Constants::COMMENT_NOT_FOUND) {
-            return Constants::COMMENT_NOT_FOUND;
-        }
-
-        $crud = new Crud($this->conn);
-        $condition = 'commentID = ?';
-        $result = $crud->delete('comment_reply', $condition, $commentID);
-
-        // Check if all replies are deleted
-        return $result ? Constants::SUCCESS : Constants::FAILED;
-    }
-
-    // Delete all replies
-    public function deleteAllReplies()
-    {
-        $crud = new Crud($this->conn);
-        $condition = '1';
-        $result = $crud->delete('comment_reply', $condition);
-
-        // Check if all replies are deleted
-        return $result ? Constants::SUCCESS : Constants::FAILED;
-    }
-
-    // Delete replies by room ID
-    public function deleteRepliesByRoomID($roomID)
-    {
-        // Check if the room exists
-        // if ($this->roomModel->getRoomByID($roomID) === Constants::ROOM_NOT_FOUND) {
-        //     return Constants::ROOM_NOT_FOUND;
-        // }
-
-        $query = "DELETE comment_reply 
-                  FROM comment_reply 
-                  INNER JOIN comments ON comment_reply.commentID = comments.commentID 
-                  WHERE comments.roomID = ?";
-        
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $roomID, PDO::PARAM_INT);
-        $result = $stmt->execute();
-
-        // Check if replies were deleted
-        return $result ? Constants::SUCCESS : Constants::FAILED;
     }
 }

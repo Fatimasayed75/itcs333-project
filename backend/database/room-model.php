@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../utils/crud.php';
 require_once __DIR__ . '/../utils/constants.php';
 
-use Utils\Constants;
 use Utils\Crud;
 
 class RoomModel
@@ -65,18 +64,6 @@ class RoomModel
         }
     }
 
-    // public function insertEquipment() {
-    //     try {
-    //         $crud = new Crud($this->conn);
-    //         $columns = ['roomID', 'equipmentID', 'Quantity'];
-    //         $values = [$this->roomID, $this->equipmentID, $this->Quantity];
-    //         return $crud->create('room_equipments', $columns, $values);
-    //     } catch (Exception $e) {
-    //         error_log("Error saving room: " . $e->getMessage());
-    //         return false;
-    //     }
-    // }
-
     // Update a room
     public function update()
     {
@@ -123,45 +110,6 @@ class RoomModel
         return $crud->read('room');
     }
 
-    // Get all available rooms
-    public function getAvailableRooms()
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'isAvailable = ?';
-        return $crud->read('room', [], $condition, true);
-    }
-
-    // Get rooms by type
-    public function getRoomsByType($type)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'type = ?';
-        return $crud->read('room', [], $condition, $type);
-    }
-
-    // Get rooms by floor
-    public function getRoomsByFloor($floor)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'floor = ?';
-        return $crud->read('room', [], $condition, $floor);
-    }
-
-    // Get all rooms by capacity
-    public function getRoomsByCapacity($capacity)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'capacity = ?';
-        return $crud->read('room', [], $condition, $capacity);
-    }
-
-    // Get all rooms by type and floor
-    public function getRoomsByTypeAndFloor($type, $floor)
-    {
-        $crud = new Crud($this->conn);
-        $condition = 'type = ? AND floor = ?';
-        return $crud->read('room', [], $condition, $type, $floor);
-    }
 
     // get all rooms by user id by the crud class
     public function getRoomsByUserId($userId)
@@ -180,7 +128,6 @@ class RoomModel
     }
 
     // get available time slots for a room
-    // booked when
     public function getAvailableTimeSlots($roomId, $date)
     {
         // Get all bookings for the room
@@ -293,13 +240,6 @@ class RoomModel
         return $crud->read('equipment');
     }
 
-    // Method to assign equipment to a room
-    public function assignEquipment($roomID, $equipmentID, $quantity = 10) {
-        // echo $roomID . $equipmentID;
-        $query = "INSERT INTO room_equipments (roomID, equipmentID, Quantity) VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$roomID, $equipmentID, $quantity]);
-    }
 
     // insert equipment using crud
     public function insertEquipment($roomID, $equipmentID, $quantity = 10) {
@@ -308,15 +248,4 @@ class RoomModel
         $values = [$roomID, $equipmentID, $quantity];
         return $crud->create('room_equipments', $columns, $values);
     }
-
-
-    // Method to remove all equipment assignments for a room
-    public function clearEquipment($roomID) {
-        $query = "DELETE FROM room_equipment WHERE roomID = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$roomID]);
-    }
-
-
-
 }
