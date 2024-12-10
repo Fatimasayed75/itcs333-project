@@ -42,9 +42,6 @@ function handleDarkModeToggle() {
   const isDark = !document.body.classList.contains("dark-mode");
   updateDarkModeUI(isDark);
   localStorage.setItem("theme", isDark ? "dark" : "light");
-  // initializeHomeEventListeners()
-  // createRoomEquipmentsTable();
-  // updateChart();
 }
 
 // Add click listeners to all dark mode toggles
@@ -85,10 +82,8 @@ sidebarLinks.forEach((link) => {
     if (page === "home.php") {
       initializeHomeEventListeners();
     } else if (page === "dashboard.php") {
-      if (!isDashboardInitialized) {
-        initializeDashboard(); // Initialize dashboard only once
-        isDashboardInitialized = true; // Set flag to true to prevent reinitialization
-      }
+      initializeDashboard(); // Initialize dashboard only once
+      isDashboardInitialized = true; // Set flag to true to prevent reinitialization
     }
   });
 });
@@ -104,10 +99,8 @@ topNavLinks.forEach((link) => {
     if (page === "home.php") {
       initializeHomeEventListeners();
     } else if (page === "dashboard.php") {
-      if (!isDashboardInitialized) {
-        initializeDashboard(); // Initialize dashboard only once
-        isDashboardInitialized = true; // Set flag to true to prevent reinitialization
-      }
+      initializeDashboard(); // Initialize dashboard only once
+      isDashboardInitialized = true; // Set flag to true to prevent reinitialization
     }
   });
 });
@@ -222,4 +215,3 @@ function setActiveLink(link) {
     }
   }
 }
-
