@@ -160,6 +160,10 @@ class BookModel
       return Constants::START_TIME_IN_PAST;
     }
 
+    // check if startTime and endTime in the same date
+    if ($startTime->format('Y-m-d') !== $endTime->format('Y-m-d')) {
+      return Constants::INVALID_END_TIME;
+    }
 
 
     // Check for booking conflicts
@@ -250,7 +254,7 @@ class BookModel
 
 
   // check for a specific room is a startTime and endTime are valid
-  private function checkConflicts($roomID, $startTime, $newEndTime)
+  public function checkConflicts($roomID, $startTime, $newEndTime)
   {
     $crud = new Crud($this->conn);
 

@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+03:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -200,7 +200,7 @@ INSERT INTO `room` (`roomID`, `type`, `capacity`, `isAvailable`, `floor`, `depar
 ('S40-0085', 'class', 30, 1, 0, 'CE'),
 ('S40-0086', 'lab', 30, 1, 0, 'CE'),
 ('S40-0088', 'class', 30, 1, 0, 'CE'),
-('S40-1002', 'lab', 100, 1, 1, ''),
+('S40-1002', 'lab', 100, 1, 1, 'IS'),
 ('S40-1006', 'lab', 30, 1, 1, 'IS'),
 ('S40-1008', 'lab', 30, 1, 1, 'IS'),
 ('S40-1009', 'lab', 30, 1, 1, 'IS'),

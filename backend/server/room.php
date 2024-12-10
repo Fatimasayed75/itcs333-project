@@ -142,6 +142,20 @@ try {
                 exit;
             }
 
+            // check if floor is between 0-2
+            if ($data['floor'] < 0 || $data['floor'] > 2) {
+                echo json_encode(['status' => 'error', 'message' => 'Floor must be between 0-2']);
+                exit;
+            }
+
+            if ($data['capacity'] < 20 || $data['capacity'] > 200) {
+                echo json_encode(['status' => 'error', 'message' => 'Capacity must be between 20-200']);
+                exit;
+            }
+
+            $inputRoom = new RoomModel($pdo);
+            $theRoom = $inputRoom->getRoomById($data['roomID']);
+
             // Create room instance with updated data
             $room = new RoomModel(
                 $pdo,
@@ -149,7 +163,8 @@ try {
                 $data['type'] ?? 'class',
                 (int) $data['capacity'],
                 isset($data['isAvailable']) ? (bool) $data['isAvailable'] : true,
-                (int) $data['floor']
+                (int) $data['floor'],
+                $theRoom[0]['department']
             );
 
             // Update room

@@ -33,13 +33,16 @@ $userID = $data['userID'];
 $bookingModel = new BookModel($pdo, $userID, $roomID, $bookingTime, $startTime, $endTime, $bookingID);
 
 if ($status === 'approved') {
+    if($bookingModel->checkConflicts($roomID, $startTime, $endTime)){
+        echo json_encode(['status' => 'error', 'message' => 'Booking conflicts with another booking']);
+        exit;
+    }
     $status = 'active';
     $response = $bookingModel->updateStatus($status);
 } else if ($status === 'rejected') {
     $status = 'rejected';
     $response = $bookingModel->updateStatus($status);
 }
-
 
 // Return success or failure response
 if ($response) {

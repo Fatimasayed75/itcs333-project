@@ -148,30 +148,24 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
 
       <h2 class="text-xl font-semibold text-center mb-6">Change Password</h2>
 
-      <form id="changePasswordForm" method="post">
-        <!-- Current Password -->
-        <div class="mb-4">
-          <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
-          <input type="password" id="currentPassword" name="currentPassword"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required />
-        </div>
+    <form id="changePasswordForm" method="post">
+      <!-- Current Password -->
+      <div class="mb-4">
+        <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+        <input type="password" id="currentPassword" name="currentPassword" class="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
 
-        <!-- New Password -->
-        <div class="mb-4">
-          <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
-          <input type="password" id="newPassword" name="newPassword"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required />
-        </div>
+      <!-- New Password -->
+      <div class="mb-4">
+        <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" class="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
 
-        <!-- Confirm New Password -->
-        <div class="mb-6">
-          <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-          <input type="password" id="confirmPassword" name="confirmPassword"
-            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required />
-        </div>
+      <!-- Confirm New Password -->
+      <div class="mb-6">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" class="w-full p-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
 
         <!-- Error Message -->
         <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
