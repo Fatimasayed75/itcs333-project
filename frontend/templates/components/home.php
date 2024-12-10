@@ -93,8 +93,7 @@ usort($CErooms, function ($a, $b) {
           </div>
         </div>
         <!-- Manage Rooms Card -->
-        <div
-          class="bg-white py-4 px-2 rounded-lg shadow-xl w-full max-w-none relative">
+        <div class="bg-white py-4 px-2 rounded-lg shadow-xl w-full max-w-none relative">
           <div onclick="openRoomListModal()" class="w-full cursor-pointer">
             <div class="flex flex-col items-center">
               <i class="bx bx-door-open text-5xl mb-4" style="color: #D885A3;"></i>
@@ -124,50 +123,52 @@ usort($CErooms, function ($a, $b) {
       <div class="relative max-w-6xl max-h-[90vh] overflow-y-auto">
 
         <!-- Add Room Modal -->
-<div id="addRoomModal" class="bg-white p-8 rounded-lg shadow-xl w-[600px] self-center mx-auto hidden">
-  <h2 class="text-2xl font-bold mb-6 text-center">Add New Room</h2>
-  <form id="addRoomForm" class="space-y-4">
-    <div>
-      <label for="roomID" class="block text-sm font-medium text-gray-700">Room ID</label>
-      <input type="text" id="roomID" name="roomID" required
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-    </div>
-    <div>
-      <label for="type" class="block text-sm font-medium text-gray-700">Room Type</label>
-      <select id="type" name="type"
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-        <option value="class">Class</option>
-        <option value="lab">Lab</option>
-      </select>
-    </div>
-    <div>
-      <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
-      <input type="number" id="capacity" name="capacity" required min="20" max="200"
-        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-    </div>
+        <div id="addRoomModal" class="bg-white p-8 rounded-lg shadow-xl w-[600px] self-center mx-auto hidden">
+          <h2 class="text-2xl font-bold mb-6 text-center">Add New Room</h2>
+          <form id="addRoomForm" class="space-y-4">
+            <div>
+              <label for="roomID" class="block text-sm font-medium text-gray-700">Room ID</label>
+              <input type="text" id="roomID" name="roomID" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label for="type" class="block text-sm font-medium text-gray-700">Room Type</label>
+              <select id="type" name="type"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="class">Class</option>
+                <option value="lab">Lab</option>
+              </select>
+            </div>
+            <div>
+              <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity</label>
+              <input type="number" id="capacity" name="capacity" required min="20" max="200"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div>
 
-    <!-- Equipment Selection -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700">Select Equipment</label>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-        <?php foreach ($equipments as $equipment): ?>
-          <div class="flex items-center space-x-2">
-            <input type="checkbox" id="equipment<?php echo $equipment['equipmentID']; ?>" name="equipment[]" value="<?php echo $equipment['equipmentID']; ?>" class="h-5 w-5">
-            <label for="equipment<?php echo $equipment['equipmentID']; ?>" class="text-sm"><?php echo htmlspecialchars($equipment['equipmentName']); ?></label>
-          </div>
-        <?php endforeach; ?>
-      </div>
-    </div>
+            <!-- Equipment Selection -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Select Equipment</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+                <?php foreach ($equipments as $equipment): ?>
+                  <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="equipment<?php echo $equipment['equipmentID']; ?>" name="equipment[]"
+                      value="<?php echo $equipment['equipmentID']; ?>" class="h-5 w-5">
+                    <label for="equipment<?php echo $equipment['equipmentID']; ?>"
+                      class="text-sm"><?php echo htmlspecialchars($equipment['equipmentName']); ?></label>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            </div>
 
-    <div class="flex justify-end space-x-4 mt-6">
-      <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
-      <button type="button" onclick="closeModal()"
-        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
-      <button type="submit" class="px-4 py-2 text-white rounded-md" style="background-color: #D885A3;">Add
-        Room</button>
-    </div>
-  </form>
-</div>
+            <div class="flex justify-end space-x-4 mt-6">
+              <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
+              <button type="button" onclick="closeModal()"
+                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
+              <button type="submit" class="px-4 py-2 text-white rounded-md" style="background-color: #D885A3;">Add
+                Room</button>
+            </div>
+          </form>
+        </div>
 
 
         <!-- Room List Modal -->
@@ -196,13 +197,15 @@ usort($CErooms, function ($a, $b) {
                     id="room_<?php echo htmlspecialchars($room['roomID']); ?>">
                     <!-- Normal View -->
                     <td class="py-3 px-6 text-left whitespace-nowrap view-mode">
-                      <?php echo htmlspecialchars($room['roomID']); ?></td>
+                      <?php echo htmlspecialchars($room['roomID']); ?>
+                    </td>
                     <!-- <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['name']); ?></td> -->
                     <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['type']); ?></td>
                     <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['capacity']); ?></td>
                     <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($room['floor']); ?></td>
                     <td class="py-3 px-6 text-left view-mode">
-                      <?php echo $room['isAvailable'] ? 'Available' : 'Unavailable'; ?></td>
+                      <?php echo $room['isAvailable'] ? 'Available' : 'Unavailable'; ?>
+                    </td>
                     <td class="py-3 px-6 text-center view-mode">
                       <div class="flex item-center justify-center space-x-4">
                         <button onclick="toggleEditMode('<?php echo htmlspecialchars($room['roomID']); ?>')"
@@ -218,7 +221,8 @@ usort($CErooms, function ($a, $b) {
 
                     <!-- Edit Mode -->
                     <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
-                      <?php echo htmlspecialchars($room['roomID']); ?></td>
+                      <?php echo htmlspecialchars($room['roomID']); ?>
+                    </td>
                     <!-- <td class="py-3 px-6 text-left edit-mode hidden">
                                     <input type="text" name="name" value="<?php echo htmlspecialchars($room['name']); ?>" 
                                            class="w-full px-2 py-1 border rounded">
@@ -337,7 +341,8 @@ usort($CErooms, function ($a, $b) {
                     id="book_<?php echo htmlspecialchars($booking['bookingID']); ?>">
                     <!-- Normal View -->
                     <td class="py-3 px-6 text-left whitespace-nowrap view-mode">
-                      <?php echo htmlspecialchars($booking['bookingID']); ?></td>
+                      <?php echo htmlspecialchars($booking['bookingID']); ?>
+                    </td>
                     <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['userID']); ?></td>
                     <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['roomID']); ?></td>
                     <td class="py-3 px-6 text-left view-mode"><?php echo htmlspecialchars($booking['bookingTime']); ?></td>
@@ -359,7 +364,8 @@ usort($CErooms, function ($a, $b) {
 
                     <!-- Edit Mode -->
                     <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
-                      <?php echo htmlspecialchars($booking['bookingID']); ?></td>
+                      <?php echo htmlspecialchars($booking['bookingID']); ?>
+                    </td>
                     <!-- <td class="py-3 px-6 text-left edit-mode hidden">
                                     <input type="text" name="name" value="<?php echo htmlspecialchars($booking['bookingID']); ?>" 
                                            class="w-full px-2 py-1 border rounded">
@@ -498,7 +504,12 @@ usort($CErooms, function ($a, $b) {
           </div>
 
           <!-- Room Details -->
-          <h3 class="text-lg font-semibold text-gray-800"><?php echo $room['roomID']; ?></h3>
+          <h3 class="text-lg font-semibold text-gray-800">
+            <?php echo $room['roomID']; ?>
+            <?php if ($room['roomID'] == "S40-1002" || $room['roomID'] == "S40-2001"): ?>
+              <span class="gray-800 p-4 text-md">open lab</span>
+            <?php endif; ?>
+          </h3>
           <div class="flex justify-around items-center text-sm text-gray-600 mt-2">
             <span>Type: <?php echo htmlspecialchars($room['type']); ?></span>
             <span>Capacity: <?php echo htmlspecialchars($room['capacity']); ?></span>

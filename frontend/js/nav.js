@@ -96,7 +96,6 @@ sidebarLinks.forEach((link) => {
 topNavLinks.forEach((link) => {
   link.addEventListener("click", async function () {
     setActiveLink(link);
-    console.log(link);
     const page =
       link.querySelector("a").getAttribute("id").replace("-tab", "").trim() +
       ".php";

@@ -5,13 +5,10 @@ function createRoomEquipmentsTable(equipments) {
 
   if (equipmentTableContainer) {
     // Check if the body has the 'dark-mode' class
-    const isDarkMode = document.body.classList.contains("dark-mode");
-
     // Create table element with Tailwind CSS classes
     const table = document.createElement("table");
     table.classList.add(
       "min-w-full",
-      isDarkMode ? "bg-gray-900" : "bg-white", // Darker background for dark mode
       "border-collapse",
       "shadow-md",
       "rounded-lg",
@@ -23,7 +20,6 @@ function createRoomEquipmentsTable(equipments) {
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
     headerRow.classList.add(
-      isDarkMode ? "bg-gray-800" : "bg-gray-100", // More contrasting header background
       "text-left",
     );
 
@@ -50,8 +46,7 @@ function createRoomEquipmentsTable(equipments) {
     if (equipments && equipments.length > 0) {
       equipments.forEach((equipment) => {
         const row = document.createElement("tr");
-        row.classList.add("hover:bg-gray-500"
-        ); // Stronger hover color in dark mode
+        row.classList.add("hover:bg-gray-500");
 
         // Equipment Name
         const equipmentNameCell = document.createElement("td");
@@ -80,7 +75,6 @@ function createRoomEquipmentsTable(equipments) {
     } else {
       const noDataRow = document.createElement("tr");
       const noDataCell = document.createElement("td");
-      // console.log("hello");
       noDataCell.colSpan = 2; // Adjust to span across both columns
       noDataCell.classList.add(
         "px-6",

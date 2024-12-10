@@ -5,6 +5,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializeHomeEventListeners() {
+  // Initialize listeners to view details for notifications (this selects multiple buttons with the same ID)
+  document.querySelectorAll(".view-details-noti").forEach((button) => {
+    button.addEventListener("click", async function (e) {
+      await loadContent("notifiations.php");
+
+      const notificationsNavLinkSidebar = document
+        .querySelector(".sidebar .nav-link a#notifiations-tab")
+        ?.closest(".nav-link");
+      const notificationsNavLinkTopNav = document
+        .querySelector(".top-nav .nav-link a#notifiations-tab")
+        ?.closest(".nav-link");
+
+      // Set notifications tab as active
+      setActiveLink(notificationsNavLinkSidebar);
+      setActiveLink(notificationsNavLinkTopNav);
+    });
+  });
+
   const roomCards = document.querySelectorAll(".room-card");
   roomCards.forEach((card) => {
     card.addEventListener("click", async function () {
@@ -12,7 +30,7 @@ function initializeHomeEventListeners() {
       await loadRoomDetails(roomId);
     });
   });
-  
+
   const roomSquares = document.querySelectorAll(".room-square");
   roomSquares.forEach((square) => {
     square.addEventListener("click", async function () {
@@ -29,27 +47,16 @@ function initializeHomeEventListeners() {
   startCountdown();
 
   // Initialize listeners to view details for booking history
-  document.getElementById("view-details-history")?.addEventListener("click", async function (e) {
-    await loadContent('bookings.php');
+  document
+    .getElementById("view-details-history")
+    ?.addEventListener("click", async function (e) {
+      await loadContent("bookings.php");
 
-    const bookingsNavLinkSidebar = document.querySelector('.sidebar .nav-link a#bookings-tab')?.closest('.nav-link');
-    setActiveLink(bookingsNavLinkSidebar);
-  });
-
-  // Initialize listeners to view details for notifications (this selects multiple buttons with the same ID)
-  document.querySelectorAll(".view-details-noti").forEach((button) => {
-    console.log(button);  // This will show you if it's being selected correctly
-    button.addEventListener("click", async function (e) {
-      await loadContent('notifiations.php');
-      
-      const notificationsNavLinkSidebar = document.querySelector('.sidebar .nav-link a#notifiations-tab')?.closest('.nav-link');
-      const notificationsNavLinkTopNav = document.querySelector('.top-nav .nav-link a#notifiations-tab')?.closest('.nav-link');
-      
-      // Set notifications tab as active
-      setActiveLink(notificationsNavLinkSidebar);
-      setActiveLink(notificationsNavLinkTopNav);
+      const bookingsNavLinkSidebar = document
+        .querySelector(".sidebar .nav-link a#bookings-tab")
+        ?.closest(".nav-link");
+      setActiveLink(bookingsNavLinkSidebar);
     });
-  });
 }
 
 function initializeRoomViewToggle() {
