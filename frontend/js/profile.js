@@ -173,8 +173,6 @@ function initializeProfile() {
           });
       }
     });
-  } else {
-    console.log("Form not found!"); // Check if form was found
   }
 
   // Close Change Password modal when clicking outside

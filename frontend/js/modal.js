@@ -215,9 +215,6 @@ function deleteBooking(bookingID) {
 // Add event listeners after DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
   const addRoomForm = document.getElementById("addRoomForm");
-  const roomIDinput = document.getElementById("NewRoomID");
-  const roomFloorInput = document.getElementById("NewRoomFloor");
-  const roomDepInput = document.getElementById("NewRoomDept");
 
   if (addRoomForm) {
     let isSubmitting = false;
@@ -254,6 +251,52 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   }
+
+  initalizeListenersForAddRoom();
+
+  // To show quantity input when checkbox is selected
+});
+
+function updateUserID(selectElement) {
+  // Loop through all options to reset their text to include the full name
+  for (let i = 0; i < selectElement.options.length; i++) {
+    const option = selectElement.options[i];
+    if (option.selected) {
+      // For the selected option, display the userID only
+      option.textContent = option.value; // Show userID only
+    } else {
+      // For non-selected options, display full name
+      option.textContent =
+        option.value +
+        " - " +
+        option.dataset.firstname +
+        " " +
+        option.dataset.lastname;
+    }
+  }
+}
+
+function initalizeListenersForAddRoom() {
+  const roomIDinput = document.getElementById("NewRoomID");
+  const roomFloorInput = document.getElementById("NewRoomFloor");
+  const roomDepInput = document.getElementById("NewRoomDept");
+
+  document
+    .querySelectorAll('input[type="checkbox"]')
+    .forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        const equipmentID = checkbox.value;
+        const quantityInput = document.getElementById("quantity" + equipmentID);
+
+        // Show or hide quantity input based on checkbox state
+        if (checkbox.checked) {
+          quantityInput.classList.remove("hidden");
+        } else {
+          quantityInput.classList.add("hidden");
+          quantityInput.value = 10; // Reset to default quantity if unchecked
+        }
+      });
+    });
 
   // Event listener for when roomID input changes
   roomIDinput.addEventListener("input", function () {
@@ -307,46 +350,4 @@ document.addEventListener("DOMContentLoaded", function () {
       roomDepInput.value = "";
     }
   });
-
-  initalizeListenersForQuantities();
-
-  // To show quantity input when checkbox is selected
-});
-
-function updateUserID(selectElement) {
-  // Loop through all options to reset their text to include the full name
-  for (let i = 0; i < selectElement.options.length; i++) {
-    const option = selectElement.options[i];
-    if (option.selected) {
-      // For the selected option, display the userID only
-      option.textContent = option.value; // Show userID only
-    } else {
-      // For non-selected options, display full name
-      option.textContent =
-        option.value +
-        " - " +
-        option.dataset.firstname +
-        " " +
-        option.dataset.lastname;
-    }
-  }
-}
-
-function initalizeListenersForQuantities() {
-  document
-    .querySelectorAll('input[type="checkbox"]')
-    .forEach(function (checkbox) {
-      checkbox.addEventListener("change", function () {
-        const equipmentID = checkbox.value;
-        const quantityInput = document.getElementById("quantity" + equipmentID);
-
-        // Show or hide quantity input based on checkbox state
-        if (checkbox.checked) {
-          quantityInput.classList.remove("hidden");
-        } else {
-          quantityInput.classList.add("hidden");
-          quantityInput.value = 10; // Reset to default quantity if unchecked
-        }
-      });
-    });
 }
