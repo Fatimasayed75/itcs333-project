@@ -4,7 +4,7 @@ require_once '../../../backend/utils/constants.php';
 
 use Utils\Constants;
 $id = isAuthorized();
-var_dump($id);
+// var_dump($id);
 ?>
 
 <!-- SIDEBAR -->
