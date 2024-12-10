@@ -87,8 +87,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
             <div class="mb-3 text-center">
               <div class="relative inline-block">
                 <?php if (isset($user['profilePicData'])): ?>
-                  <img
-                    id="profilePicPreview"
+                  <img id="profilePicPreview"
                     src="data:<?php echo $user['profilePicData']['mime_type']; ?>;base64,<?php echo base64_encode($user['profilePicData']['file_content']); ?>"
                     alt="Profile Picture" class="w-20 h-20 rounded-full object-cover mx-auto">
                   <!-- Reduced size from w-20 h-20 to w-16 h-16 -->
@@ -138,44 +137,54 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
     </div>
   </div>
 
-<!-- Change Password Modal -->
-<div id="changePasswordModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white rounded-lg w-96 p-6 shadow-lg relative">
-    <button onclick="closeChangePasswordModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
-      <i class="bx bx-x"></i>
-    </button>
+  <!-- Change Password Modal -->
+  <div id="changePasswordModal"
+    class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white rounded-lg w-96 p-6 shadow-lg relative">
+      <button onclick="closeChangePasswordModal()"
+        class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl">
+        <i class="bx bx-x"></i>
+      </button>
 
-    <h2 class="text-xl font-semibold text-center mb-6">Change Password</h2>
+      <h2 class="text-xl font-semibold text-center mb-6">Change Password</h2>
 
-    <form id="changePasswordForm" method="post">
-      <!-- Current Password -->
-      <div class="mb-4">
-        <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
-        <input type="password" id="currentPassword" name="currentPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      </div>
+      <form id="changePasswordForm" method="post">
+        <!-- Current Password -->
+        <div class="mb-4">
+          <label for="currentPassword" class="block text-sm font-medium text-gray-700">Current Password</label>
+          <input type="password" id="currentPassword" name="currentPassword"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required />
+        </div>
 
-      <!-- New Password -->
-      <div class="mb-4">
-        <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
-        <input type="password" id="newPassword" name="newPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      </div>
+        <!-- New Password -->
+        <div class="mb-4">
+          <label for="newPassword" class="block text-sm font-medium text-gray-700">New Password</label>
+          <input type="password" id="newPassword" name="newPassword"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required />
+        </div>
 
-      <!-- Confirm New Password -->
-      <div class="mb-6">
-        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
-        <input type="password" id="confirmPassword" name="confirmPassword" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      </div>
+        <!-- Confirm New Password -->
+        <div class="mb-6">
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm New Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword"
+            class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required />
+        </div>
 
-      <!-- Error Message -->
-      <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
 
-      <div class="flex justify-between">
-        <button type="button" onclick="closeChangePasswordModal()" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>
-        <button type="submit" class="px-6 py-2 bg-[#D885A3] text-white rounded-md hover:bg-[#C77492] transition duration-300" form="changePasswordForm">Update Password</button>
-      </div>
-    </form>
+        <div class="flex justify-between">
+          <button type="button" onclick="closeChangePasswordModal()" class="text-sm">Cancel</button>
+          <button type="submit"
+            class="px-6 py-2 bg-[#D885A3] text-white rounded-md hover:bg-[#C77492] transition duration-300"
+            form="changePasswordForm">Update Password</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
 
 
 
