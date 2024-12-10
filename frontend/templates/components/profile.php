@@ -167,7 +167,7 @@ $replies = $commentReplyModel->getRepliesByUserID($id);
       </div>
 
       <!-- Error Message -->
-      <div id="errorMessage" class="hidden text-red-500 text-sm mb-4"></div>
+      <div id="errorMessage" class="hidden text-[#D885A3] text-sm mb-4"></div>
 
       <div class="flex justify-between">
         <button type="button" onclick="closeChangePasswordModal()" class="text-sm text-gray-600 hover:text-gray-800">Cancel</button>

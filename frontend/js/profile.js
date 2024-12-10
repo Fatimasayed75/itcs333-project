@@ -101,10 +101,24 @@ function initializeProfile() {
   window.closeChangePasswordModal = function () {
     const modal = document.getElementById("changePasswordModal");
     if (modal) {
-      modal.classList.add("hidden");
-      document.body.style.overflow = "";
+        modal.classList.add("hidden");
+        document.body.style.overflow = "";
+
+        // Reset form inputs
+        const form = document.getElementById("changePasswordForm");
+        if (form) {
+            form.reset();
+        }
+
+        // Clear any error messages
+        const errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            errorMessage.textContent = "";
+            errorMessage.classList.add("hidden");
+        }
     }
-  };
+};
+
 
   // Handle Change Password form submission and validation
   const changePasswordForm = document.getElementById("changePasswordForm");

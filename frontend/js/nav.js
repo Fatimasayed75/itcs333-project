@@ -175,6 +175,10 @@ async function loadContent(page) {
           const newPassword = document.getElementById("newPassword").value;
           const confirmPassword = document.getElementById("confirmPassword").value;
           const errorMessage = document.getElementById("errorMessage");
+
+           // Clear any existing error messages before making the request
+          errorMessage.textContent = "";
+          errorMessage.classList.add("hidden");
       
           // Send AJAX request to update password
           const formData = new FormData();
