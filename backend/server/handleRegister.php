@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Determine user role based on email pattern
-    if (preg_match("/^(201[0-9]|202[0-4])[0-9]{4,5}@stu\.uob\.edu\.bh$/", $email)) {
+    if (preg_match("/^(201[0-9]{5}|202[0-4](0|1)[0-9]{4})@stu\.uob\.edu\.bh$/", $email)) {
       $role = "student";
     } elseif (preg_match("/^[a-z]+@uob\.edu\.bh$/i", $email)) {
       $role = "instructor";
