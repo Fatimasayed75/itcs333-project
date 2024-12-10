@@ -1,5 +1,5 @@
-let currentWeekOffset = 0;
-let roomAvailabilityChart = null;
+var currentWeekOffset = 0;
+var roomAvailabilityChart = null;
 
 function createRoomAvailabilityChart(bookings) {
   const canvas = document.getElementById("roomAvailability");

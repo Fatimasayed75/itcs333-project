@@ -4,7 +4,8 @@ require_once '../../../backend/utils/constants.php';
 
 use Utils\Constants;
 $id = isAuthorized();
-// var_dump($id);
+// put id in hidden input field
+echo "<input type='hidden' id='user-id' value='$id'>";
 ?>
 
 <!-- SIDEBAR -->

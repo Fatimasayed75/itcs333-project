@@ -209,9 +209,6 @@ async function loadContent(page) {
     }
   } catch (error) {
     console.error("Error loading content: ", error);
-    const response = await fetch("../components/404.php");
-    console.log(response);
-    const data = await response.text();
     document.getElementById("main-content").innerHTML =
       "Content not available.";
   }

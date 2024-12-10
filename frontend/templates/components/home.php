@@ -247,22 +247,19 @@ usort($CErooms, function ($a, $b) {
                     <td class="py-3 px-6 text-left whitespace-nowrap edit-mode hidden">
                       <?php echo htmlspecialchars($room['roomID']); ?>
                     </td>
-                    <!-- <td class="py-3 px-6 text-left edit-mode hidden">
-                                    <input type="text" name="name" value="<?php echo htmlspecialchars($room['name']); ?>" 
-                                           class="w-full px-2 py-1 border rounded">
-                                </td> -->
+                    
                     <td class="py-3 px-6 text-left edit-mode hidden">
                       <select name="type" class="w-full px-2 py-1 border rounded">
-                        <option value="class" <?php echo $room['type'] === 'class' ? 'selected' : ''; ?>>Classroom</option>
-                        <option value="lab" <?php echo $room['type'] === 'lab' ? 'selected' : ''; ?>>Laboratory</option>
+                        <option value="class" <?php echo $room['type'] === 'class' ? 'selected' : ''; ?>>Class</option>
+                        <option value="lab" <?php echo $room['type'] === 'lab' ? 'selected' : ''; ?>>Lab</option>
                       </select>
                     </td>
                     <td class="py-3 px-6 text-left edit-mode hidden">
-                      <input type="number" name="capacity" value="<?php echo htmlspecialchars($room['capacity']); ?>"
+                      <input type="number" name="capacity" min="0" max="200" value="<?php echo htmlspecialchars($room['capacity']); ?>"
                         class="w-full px-2 py-1 border rounded">
                     </td>
                     <td class="py-3 px-6 text-left edit-mode hidden">
-                      <input type="number" name="floor" value="<?php echo htmlspecialchars($room['floor']); ?>"
+                      <input type="number" name="floor" min="0" max="2" value="<?php echo htmlspecialchars($room['floor']); ?>"
                         class="w-full px-2 py-1 border rounded">
                     </td>
                     <td class="py-3 px-6 text-left edit-mode hidden">

@@ -49,9 +49,6 @@ function toggleEditMode(roomID) {
   const viewCells = row.querySelectorAll(".view-mode");
   const editCells = row.querySelectorAll(".edit-mode");
 
-  console.log(row);
-  console.log(editCells);
-
   viewCells.forEach((cell) => cell.classList.toggle("hidden"));
   editCells.forEach((cell) => cell.classList.toggle("hidden"));
 }
@@ -252,7 +249,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  initalizeListenersForAddRoom();
+  if(IsAdmin()){
+    initalizeListenersForAddRoom();
+  }
 
   // To show quantity input when checkbox is selected
 });

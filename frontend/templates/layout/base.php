@@ -34,7 +34,7 @@ if (isset($_SESSION['active-user'])) {
   <?php include "../components/nav.php"; ?>
 
   <!-- Main Content -->
-  <div id="main-content" class="content lg:ml-24 md:ml-12">
+  <div id="main-content" class="content lg:ml-24 md:ml-28">
     <?php include "../components/home.php" ?>
   </div>
   <!-- <script src="../../js/fetchNotification.js" defer></script> -->
@@ -57,6 +57,7 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/modal.js"></script>
   <script src="../../js/downTime.js"></script>
   <script src="../../js/equipmentTable.js"></script>
+  <script src="../../js/IsAdmin.js"></script>
 </body>
 
 </html>

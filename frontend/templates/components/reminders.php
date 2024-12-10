@@ -98,8 +98,6 @@ if (!$isAdmin) {
           $currentDateTime = time();
           $timeDifference = $bookingDateTime - $currentDateTime;
 
-          echo $timeDifference;
-
           // Check if the booking is within the coming 2 days (172800 seconds)
           if ($timeDifference > 0 && $timeDifference <= 172800):
             // Determine card color based on status
