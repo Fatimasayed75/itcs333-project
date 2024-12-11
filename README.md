@@ -20,7 +20,7 @@
 | Role       | Email                        | Password        |
 |------------|------------------------------|-----------------|
 | Admin      | admin@uob.edu.bh             | uobAdmin1!      |
-| Student    | 202211111@stu.uob.edu.bh     | uobStudent12!    |
+| Student    | 202211111@stu.uob.edu.bh     | uobStudent1!    |
 | Instructor | instructor@uob.edu.bh        | uobInstructor1! |
 
 ---
