@@ -73,15 +73,16 @@ echo "<input type='hidden' id='user-id' value='$id'>";
 
         <!-- PROFILE TAB -->
         <?php
-        if ($id != Constants::GUEST_USER_ID) {
-          echo "<li class='nav-link'>
-          <a id='profile-tab' onclick='loadContent('profile.php')'>
-            <i class='bx bx-user-circle icon'></i>
-            <span class='text nav-text'>Profile</span>
-          </a>
-        </li>";
-        }
+          if ($id != Constants::GUEST_USER_ID) {
+              echo "<li class='nav-link'>
+                      <a id='profile-tab' onclick=\"loadContent('profile.php')\">
+                          <i class='bx bx-user-circle icon'></i>
+                          <span class='text nav-text'>Profile</span>
+                      </a>
+                    </li>";
+          }
         ?>
+
 
         <!-- NOTIFICATIONS TAB -->
         <?php
