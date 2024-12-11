@@ -38,7 +38,6 @@ if (isset($_SESSION['active-user'])) {
     <?php include "../components/home.php" ?>
   </div>
   <!-- <script src="../../js/fetchNotification.js" defer></script> -->
-  <script src="../../js/nav.js"></script>
   <script src="../../js/rebook.js"></script>
   <script src="../../js/roomViews.js"></script>
   <script src="../../js/roomDetails.js"></script>
@@ -57,7 +56,8 @@ if (isset($_SESSION['active-user'])) {
   <script src="../../js/modal.js"></script>
   <script src="../../js/downTime.js"></script>
   <script src="../../js/equipmentTable.js"></script>
-  <script src="../../js/IsAdmin.js"></script>
+  <script src="../../js/isAdminGuest.js"></script>
+  <script src="../../js/nav.js"></script>
 </body>
 
 </html>

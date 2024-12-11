@@ -27,11 +27,6 @@ function applyFilters() {
   const capacity = document.getElementById("capacity").value;
   const cardRooms = document.querySelectorAll(".room-card");
 
-  console.log("Applying filters: ", document.getElementById("capacity"));
-  console.log("capacity: ", capacity);
-  console.log("type: ", type);
-  console.log("available: ", available);
-
   let found = false;
   cardRooms.forEach((card) => {
     const roomAvailable =

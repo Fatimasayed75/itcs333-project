@@ -48,7 +48,9 @@ function initializeHomeEventListeners() {
 
   document.getElementById("filterIcon").classList.remove("hidden");
   // Initialize countdown on page load
-  startCountdown();
+  if(!IsGuest()){
+    startCountdown();
+  }
 
   // Initialize listeners to view details for booking history
   document

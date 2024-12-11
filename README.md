@@ -82,11 +82,15 @@ This project is a **Responsive Web-Based Room Booking System** for the IT Colleg
     - Most Booked Room.
     - Number of recent feedbacks (within last 30 days)
 
-12. **Feedback System & Notifications**:
-    - A system for users to leave feedback on previous bookings, and a notification system that alerts users and admins about open lab requests acceptance/reject.
+12. **Feedback System & Chat**:
+    - A system for users to leave feedback on previous bookings and a chat between user and admin in notifications page. NOTE: users can reply with one message only each time admin sends a message.
+13. **Admin Can Accept/reject open lab requiests**
+   - Alert user and admins about open lab requests acceptance/reject
 
-13. **HOSTING**    
-
+14. **HOSTING**   
+   - Hosted on [here](https://itcs333.dilmune.com/). 
+   - https://itcs333.dilmune.com/
+   
 ## Technologies Used
 - **Frontend**: HTML/CSS, JavaScript, Tailwind frameword
 - **Backend**: PHP with PDO

@@ -255,7 +255,7 @@ usort($CErooms, function ($a, $b) {
                       </select>
                     </td>
                     <td class="py-3 px-6 text-left edit-mode hidden">
-                      <input type="number" name="capacity" min="0" max="200" value="<?php echo htmlspecialchars($room['capacity']); ?>"
+                      <input type="number" name="capacity" min="1" max="200" value="<?php echo htmlspecialchars($room['capacity']); ?>"
                         class="w-full px-2 py-1 border rounded">
                     </td>
                     <td class="py-3 px-6 text-left edit-mode hidden">
